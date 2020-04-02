@@ -218,17 +218,17 @@ elasticdump \
 <p>折腾完上面的远程ES导出到本地JSON之外，突然发现可以直接从远程ES导入本地ES，为什么我还要拐个弯导出个本地文件，服了我自己的智商。。。</p>
 <p><img src="/img/zhishang1.jpg" srcset="/img/loading.gif" alt="智商"></p>
 <p>由于本地ES没有任何配置，于是我按照示例，最初想到了这样：</p>
-<pre><code>$ elasticdump --input http://shenchangchang:12345678@10.32.67.12:9200/kis_data_index \
---output http://localhost:9200/kis_data_index --type=mapping</code></pre><p>报错：</p>
+<pre><code>$ elasticdump --input http://username:password@0.0.0.0:9200/data_index \
+--output http://localhost:9200/data_index --type=mapping</code></pre><p>报错：</p>
 <pre><code>Error Emitted =&gt; {&quot;root_cause&quot;:[{&quot;type&quot;:&quot;mapper_parsing_exception&quot;,&quot;reason&quot;:&quot;Root mapping definition has unsupported parameters:  [kis_data_index_type : {properties={eng_exam_res={type=keyword}, item_state={type=keyword}, first_level={type=text}, chin_exam={analyzer=ik_max_word, type=text}, chinese_item={analyzer=ik_max_word, type=text}, xremark={type=keyword}, eng_synonym={type=keyword}, eng_exam={type=text}, contributor={type=text}, third_level={type=text}, chin_exam_res={type=keyword}, id={type=long}, remark_str={type=keyword}, chin_define_res={type=keyword}, chin_synonym={type=text}, eng_abbr={type=text}, contributor ={type=text, fields={keyword={ignore_above=256, type=keyword}}}, query={properties={match_all={type=object}}}, source_type={type=keyword}, english_item={analyzer=english, type=text}, second_level={type=text}, eng_define_res={type=keyword}, eng_define={type=text}, picture_res={type=keyword}, chin_abbr={type=text}, chin_define={type=text}}}]&quot;}],&quot;type&quot;:&quot;mapper_parsing_exception&quot;,&quot;reason&quot;:&quot;Root mapping definition has unsupported parameters:  [kis_data_index_type : {properties={eng_exam_res={type=keyword}, item_state={type=keyword}, first_level={type=text}, chin_exam={analyzer=ik_max_word, type=text}, chinese_item={analyzer=ik_max_word, type=text}, xremark={type=keyword}, eng_synonym={type=keyword}, eng_exam={type=text}, contributor={type=text}, third_level={type=text}, chin_exam_res={type=keyword}, id={type=long}, remark_str={type=keyword}, chin_define_res={type=keyword}, chin_synonym={type=text}, eng_abbr={type=text}, contributor ={type=text, fields={keyword={ignore_above=256, type=keyword}}}, query={properties={match_all={type=object}}}, source_type={type=keyword}, english_item={analyzer=english, type=text}, second_level={type=text}, eng_define_res={type=keyword}, eng_define={type=text}, picture_res={type=keyword}, chin_abbr={type=text}, chin_define={type=text}}}]&quot;}
 Error Emitted =&gt; {&quot;root_cause&quot;:[{&quot;type&quot;:&quot;mapper_parsing_exception&quot;,&quot;reason&quot;:&quot;Root mapping definition has unsupported parameters:  [kis_data_index_type : {properties={eng_exam_res={type=keyword}, item_state={type=keyword}, first_level={type=text}, chin_exam={analyzer=ik_max_word, type=text}, chinese_item={analyzer=ik_max_word, type=text}, xremark={type=keyword}, eng_synonym={type=keyword}, eng_exam={type=text}, contributor={type=text}, third_level={type=text}, chin_exam_res={type=keyword}, id={type=long}, remark_str={type=keyword}, chin_define_res={type=keyword}, chin_synonym={type=text}, eng_abbr={type=text}, contributor ={type=text, fields={keyword={ignore_above=256, type=keyword}}}, query={properties={match_all={type=object}}}, source_type={type=keyword}, english_item={analyzer=english, type=text}, second_level={type=text}, eng_define_res={type=keyword}, eng_define={type=text}, picture_res={type=keyword}, chin_abbr={type=text}, chin_define={type=text}}}]&quot;}],&quot;type&quot;:&quot;mapper_parsing_exception&quot;,&quot;reason&quot;:&quot;Root mapping definition has unsupported parameters:  [kis_data_index_type : {properties={eng_exam_res={type=keyword}, item_state={type=keyword}, first_level={type=text}, chin_exam={analyzer=ik_max_word, type=text}, chinese_item={analyzer=ik_max_word, type=text}, xremark={type=keyword}, eng_synonym={type=keyword}, eng_exam={type=text}, contributor={type=text}, third_level={type=text}, chin_exam_res={type=keyword}, id={type=long}, remark_str={type=keyword}, chin_define_res={type=keyword}, chin_synonym={type=text}, eng_abbr={type=text}, contributor ={type=text, fields={keyword={ignore_above=256, type=keyword}}}, query={properties={match_all={type=object}}}, source_type={type=keyword}, english_item={analyzer=english, type=text}, second_level={type=text}, eng_define_res={type=keyword}, eng_define={type=text}, picture_res={type=keyword}, chin_abbr={type=text}, chin_define={type=text}}}]&quot;}</code></pre><p>应该是不能直接用localhost。</p>
 <p>于是我又试了这样：</p>
-<pre><code>$ elasticdump --input http://shenchangchang:12345678@10.32.67.12:9200/kis_data_index \
---output http://127.0.0.1:9200/kis_data_index --type=mapping</code></pre><p>本机地址，没错吧？</p>
+<pre><code>$ elasticdump --input http://username:password@0.0.0.0:9200/kis_data_index \
+--output http://127.0.0.1:9200/data_index --type=mapping</code></pre><p>本机地址，没错吧？</p>
 <p>依然报同样的错误。</p>
 <p>于是，我寻思着是不是应该用电脑无线的IP？(我还加了公司无线网的账号密码。。)</p>
-<pre><code>$ elasticdump --input http://shenchangchang:12345678@10.32.67.12:9200/kis_data_index \
---output http://39796:Gw@303323@10.9.161.210:9200/kis_data_index --type=mapping</code></pre><p>这次报错是连不上：</p>
+<pre><code>$ elasticdump --input http://username:password@0.0.0.0:9200/data_index \
+--output http://OA:password@10.9.1.000:9200/data_index --type=mapping</code></pre><p>这次报错是连不上：</p>
 <pre><code>Thu, 02 Apr 2020 08:01:54 GMT | starting dump
 Thu, 02 Apr 2020 08:01:54 GMT | got 1 objects from source elasticsearch (offset: 0)
 Thu, 02 Apr 2020 08:02:14 GMT | Error Emitted =&gt; connect ECONNREFUSED 0.0.0.0:9200
@@ -238,8 +238,8 @@ Thu, 02 Apr 2020 08:02:14 GMT | dump ended with error (get phase) =&gt; Error: c
 <p>这时候我才看到指令最后的 –type=mapping。</p>
 <p>不会是这个指令多余了吧？？</p>
 <p>删掉之后，果然通了。。</p>
-<pre><code>$ elasticdump --input http://shenchangchang:12345678@10.32.67.12:9200/kis_data_index \
---output http://127.0.0.1:9200/kis_data_index</code></pre><p><strong>妈蛋!</strong><br><strong>被自己气吐血！！</strong></p>
+<pre><code>$ elasticdump --input http://username:password@0.0.0.0:9200/data_index \
+--output http://127.0.0.1:9200/data_index</code></pre><p><strong>妈蛋!</strong><br><strong>被自己气吐血！！</strong></p>
 <pre><code>Thu, 02 Apr 2020 08:24:37 GMT | starting dump
 Thu, 02 Apr 2020 08:24:37 GMT | got 100 objects from source elasticsearch (offset: 0)
 Thu, 02 Apr 2020 08:24:38 GMT | sent 100 objects to destination elasticsearch, wrote 100
