@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>Elasticsearch + Kibana 安装记录 - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Sunday, April 5th 2020, 12:47 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.7k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>公司今年的项目要把原来的数据迁移到Elasticsearch数据库中，通过技术负责人的介绍，我才知道了ES+kibana这个组合，开源，可以基于ES数据直接在Kibana上进行数据查询和图表分析。<a id="more"></a> 想我们之前还苦哈哈的自己写Echarts做数据图表，虽然实现了我们最初的需求，但是和采用Kibana比起来，还是占用了不少的时间和精力。</p>
+<p>这几天在本地搭建了ES+Kibana，在此记录一下。</p>
+<h1 id="Elasticsearch-安装"><a href="#Elasticsearch-安装" class="headerlink" title="Elasticsearch 安装"></a>Elasticsearch 安装</h1><h2 id="下载与安装"><a href="#下载与安装" class="headerlink" title="下载与安装"></a>下载与安装</h2><p>Elasticsearch的安装方式相对来说比较简单。<code>brew</code>的安装方式对我来说太慢，于是直接在官网上下载的安装包（公司网太慢，下个安装包还花了一天时间）。</p>
+<ul>
+<li><p>下载地址：<a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="noopener">https://www.elastic.co/downloads/elasticsearch</a></p>
+</li>
+<li><p>安装版本：7.6.2 （与Kibana的版本要一致）</p>
+</li>
+</ul>
+<p>下载完成之后，放到<code>/usr/local/Cellar/</code>路径下，解压。</p>
+<p>进入 bin 目录启动 ES 并在运行：</p>
+<pre><code>$ ./elasticsearch
+$ ./elasticsearch -d (后台运行)</code></pre><p>curl 测试是否正常运行（或者在浏览器中打开）：</p>
+<pre><code>$ curl 127.0.0.1:9200</code></pre><p>此时出现：</p>
+<pre><code>{
+  &quot;name&quot; : &quot;mvQoSGm&quot;,
+  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,
+  &quot;cluster_uuid&quot; : &quot;4vUSt2_AQFSj5LZDVgR74g&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;7.6.2&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;tar&quot;,
+    &quot;build_hash&quot; : &quot;04711c2&quot;,
+    &quot;build_date&quot; : &quot;2020-04-02T13:34:09.098244Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;7.4.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;6.6.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;6.0.0&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;</code></pre><p>表示安装成功。</p>
+<p>初步安装之后，我并没有做其他的设置，还有一些插件因为下载路径实在太慢，准备后面再慢慢安装。</p>
+<h2 id="查看ES集群的简单命令"><a href="#查看ES集群的简单命令" class="headerlink" title="查看ES集群的简单命令"></a>查看ES集群的简单命令</h2><h3 id="1-查看集群的健康状态"><a href="#1-查看集群的健康状态" class="headerlink" title="1. 查看集群的健康状态"></a>1. 查看集群的健康状态</h3><pre><code>http://127.0.0.1:9200/_cat/health?v</code></pre><p>URL中_cat表示查看信息，health表明返回的信息为集群健康信息，?v表示返回的信息加上头信息，跟返回JSON信息加上?。</p>
+<ul>
+<li><p>集群的状态（status）：red红表示集群不可用，有故障。yellow黄表示集群不可靠但可用，一般单节点时就是此状态。green正常状态，表示集群一切正常。</p>
+</li>
+<li><p>节点数（node.total）：节点数，这里是2，表示该集群有两个节点。</p>
+</li>
+<li><p>数据节点数（node.data）：存储数据的节点数，这里是2。数据节点在Elasticsearch概念介绍有。</p>
+</li>
+<li><p>分片数（shards）：这是12，表示我们把数据分成多少块存储。</p>
+</li>
+<li><p>主分片数（pri）：primary shards，这里是6，实际上是分片数的两倍，因为有一个副本，如果有两个副本，这里的数量应该是分片数的三倍，这个会跟后面的索引分片数对应起来，这里只是个总数。</p>
+</li>
+<li><p>激活的分片百分比（active_shards_percent）：这里可以理解为加载的数据分片数，只有加载所有的分片数，集群才算正常启动，在启动的过程中，如果我们不断刷新这个页面，我们会发现这个百分比会不断加大。</p>
+</li>
+</ul>
+<p><img src="/img/1.png" srcset="/img/loading.gif" alt="1"></p>
+<h3 id="2-查看集群的索引数"><a href="#2-查看集群的索引数" class="headerlink" title="2. 查看集群的索引数"></a>2. 查看集群的索引数</h3><pre><code>http://127.0.0.1:9200/_cat/indices?v</code></pre><ul>
+<li><p>索引健康（health），green为正常，yellow表示索引不可靠（单节点），red索引不可用。与集群健康状态一致。</p>
+</li>
+<li><p>状态（status），表明索引是否打开。</p>
+</li>
+<li><p>索引名称（index），这里有.kibana和school。</p>
+</li>
+<li><p>uuid，索引内部随机分配的名称，表示唯一标识这个索引。</p>
+</li>
+<li><p>主分片（pri），.kibana为1，school为5，加起来主分片数为6，这个就是集群的主分片数。</p>
+</li>
+<li><p>文档数（docs.count），school在之前的演示添加了两条记录，所以这里的文档数为2。</p>
+</li>
+<li><p>已删除文档数（docs.deleted），这里统计了被删除文档的数量。</p>
+</li>
+<li><p>索引存储的总容量（store.size），这里school索引的总容量为6.4kb，是主分片总容量的两倍，因为存在一个副本。</p>
+</li>
+<li><p>主分片的总容量（pri.store.size），这里school的主分片容量是7kb，是索引总容量的一半。</p>
+</li>
+</ul>
+<p><img src="/img/2.png" srcset="/img/loading.gif" alt="2"></p>
+<h3 id="3-查看集群所在磁盘的分配状况"><a href="#3-查看集群所在磁盘的分配状况" class="headerlink" title="3. 查看集群所在磁盘的分配状况"></a>3. 查看集群所在磁盘的分配状况</h3><pre><code>http://127.0.0.1:9200/_cat/allocation?v</code></pre><p>返回集群中的各节点所在磁盘的磁盘状况。</p>
+<h3 id="4-查看集群的节点"><a href="#4-查看集群的节点" class="headerlink" title="4. 查看集群的节点"></a>4. 查看集群的节点</h3><pre><code>http://127.0.0.1:9200/_cat/nodes?v</code></pre><p>通过该连接返回了集群中各节点的情况。这些信息中比较重要的是master列，带*星号表明该节点是主节点。带-表明该节点是从节点。</p>
+<pre><code>ip heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+
+127.0.0.1 19 99 6 2.86 mdi * ruan-node-1
+
+127.0.0.1 13 99 6 2.86 mdi - ruan-node-2</code></pre><h3 id="5-查看集群的其它信息"><a href="#5-查看集群的其它信息" class="headerlink" title="5. 查看集群的其它信息"></a>5. 查看集群的其它信息</h3><pre><code>http://127.0.0.1:9200/_cat/</code></pre><p>获得查看集群信息的目录。</p>
+<h3 id="6-全词搜索"><a href="#6-全词搜索" class="headerlink" title="6. 全词搜索"></a>6. 全词搜索</h3><pre><code>http://127.0.0.1:9200/indexName/_search?pretty=true</code></pre><p><code>pretty=true</code> 表示格式化输出。</p>
+<h3 id="7-精准搜索"><a href="#7-精准搜索" class="headerlink" title="7. 精准搜索"></a>7. 精准搜索</h3><pre><code>http://127.0.0.1:9200/indexName/_search?q=123&amp;pretty=true</code></pre><p>表示搜索“123”。</p>
+<h3 id="8-模糊搜索"><a href="#8-模糊搜索" class="headerlink" title="8. 模糊搜索"></a>8. 模糊搜索</h3><pre><code>http://127.0.0.1:9200/indexName/_search?q=*123*&amp;pretty=true</code></pre><p>模糊搜索“123”。</p>
+<h1 id="Kibana-安装"><a href="#Kibana-安装" class="headerlink" title="Kibana 安装"></a>Kibana 安装</h1><h2 id="下载与安装-1"><a href="#下载与安装-1" class="headerlink" title="下载与安装"></a>下载与安装</h2><p>Kibana安装时要注意与ES是同一个版本，ES我的版本是7.6.2，因此Kibana也下载的7.6.2版本的安装包。</p>
+<ul>
+<li>下载地址同官网</li>
+<li>版本：7.6.2</li>
+</ul>
+<p>下载完成后，同样解压到<code>/usr/local/Cellar/</code>路径下。</p>
+<p>进入kibana中的bin目录中，启动：</p>
+<pre><code>$ ./kibana</code></pre><p>Kibana默认端口号<em>5601</em>， 启动成功后，到浏览器输入<code>hocalhost:5601</code>，就能进入Kibana页面了。</p>
+<p>Kibana 7.x版本界面终于做的好看了一些。公司目前用的是5.x版本，界面简单粗暴，看起来总有些怪怪的。</p>
+<p><img src="/img/kibana_cut.png" srcset="/img/loading.gif" alt="3"></p>
+<p><strong>问题：</strong></p>
+<p>在公司安装时，localhost:5601地址可以直接访问Kibana，但是回到家之后再次访问却提示localhost:5601错误，无法访问了，ES也只能通过127.0.0.1:9200才能访问，localhost：9200显示无法连接。</p>
+<p>后来在<code>kibana.yml</code>配置文件里把localhost改成127.0.0.1之后，才能通过127.0.0.1:5601访问，不知道是不是我改动了一些配置？？</p>
+<p>之后再调整一下看看。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>首先在<code>Management</code>中配置<code>Index Patterns</code>，将想要分析的Index加入进来。</p>
+<p>在<code>Dev Tools</code>里写命令获取数据：</p>
+<pre><code>GET /data_index/_search
+{
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}</code></pre><p>上面是最简单的获取，Kibana还有其他的Lucene查询语法，可以查询更多的ES数据，按条件查询、搜索等，待实际应用中慢慢学习。</p>
+<p>今天先初步记录安装与使用的信息，以免过后忘记。</p>
+<hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><em><a href="https://blog.csdn.net/genghaihua/article/details/81479619" target="_blank" rel="noopener">ES查看集群信息命令</a></em></li>
+<li><em><a href="https://blog.csdn.net/a544258023/article/details/89709046?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-2&utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-2" target="_blank" rel="noopener">ElasticSearch常用查询命令</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/ELK">ELK</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Kibana">Kibana</a>
+                
+                  <a class="hover-with-bg" href="/tags/Elasticsearch">Elasticsearch</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Elasticsearch + Kibana 安装记录&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

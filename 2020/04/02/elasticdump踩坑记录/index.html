@@ -137,7 +137,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      15 min
+                      16 min
                   </span>&nbsp;
                 
 
@@ -320,6 +320,9 @@ Thu, 02 Apr 2020 08:25:23 GMT | sent 35 objects to destination elasticsearch, wr
 Thu, 02 Apr 2020 08:25:23 GMT | got 0 objects from source elasticsearch (offset: 3735)
 Thu, 02 Apr 2020 08:25:23 GMT | Total Writes: 3735
 Thu, 02 Apr 2020 08:25:23 GMT | dump complete</code></pre><p>不过，我在网上研究的时候，看到示例中都有指定–type=XXX，mapping和data要分别指定。后边需要验证一下不指定–type的情况下，导入到本地ES的文件是不是同时包含了mapping和所有data数据（从导入的记录上看，确实完整导入了3735条数据）。</p>
+<hr>
+<p><strong>2020-04-03 补充：</strong></p>
+<p>后来想到，–type无法访问可能是因为index指定的问题，后边遇到搜索查询数据的时候，再研究一下。</p>
 
             <hr>
           </div>
@@ -330,7 +333,7 @@ Thu, 02 Apr 2020 08:25:23 GMT | dump complete</code></pre><p>不过，我在网�
               <span>
                 <i class="iconfont icon-inbox"></i>
                 
-                  <a class="hover-with-bg" href="/categories/ElasticSearch">ElasticSearch</a>
+                  <a class="hover-with-bg" href="/categories/ELK">ELK</a>
                   &nbsp;
                 
               </span>&nbsp;&nbsp;
@@ -339,7 +342,7 @@ Thu, 02 Apr 2020 08:25:23 GMT | dump complete</code></pre><p>不过，我在网�
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/%E6%8F%92%E4%BB%B6">插件</a>
+                  <a class="hover-with-bg" href="/tags/Elasticsearch">Elasticsearch</a>
                 
               </span>
             
