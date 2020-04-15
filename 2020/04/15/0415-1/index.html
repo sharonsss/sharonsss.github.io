@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>jQuery、HTML、CSS中的小细节汇总（一） - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Wednesday, April 15th 2020, 10:33 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    809 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>这个博客其中一个目的，是一边开发前端页面，一边记录下自己遇到的问题，很多是非常有tricks的，之后也可能会频繁用到。</p>
+<p>下边主要总结的是 jQuery 和 CSS 中的一些小细节，之后如果积累了更多的点，再补充第二篇。</p>
+<a id="more"></a>
+
+<br>
+
+<h1 id="HTML-中获取-lt-span-gt-标签内的值-jQuery"><a href="#HTML-中获取-lt-span-gt-标签内的值-jQuery" class="headerlink" title="HTML 中获取 &lt;span&gt; 标签内的值 - jQuery"></a>HTML 中获取 <code>&lt;span&gt;</code> 标签内的值 - jQuery</h1><p>在 jQuery 中，获取 HTML 中各个标签内值的方法有几个。</p>
+<p>最近遇到了如何获取 <code>&lt;span&gt;</code> 标签内的值的问题，试验了一下几种获取值的方法：</p>
+<pre><code class="html">&lt;html&gt;
+  &lt;head&gt;
+    &lt;script language=JavaScript src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+
+     &lt;span id=&quot;spId&quot;&gt;show me&lt;/span&gt;
+
+     &lt;script language=JavaScript&gt;
+
+       var test1 = $(&quot;#spId&quot;).val();
+       var test2 = $(&quot;#spId&quot;).html();
+       var test3 = $(&quot;#spId&quot;).text();
+       alert(&quot;val: &quot;  + test1);
+       alert(&quot;html: &quot; + test2);
+       alert(&quot;text: &quot; + test3);
+
+     &lt;/script&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>三种获取所得的值分别为：</p>
+<pre><code>val: 空
+html: show me
+text: show me</code></pre><p>因此，</p>
+<ul>
+<li><p>获取input的信息时，可以用 <code>val()</code></p>
+</li>
+<li><p>获取 <code>&lt;span&gt;</code> 的值，可以用 <code>html()</code> 或者 <code>text()</code></p>
+</li>
+</ul>
+<br>
+
+<h1 id="CSS-中-active-选择器的用法"><a href="#CSS-中-active-选择器的用法" class="headerlink" title="CSS 中 active 选择器的用法"></a>CSS 中 <code>active</code> 选择器的用法</h1><p>CSS 选择器 <code>active</code> 代表元素被激活（按下）时的样式。“激活”是指从点击模块后直到松开模块的过程。</p>
+<p>例如：</p>
+<pre><code class="css">a:active
+{
+  background-color: yellow;
+}</code></pre>
+<p>来一个简单的实现例子：</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;style&gt;
+      a:active
+      {
+        background-color:yellow;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;a href=&quot;http://www.google.com&quot;&gt;Google&lt;/a&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p><strong>另外，需要注意一个区别：</strong></p>
+<ul>
+<li><p><code>a.active</code> 是对<code>class=active</code>的<code>a</code>标签生效</p>
+</li>
+<li><p><code>a:active</code> 是对按下的<code>a</code>标签生效</p>
+</li>
+</ul>
+<p>两者所代表的内涵是不一样的。</p>
+<p>此外，<code>active</code> 也可以实现元素 <code>display:none</code> 和 <code>display:block</code> 的切换。</p>
+<br>
+
+<h1 id="CSS-设置背景、背景图片、blur效果"><a href="#CSS-设置背景、背景图片、blur效果" class="headerlink" title="CSS 设置背景、背景图片、blur效果"></a>CSS 设置背景、背景图片、blur效果</h1><ul>
+<li><p><code>background: url(&#39;url&#39;)</code> 用来设置背景图片，后边可以加 <code>no-repeat</code> 限制是否重复平铺图像</p>
+</li>
+<li><p><code>background-position</code> 和 <code>background-size</code> 用来调整图片的显示方式</p>
+</li>
+</ul>
+<pre><code class="css">.bg {
+      background: url(&#39;1.jpg&#39;) no-repeat;
+      height:600px;
+      width: 100%;
+      text-align: center;
+      line-height: 600px;
+      background-position: center;
+      background-size: cover;
+  }</code></pre>
+<ul>
+<li><p>最简单粗暴的设置 blur 的方法，是直接加上 <code>filter: blur(3px)</code> 的属性。但是，这样会导致背景图所在 <code>&lt;div&gt;</code> 内的其他元素，包括文字，都会虚化。解决办法有两种：</p>
+<ul>
+<li><p>第一，将背景图片单独放到一个div里，这样就不会和其他元素的效果有冲突</p>
+</li>
+<li><p>第二，通过 <code>:before</code> 的状态和 <code>z-index</code> 来控制，只让背景图片虚化。举个例子：</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code class="css">.demo1{
+    width: 500px;
+    height: 300px;
+    line-height: 50px;
+    text-align: center;
+}
+.demo1:before{
+    background: url(http://csssecrets.io/images/tiger.jpg) no-repeat;
+    background-size: cover;
+    width: 500px;
+    height: 300px;
+    content: &quot;&quot;;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;/*-1 可以当背景*/
+    -webkit-filter: blur(3px);
+    filter: blur(3px);
+}
+
+&lt;div class=&quot;demo1&quot;&gt;背景图半透明，文字不透明&lt;br/&gt;
+  方法：背景图+ filter：blur
+&lt;/div&gt;</code></pre>
+<p>这种设置可以在不改变div结构的情况下，使背景图片虚化。</p>
+<hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><em><a href="https://blog.csdn.net/qq_37540004/article/details/78280454" target="_blank" rel="noopener">css实现 display: none和display: block的切换动画</a></em></li>
+<li><em><a href="https://blog.csdn.net/xiaoxiao20121314/article/details/81103500" target="_blank" rel="noopener">CSS样式的状态hover、focus、active、link、visited详解</a></em></li>
+<li><em><a href="https://www.jianshu.com/p/12a938e5c557" target="_blank" rel="noopener">CSS实现背景图片透明和文字不透明效果</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/jQuery">jQuery</a>
+                
+                  <a class="hover-with-bg" href="/tags/CSS">CSS</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "jQuery、HTML、CSS中的小细节汇总（一）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

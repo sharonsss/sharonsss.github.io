@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>jQuery、HTML、CSS中的小细节汇总（一）</title>
+    <link href="/2020/04/15/0415-1/"/>
+    <url>/2020/04/15/0415-1/</url>
+    
+    <content type="html"><![CDATA[<p>这个博客其中一个目的，是一边开发前端页面，一边记录下自己遇到的问题，很多是非常有tricks的，之后也可能会频繁用到。</p><p>下边主要总结的是 jQuery 和 CSS 中的一些小细节，之后如果积累了更多的点，再补充第二篇。</p><a id="more"></a><br><h1 id="HTML-中获取-lt-span-gt-标签内的值-jQuery"><a href="#HTML-中获取-lt-span-gt-标签内的值-jQuery" class="headerlink" title="HTML 中获取 &lt;span&gt; 标签内的值 - jQuery"></a>HTML 中获取 <code>&lt;span&gt;</code> 标签内的值 - jQuery</h1><p>在 jQuery 中，获取 HTML 中各个标签内值的方法有几个。</p><p>最近遇到了如何获取 <code>&lt;span&gt;</code> 标签内的值的问题，试验了一下几种获取值的方法：</p><pre><code class="html">&lt;html&gt;  &lt;head&gt;    &lt;script language=JavaScript src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;  &lt;/head&gt;  &lt;body&gt;     &lt;span id=&quot;spId&quot;&gt;show me&lt;/span&gt;     &lt;script language=JavaScript&gt;       var test1 = $(&quot;#spId&quot;).val();       var test2 = $(&quot;#spId&quot;).html();       var test3 = $(&quot;#spId&quot;).text();       alert(&quot;val: &quot;  + test1);       alert(&quot;html: &quot; + test2);       alert(&quot;text: &quot; + test3);     &lt;/script&gt;  &lt;/body&gt;&lt;/html&gt;</code></pre><p>三种获取所得的值分别为：</p><pre><code>val: 空html: show metext: show me</code></pre><p>因此，</p><ul><li><p>获取input的信息时，可以用 <code>val()</code></p></li><li><p>获取 <code>&lt;span&gt;</code> 的值，可以用 <code>html()</code> 或者 <code>text()</code></p></li></ul><br><h1 id="CSS-中-active-选择器的用法"><a href="#CSS-中-active-选择器的用法" class="headerlink" title="CSS 中 active 选择器的用法"></a>CSS 中 <code>active</code> 选择器的用法</h1><p>CSS 选择器 <code>active</code> 代表元素被激活（按下）时的样式。“激活”是指从点击模块后直到松开模块的过程。</p><p>例如：</p><pre><code class="css">a:active{  background-color: yellow;}</code></pre><p>来一个简单的实现例子：</p><pre><code class="html">&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;style&gt;      a:active      {        background-color:yellow;      }    &lt;/style&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;a href=&quot;http://www.google.com&quot;&gt;Google&lt;/a&gt;  &lt;/body&gt;&lt;/html&gt;</code></pre><p><strong>另外，需要注意一个区别：</strong></p><ul><li><p><code>a.active</code> 是对<code>class=active</code>的<code>a</code>标签生效</p></li><li><p><code>a:active</code> 是对按下的<code>a</code>标签生效</p></li></ul><p>两者所代表的内涵是不一样的。</p><p>此外，<code>active</code> 也可以实现元素 <code>display:none</code> 和 <code>display:block</code> 的切换。</p><br><h1 id="CSS-设置背景、背景图片、blur效果"><a href="#CSS-设置背景、背景图片、blur效果" class="headerlink" title="CSS 设置背景、背景图片、blur效果"></a>CSS 设置背景、背景图片、blur效果</h1><ul><li><p><code>background: url(&#39;url&#39;)</code> 用来设置背景图片，后边可以加 <code>no-repeat</code> 限制是否重复平铺图像</p></li><li><p><code>background-position</code> 和 <code>background-size</code> 用来调整图片的显示方式</p></li></ul><pre><code class="css">.bg {      background: url(&#39;1.jpg&#39;) no-repeat;      height:600px;      width: 100%;      text-align: center;      line-height: 600px;      background-position: center;      background-size: cover;  }</code></pre><ul><li><p>最简单粗暴的设置 blur 的方法，是直接加上 <code>filter: blur(3px)</code> 的属性。但是，这样会导致背景图所在 <code>&lt;div&gt;</code> 内的其他元素，包括文字，都会虚化。解决办法有两种：</p><ul><li><p>第一，将背景图片单独放到一个div里，这样就不会和其他元素的效果有冲突</p></li><li><p>第二，通过 <code>:before</code> 的状态和 <code>z-index</code> 来控制，只让背景图片虚化。举个例子：</p></li></ul></li></ul><pre><code class="css">.demo1{    width: 500px;    height: 300px;    line-height: 50px;    text-align: center;}.demo1:before{    background: url(http://csssecrets.io/images/tiger.jpg) no-repeat;    background-size: cover;    width: 500px;    height: 300px;    content: &quot;&quot;;    position: absolute;    top: 0;    left: 0;    z-index: -1;/*-1 可以当背景*/    -webkit-filter: blur(3px);    filter: blur(3px);}&lt;div class=&quot;demo1&quot;&gt;背景图半透明，文字不透明&lt;br/&gt;  方法：背景图+ filter：blur&lt;/div&gt;</code></pre><p>这种设置可以在不改变div结构的情况下，使背景图片虚化。</p><hr><p><strong>参考来源：</strong></p><ul><li><em><a href="https://blog.csdn.net/qq_37540004/article/details/78280454" target="_blank" rel="noopener">css实现 display: none和display: block的切换动画</a></em></li><li><em><a href="https://blog.csdn.net/xiaoxiao20121314/article/details/81103500" target="_blank" rel="noopener">CSS样式的状态hover、focus、active、link、visited详解</a></em></li><li><em><a href="https://www.jianshu.com/p/12a938e5c557" target="_blank" rel="noopener">CSS实现背景图片透明和文字不透明效果</a></em></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>前端开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>jQuery</tag>
+      
+      <tag>CSS</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>jQuery需要注意的几个小点</title>
     <link href="/2020/04/11/jquery/"/>
     <url>/2020/04/11/jquery/</url>
