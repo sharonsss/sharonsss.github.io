@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Categories - Sansan&#39;s Blog</title>
+  <title>Java 程序打包之后，替换 jar 包内的文件 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -37,7 +37,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -105,7 +105,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/wolfgang.jpg')no-repeat center center;
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -115,6 +115,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Thursday, April 30th 2020, 8:55 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    374 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -126,22 +161,100 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p><strong>Java 对我来说绝对是一窍不通，基本陌生。</strong></p>
+<a id="more"></a>
+
+<p>奈何公司的工程师小伙伴开发了一个Java程序，前端、后端、数据库都是他自己一个人一手搭建起来的，遇到任何问题也只有他才能解决。</p>
+<p>这两天领导一句话，要求把程序里的Logo换掉，可是小伙伴的程序都是打包好的，jar 包里的文件，怎么样替换呢？</p>
+<p>小伙伴也不知道，这种不能像拆口袋一样，直接拆包替换东西。</p>
+<p>下载到本地，在压缩软件里，不解压的情况下直接替换里面的logo文件，再上传到服务器？</p>
+<p>尝试失败。文件在压缩包里替换成功，但上传到服务器，替换原 jar 包之后，运行程序会报错，显示修改打包文件错误。</p>
+<p>看来不能直接这样替换文件？！</p>
+<p><img src="/img/wunai.jpg" srcset="/img/loading.gif" alt="wunai"></p>
+<p>之后百度才找到正确方法：</p>
+<h2 id="替换-jar-包中指定文件"><a href="#替换-jar-包中指定文件" class="headerlink" title="替换 jar 包中指定文件"></a>替换 jar 包中指定文件</h2><ol>
+<li><strong>找到 jar 包中指定文件的路径：</strong></li>
+</ol>
+<pre><code>jar -tvf test.jar | grep logo.svg</code></pre><ol start="2">
+<li><strong>解压指定路径下的文件</strong></li>
+</ol>
+<pre><code>jar -xvf test.jar conf/logo.svg</code></pre><p>会自动在当前路径下创建目录。</p>
+<ol start="3">
+<li><strong>把需要替换的文件删除</strong></li>
+</ol>
+<pre><code>rm -rf conf/logo.svg</code></pre><ol start="4">
+<li><strong>上传文件到替换文件的目录下</strong></li>
+</ol>
+<pre><code class="terminal">$ scp 本地目录 服务器目录（绝对路径）</code></pre>
+<ol start="5">
+<li><strong>更新到 jar 包中</strong></li>
+</ol>
+<pre><code>jar -uvf test.jar conf/logo.svg</code></pre><hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><em><a href="https://blog.csdn.net/u011817217/article/details/92411009" target="_blank" rel="noopener">使用jar命令替换jar包中指定文件</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
                 
-
-<ul class="category-tree-list"><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/ELK/">ELK</a><span class="category-tree-list-count">2</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/Java-%E7%A8%8B%E5%BA%8F/">Java 程序</a><span class="category-tree-list-count">1</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a><span class="category-tree-list-count">4</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a><span class="category-tree-list-count">1</span></li><li class="category-tree-list-item"><a class="category-tree-list-link" href="/categories/%E8%AE%A1%E5%88%92/">计划</a><span class="category-tree-list-count">1</span></li></ul>
-
-
-              </div>
-            </div>
+                  <a class="hover-with-bg" href="/categories/Java%20%E7%A8%8B%E5%BA%8F">Java 程序</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Java">Java</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -220,6 +333,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -260,7 +378,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Category&nbsp;",
+        "Java 程序打包之后，替换 jar 包内的文件&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
