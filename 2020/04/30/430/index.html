@@ -129,7 +129,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    374 字
+                    437 字
                   </span>&nbsp;
                 
 
@@ -177,10 +177,11 @@
 <p>这两天领导一句话，要求把程序里的Logo换掉，可是小伙伴的程序都是打包好的，jar 包里的文件，怎么样替换呢？</p>
 <p>小伙伴也不知道，这种不能像拆口袋一样，直接拆包替换东西。</p>
 <p>下载到本地，在压缩软件里，不解压的情况下直接替换里面的logo文件，再上传到服务器？</p>
-<p>尝试失败。文件在压缩包里替换成功，但上传到服务器，替换原 jar 包之后，运行程序会报错，显示修改打包文件错误。</p>
+<p><strong>尝试失败。</strong></p>
+<p>文件在压缩包里替换成功，但上传到服务器，替换原 jar 包之后，运行程序会报错，显示修改打包文件错误。</p>
 <p>看来不能直接这样替换文件？！</p>
 <p><img src="/img/wunai.jpg" srcset="/img/loading.gif" alt="wunai"></p>
-<p>之后百度才找到正确方法：</p>
+<p>之后，在万能百度上才找到正确方法：</p>
 <h2 id="替换-jar-包中指定文件"><a href="#替换-jar-包中指定文件" class="headerlink" title="替换 jar 包中指定文件"></a>替换 jar 包中指定文件</h2><ol>
 <li><strong>找到 jar 包中指定文件的路径：</strong></li>
 </ol>
@@ -198,7 +199,11 @@
 <ol start="5">
 <li><strong>更新到 jar 包中</strong></li>
 </ol>
-<pre><code>jar -uvf test.jar conf/logo.svg</code></pre><hr>
+<pre><code>jar -uvf test.jar conf/logo.svg</code></pre><br>
+
+<p><strong>2020.05.25补充：</strong></p>
+<p>实操过程中，正确替换了Jar包中的文件之后，需要重新启动服务器，然后重新启动Redis、应用程序、Nginx，不然系统还是运行不起来的。mark 一下。</p>
+<hr>
 <p><strong>参考来源：</strong></p>
 <ul>
 <li><em><a href="https://blog.csdn.net/u011817217/article/details/92411009" target="_blank" rel="noopener">使用jar命令替换jar包中指定文件</a></em></li>
