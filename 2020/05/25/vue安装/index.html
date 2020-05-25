@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>Vue 安装——使用命令行工具（CLI）脚手架 - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Monday, May 25th 2020, 11:35 am
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    816 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <blockquote>
+<p>学习Vue的时候，首先要关注的就是安装问题。今天要记录的是通过脚手架创建Vue新项目，搭建基本的开发环境。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于 Vue 的安装，官方文档中提供了几种方法。</p>
+<p>如果是初学者，可以通过<code>npm</code>安装，或者直接在<code>&lt;script&gt;</code>中引入，具体可以参考官方的教程，简单明了。</p>
+<p>这里我使用的是通过 Vue 的 CLI 脚手架工具来构建Vue的初始项目，搭建出基本的开发环境，自动配置好目录结构，可以方便的进行本地调试、单元测试、热加载（不重启项目，进行部分代码更新）以及本地部署等。</p>
+<h2 id="Vue-脚手架工具安装"><a href="#Vue-脚手架工具安装" class="headerlink" title="Vue 脚手架工具安装"></a>Vue 脚手架工具安装</h2><p>看网上安装教程的时候发现，之前的脚手架工具 <code>vue-cli</code> 已经更改为 <strong>@vue/cli</strong>，官方教程中的安装方式也做了一些调整。</p>
+<p>如果通过之前的方式（<code>npm install  -g vue-cli</code>）安装了 <code>vue-cli</code>，需要先进行卸载（<code>npm unistall vue-cli</code>），然后采用新的安装包名称<code>@vue/cli</code>：</p>
+<pre><code>进入项目目录
+全局安装
+npm install -g @vue/cli</code></pre><p>回车，输入密码（密闻模式）。</p>
+<p>此时会提醒<code>File exists...Remove the existing file and try again, or run npm with --force to overwrite files recklessly.</code>，是之前安装过 <code>vue-cli</code> 留下的一些文件。</p>
+<p>如果不再需要，就强制覆盖掉：</p>
+<pre><code>npm install -g @vue/cli --force</code></pre><p>安装成功，会显示 <code>@vue/cli</code> 以及一些依赖包的版本：</p>
+<p><img src="/img/vue0525.png" srcset="/img/loading.gif" alt="screenshot"></p>
+<br>
+
+<h2 id="基于-Webpack-模版-init-初始化项目"><a href="#基于-Webpack-模版-init-初始化项目" class="headerlink" title="基于 Webpack 模版 init 初始化项目"></a>基于 Webpack 模版 init 初始化项目</h2><p>在项目目录下，创建一个基于 Webpack 模版的新项目。</p>
+<p>之前的方式是执行命令：<code>vue init webpack projectname</code>，但是使用 <code>@vue/cli</code> 之后，需要先安装 <code>@vue/cli-init</code>，再进行初始化。</p>
+<p>我创建的项目名称为 <code>vueapp</code>。</p>
+<pre><code>全局安装
+npm install -g @vue/cli-init
+
+再运行
+vue init webpack vueapp</code></pre><p>回车之后，会要求填写相应的信息：</p>
+<pre><code>? Project name vueapp
+? Project description A Vue.js project
+? Author sharonsss
+? Vue build standalone
+? Install vue-router? No
+? Use ESLint to lint your code? No
+? Set up unit tests No
+? Setup e2e tests with Nightwatch? No
+? Should we run `npm install` for you after the project has been created? (recommended) np
+m
+
+   vue-cli · Generated &quot;vueapp&quot;.</code></pre><p>初建项目的时候可以都默认，需要 install 的部分先选择不安装，后面再说。</p>
+<p>最后一项会询问是否在创建了新项目之后自动安装依赖，默认选择“是”。不然也得自己手动执行安装。</p>
+<pre><code># Installing project dependencies ...
+# ========================
+
+......
+
+# Project initialization finished!
+# ========================
+
+To get started:
+
+  cd vueapp
+  npm run dev
+
+Documentation can be found at https://vuejs-templates.github.io/webpack</code></pre><p>依赖安装完成之后，会提示你如何启动项目。</p>
+<p>执行 <code>npm run dev</code>，在浏览器访问 <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>，就能看到新项目初始化的页面啦。（8080为默认端口，如果该端口被占用，可以修改为其他的端口）</p>
+<p>也就是这个页面：</p>
+<p><img src="/img/vue_init.png" srcset="/img/loading.gif" alt=" "></p>
+<p>此时，<code>vueapp</code> 项目路径下的目录是这个样子：</p>
+<p><img src="/img/vue_folder.png" srcset="/img/loading.gif" alt="folder"></p>
+<ul>
+<li><p>具体的项目开发，都是在 <code>src</code> 目录中进行的。</p>
+</li>
+<li><p><code>build</code>和<code>config</code>目录是和webpack配置相关的.</p>
+</li>
+<li><p><code>node_modules</code> 是我们通过 <code>npm install</code> 安装的依赖。</p>
+</li>
+</ul>
+<p>这样 <code>@vue/cli</code> 脚手架工具就成功安装了，接下来就可以在模版的基础上进行自己的 Vue 项目开发了。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Vue">Vue</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Vue 安装——使用命令行工具（CLI）脚手架&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
