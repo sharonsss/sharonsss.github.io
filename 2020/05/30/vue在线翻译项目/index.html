@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>Vue.js 实现在线翻译小项目 - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Saturday, May 30th 2020, 4:17 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    3.8k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      16 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <blockquote>
+<p>用 Vue.js 实现一个在线翻译的小项目。学习课程用半天，课后总结居然用了一天？</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>利用 Vue 的脚手架工具（CLI）搭建好一套开发环境之后，我跟着一个网上课程学习了如何开发一个简单的在线翻译小项目。</p>
+<p>需要用到的知识点包括：</p>
+<ul>
+<li>使用 <code>@vue/cli</code> 创建项目</li>
+<li>创建多个组件</li>
+<li>组件之间的调用</li>
+<li><code>http</code> 访问请求</li>
+<li>获取在线翻译 API key</li>
+<li>应用 Bootstrap 主题</li>
+</ul>
+<h1 id="一、使用-vue-cli-创建新项目"><a href="#一、使用-vue-cli-创建新项目" class="headerlink" title="一、使用 @vue/cli 创建新项目"></a>一、使用 @vue/cli 创建新项目</h1><p>如何使用 <code>@vue/cli</code> 创建项目，在上一篇文章里已经记录过，这里就不再重复了。这次创建的项目还是在原来的 <code>Projects</code> 文件夹下，项目名称为 <code>my-project</code>。</p>
+<p>需要注意的是，因为上一篇文章中，我已经创建了一个名为 <code>vueapp</code> 的项目，其默认端口为 <code>8080</code>，因此在新的项目创建好之后，需要改变默认的端口号，比如改为 <code>8081</code>。</p>
+<p>端口号需要在配置文件里更改，也就是 <code>/config/inedx.js</code>这个文件：</p>
+<pre><code class="Javascript">// Various Dev Server settings
+host: &#39;localhost&#39;, // can be overwritten by process.env.HOST
+port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+autoOpenBrowser: false,
+errorOverlay: true,
+notifyOnErrors: true,
+poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-</code></pre>
+<p>将 <code>port</code> 后面的的值改为<code>8081</code>，或者任意一个不被占用的端口号。</p>
+<p>配置好之后，在浏览器访问 <code>http://localhost:8081</code>，就能看到Vue项目的初始页面了。</p>
+<p><img src="/img/vue_init.png" srcset="/img/loading.gif" alt="init"></p>
+<h1 id="二、创建组件"><a href="#二、创建组件" class="headerlink" title="二、创建组件"></a>二、创建组件</h1><p>将原模版中默认的内容删掉，重新创建我们需要的内容。</p>
+<p>此次想要创建的在线翻译项目，包括三个部分：</p>
+<ol>
+<li>主组件（App.vue），用来显示页面标题</li>
+<li>Form 组件（TranslateForm.vue），用来创建翻译词条输入，语言筛选框，以及搜索按钮</li>
+<li>Ouutput 组件（TranslateOutput.vue），用来展示在线翻译的结果</li>
+</ol>
+<h2 id="1-创建组件并引入"><a href="#1-创建组件并引入" class="headerlink" title="1. 创建组件并引入"></a>1. 创建组件并引入</h2><p>话不多说，先在 <code>/components</code> 目录下创建两个组件 <code>TranslateForm.vue</code> 和 <code>TranslateOutput.vue</code>。并填充好每个组件中的基本代码结构。</p>
+<p>以 <code>TranslateForm.vue</code> 为例：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;translateForm&quot;&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+// 输出 name 到 App.vue
+export default {
+  name: &#39;translateForm&#39;
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+&lt;/style&gt;</code></pre>
+<p>在这个组件中，定义好 <code>translateForm</code> 的 <code>id</code> 和要输出的 <code>name</code>，这样就可以在 <code>App.vue</code> 中引入， <code>TranslateOutput.vue</code> 组件同理。如果是小的组件，CSS相关的的代码可以直接写到 <code>&lt;style&gt;</code> 标签中。</p>
+<p>组件创建好之后，就可以在 <code>App.vue</code> 中引入两个组件：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;!-- 引入两个组件 --&gt;
+    &lt;translateForm&gt;&lt;/translateForm&gt;
+    &lt;translateOutput&gt;&lt;/translateOutput&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+// import components
+import TranslateForm from &#39;./components/TranslateForm&#39;
+import TranslateOutput from &#39;./components/TranslateOutput&#39;
+
+export default {
+  name: &#39;App&#39;,
+  // import components
+  components: {
+    TranslateForm,TranslateOutput
+  }
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+#app {
+  font-family: &#39;Avenir&#39;, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+&lt;/style&gt;</code></pre>
+<p>引入的位置有三个，一个在 <code>&lt;template&gt;</code> 中，一个在 <code>import</code> 中，一个在 <code>export default</code> 中的 <code>components</code> 中。</p>
+<p><strong>需要注意的是，两个位置引入的组件名称是两个 <code>.vue</code> 文件的名称，并非组件里定义的 <code>name</code>。在这里，<code>.vue</code> 文件的名称首字母都是大写，而 <code>name</code> 中的第一个首字母是小写，注意区分。</strong></p>
+<h2 id="2-填充页面的基本内容"><a href="#2-填充页面的基本内容" class="headerlink" title="2. 填充页面的基本内容"></a>2. 填充页面的基本内容</h2><p>接下来，我们先填充主页面的基本内容。在 <code>App.vue</code> 中，填充页面的标题和副标题：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;h1&gt;在线翻译&lt;/h1&gt;
+    &lt;h5&gt;简单 / 易用 / 便捷&lt;/h5&gt;
+    &lt;!-- 引入两个组件 --&gt;
+    &lt;translateForm&gt;&lt;/translateForm&gt;
+    &lt;translateOutput&gt;&lt;/translateOutput&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>在 <code>TranslateForm.vue</code> 中填充输入框、筛选框和“翻译”按钮：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;translateForm&quot;&gt;
+      &lt;div&gt;
+        &lt;form&gt;
+            &lt;input type=&quot;text&quot; placeholder=&quot;输入需要翻译的内容&quot;&gt;
+            &lt;select&gt;
+                &lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;
+                &lt;option value=&quot;ru&quot;&gt;Russian&lt;/option&gt;
+                &lt;option value=&quot;kor&quot;&gt;Korean&lt;/option&gt;
+                &lt;option value=&quot;jp&quot;&gt;Japanese&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;翻译&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p>此时，就可以在页面中看到填充的基本信息：</p>
+<img src="/img/基本页面.png" srcset="/img/loading.gif" width="30%">
+
+<h2 id="3-定义事件"><a href="#3-定义事件" class="headerlink" title="3. 定义事件"></a>3. 定义事件</h2><p>接下来，我们需要定义几个事件。</p>
+<p>首先，需要获取用户在 <code>&lt;input&gt;</code> 标签中输入的值，在点击“翻译”按钮时，先 <code>alert</code> 一下输入的值。</p>
+<p>分步来做：</p>
+<ol>
+<li>使“翻译”按钮生效</li>
+<li>获取 <code>&lt;input&gt;</code> 标签的值，并 <code>alert</code> 出来</li>
+</ol>
+<p>给 <code>&lt;form&gt;</code> 标签定义一个点击提交事件 <code>v-on:submit=&quot;formSubmit&quot;</code>，然后在 JS 部分中定义一个 <code>method</code>方法，实现<code>formSubmit</code> 的功能，此时点击“翻译”按钮，页面会弹出 <code>alert</code> 定义的文字 “hello world”。</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div id=&quot;translateForm&quot;&gt;
+      &lt;div&gt;
+        &lt;form v-on:submit=&quot;formSubmit&quot;&gt;
+            &lt;input type=&quot;text&quot; placeholder=&quot;输入需要翻译的内容&quot;&gt;
+            &lt;select v-model=&quot;language&quot;&gt;
+                &lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;
+                &lt;option value=&quot;ru&quot;&gt;Russian&lt;/option&gt;
+                &lt;option value=&quot;kor&quot;&gt;Korean&lt;/option&gt;
+                &lt;option value=&quot;jp&quot;&gt;Japanese&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;翻译&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &#39;translateForm&#39;,
+  methods: {
+      formSubmit:function(){
+          alert(&quot;hello world&quot;);
+      }
+  }
+}
+&lt;/script&gt;</code></pre>
+<p>接下来，需要获取 <code>&lt;input&gt;</code> 标签的值，并 <code>alert</code> 出来，此时涉及到数据绑定。在 JS 中添加<code>data</code>方法，在这个方法中定义一个属性，然后使用 <code>v-model</code> 将<code>&lt;input&gt;</code> 的值绑定到这个属性上。</p>
+<p>这个属性我命名为 <code>textToTranslate</code>，默认给一个空值：</p>
+<pre><code class="html">&lt;script&gt;
+export default {
+  name: &#39;translateForm&#39;,
+  data: function() {
+      return {
+          // 定义绑定到 &lt;input&gt; 标签中的属性
+          textToTranslate: &quot;&quot;
+      }
+  }，
+  methods: {
+      formSubmit:function(){
+          alert(&quot;hello world&quot;);
+      }
+  }
+}
+&lt;/script&gt;</code></pre>
+<p>之后，将 <code>textToTranslate</code> 属性绑定到 <code>&lt;input&gt;</code> 标签中。这时，当用户输入内容，并点击“翻译”按钮时，就可以在 <code>method</code> 方法中 <code>alert</code> 出用户输入的内容，也就是传递到 <code>textToTranslate</code> 中的值：</p>
+<pre><code class="html">&lt;input type=&quot;text&quot; v-model=&quot;textToTranslate&quot; placeholder=&quot;输入需要翻译的内容&quot;&gt;</code></pre>
+<pre><code class="javascript">methods: {
+      formSubmit:function(){
+          alert(this.textToTranslate);
+      }
+  }</code></pre>
+<p>这个时候，页面会有一次自动刷新，需要把页面自动刷新关掉（取消默认事件）：</p>
+<pre><code class="javascript">methods: {
+      formSubmit:function(e){
+          alert(this.textToTranslate);
+          // 取消默认事件
+          e.preventDefault();
+      }
+  }</code></pre>
+<h2 id="4-传递输入内容至根组件"><a href="#4-传递输入内容至根组件" class="headerlink" title="4. 传递输入内容至根组件"></a>4. 传递输入内容至根组件</h2><p> <code>TranslateForm.vue</code> 组件中获取到的输入内容，<strong>需要传递到根组件 <code>App.vue</code>，在根组件中将输入内容进行翻译，再将翻译结果传递给 <code>TranslateOutput.vue</code> 组件，然后显示出来。</strong></p>
+<p> 那么，怎么样才能把 <code>TranslateForm.vue</code> 组件中的内容传递给根组件（父组件）？</p>
+<p> Vue 中提供了一个“事件注册”的方法，实现子组件向父组件传值：</p>
+<pre><code class="javascript"> //第一个参数是注册事件的名称，名字随便起，第二参数是要传的值
+ this.$emit(&quot;事件名称&quot;, &quot;要传递的值&quot;);</code></pre>
+<p> <code>TranslateForm.vue</code> 组件中，在 <code>method</code> 方法里注册一个事件 <code>formSubmitted</code>，传递的值就是 <code>this.textToTranslate</code>：</p>
+<pre><code class="javascript"> methods: {
+      formSubmit:function(e){
+          // alert(this.textToTranslate);
+          // 注册事件，传递输入的值给根组件
+          this.$emit(&quot;formSubmitted&quot;, this.textToTranslate);
+          // 取消默认事件
+          e.preventDefault();
+      }
+  }</code></pre>
+<p>  定义好之后，在 <code>App.vue</code> 中的相应位置来接收，将接收的事件定义为 <code>translateText</code>：</p>
+<pre><code class="html">&lt;translateForm v-on:formSubmitted=&quot;translateText&quot;&gt;&lt;/translateForm&gt;
+
+...
+
+&lt;script&gt;
+methods: {
+    // 定义一个参数 text，来接收子组件传递过来的值
+    translateText: function(text) {
+        alert(text);
+    }
+}
+&lt;/script&gt;</code></pre>
+<p>这样，组件之间的传值问题就解决了。</p>
+<h2 id="5-调用百度翻译-API-实现翻译"><a href="#5-调用百度翻译-API-实现翻译" class="headerlink" title="5. 调用百度翻译 API 实现翻译"></a>5. 调用百度翻译 API 实现翻译</h2><p>传递到跟组件的值，将借助百度翻译 API 来进行翻译。目前百度翻译提供免费的通用型 API，普通开发者可以直接申请 API key，调用限制为1s一次，对于这个小项目够用了。</p>
+<p><strong>通用翻译API HTTP地址：</strong></p>
+<ul>
+<li><a href="http://api.fanyi.baidu.com/api/trans/vip/translate" target="_blank" rel="noopener">http://api.fanyi.baidu.com/api/trans/vip/translate</a></li>
+</ul>
+<p>在此链接基础上，需要输入多个参数构成 API 的访问地址。为了保证调用安全，百度翻译 API 采用了生成签名的方式（md5 加密），具体生成方法在官方文档中有详细的举例。</p>
+<p><img src="/img/baiduapi.png" srcset="/img/loading.gif" alt="api"></p>
+<p>Javascript 中实现 md5 加密需要借助插件 <code>js-md5</code>：</p>
+<pre><code class="terminal">npm install --save js-md5
+</code></pre>
+<p>下载之后，需要在 <code>main.js</code> 文件中引入：</p>
+<pre><code class="javascript">import md5 from &#39;js-md5&#39;;
+
+Vue.prototype.$md5 = md5</code></pre>
+<p>然后在 <code>App.vue</code> 中使用：</p>
+<pre><code class="javascript">// 按官方文档中的 step 1 生成拼接字符串，并存储到变量中
+var baiduApi = xxxxxx
+// 将拼接字符串进行 md5 加密
+var md5 = this.$md5(baiduApi);</code></pre>
+<h2 id="6-http-方法与-jsonp-方法"><a href="#6-http-方法与-jsonp-方法" class="headerlink" title="6. $http 方法与 $jsonp 方法"></a>6. <code>$http</code> 方法与 <code>$jsonp</code> 方法</h2><p>在 Vue 项目中调用 API，可以使用 <code>http</code> 方式调用，也可以使用 <code>jsonp</code>，我们先使用前者。使用 <code>http</code> 调用，需要从项目所在目录安装 <code>vue-resource</code>:</p>
+<pre><code>npm install vue-resource --save</code></pre><p>安装好之后，在 <code>main.js</code> 中引入：</p>
+<pre><code>import VueResource from &#39;vue-resource&#39;
+// 使用中间件
+Vue.use(VueResource)</code></pre><p>引入成功，回到 <code>App.vue</code> ，将 method方法中的代码做相应改变，使用 <code>http</code> 请求，然后返回请求结果：</p>
+<pre><code class="javascript">&lt;script&gt;
+methods: {
+    // 定义一个参数 text，来接收子组件传递过来的值
+    translateText: function(text) {
+        // alert(text);
+        this.$http.get(&#39;http://api.fanyi.baidu.com/api/trans/vip/translate?q=&#39; + text + &#39;&amp;from=zh&amp;to=en&amp;appid=xxxx&amp;salt=1435660288&amp;sign=&#39; + md5)
+            // 返回请求结果 response
+            .then((response)=&gt;{
+                // 打印请求结果
+                console.log(response);
+            })
+    }
+}
+&lt;/script&gt;</code></pre>
+<p>重新运行项目出现了 <code>No &#39;Access-Control-Allow-Origin&#39;</code> 错误，产生了跨域的问题。我没有找到基于 <code>$http</code> 请求的跨域问题解决办法，于是又尝试了第二种方法：使用 <code>jsonp</code> 进行 API 请求。</p>
+<ul>
+<li><p>同样，也需要先在项目目录下安装 <code>jsonp</code> 模块：<code>npm install vue-jsonp --save</code>；</p>
+</li>
+<li><p>在 <code>main.js</code> 中引入该模块</p>
+</li>
+</ul>
+<pre><code>import VueJsonp from &#39;vue-jsonp&#39;
+
+// 使用中间件
+Vue.use(VueJsonp)</code></pre><p>引入之后，就可以在 <code>App.vue</code> 中使用 <code>jsonp</code> 进行跨域请求数据：</p>
+<pre><code class="javascript">var param = {
+        header: {
+          &quot;content-type&quot;: &quot;application/xml&quot;
+        }
+      };
+
+      // jsonp 解决跨域问题
+      this.$jsonp(&#39;http://api.fanyi.baidu.com/api/trans/vip/translate?q=&#39; + text 
+                      + &#39;&amp;from=zh&amp;to=en&amp;appid=xxx&amp;salt=1435660288&amp;sign=&#39; + md5, param)
+          .then((response)=&gt;{
+            console.log(response.trans_result[0].dst);
+          })</code></pre>
+<p>此时就可以获取到 JSON 数据了，我只需要翻译后的内容，也就是 <code>response.trans_result</code> 中的内容，根据 JSON 的结构来准确定位。</p>
+<h1 id="三、传递翻译结果到-TranslateOutput-vue-组件中"><a href="#三、传递翻译结果到-TranslateOutput-vue-组件中" class="headerlink" title="三、传递翻译结果到 TranslateOutput.vue 组件中"></a>三、传递翻译结果到 <code>TranslateOutput.vue</code> 组件中</h1><p>拿到翻译结果之后，接下来就需要传递给 <code>TranslateOutput.vue</code> 组件，在这个组件中显示。</p>
+<p>在 <code>App.vue</code> 中写一个 <code>data</code> 方法，在这个方法中定义一个属性 <code>translatedText</code>，将其设置为空值，然后将 API 请求的结果存储到 <code>translatedText</code> 当中：</p>
+<pre><code class="javascript">data: function() {
+    return {
+      translatedText: &quot;&quot;
+    }
+  }
+
+...
+
+// jsonp 解决跨域问题
+this.$jsonp(&#39;http://api.fanyi.baidu.com/api/trans/vip/translate?q=&#39; + text 
+                + &#39;&amp;from=zh&amp;to=en&amp;appid=xxx&amp;salt=1435660288&amp;sign=&#39; + md5, param)
+    .then((response)=&gt;{
+    // console.log(response.trans_result[0].dst);
+    // 将结果赋值给 translatedText
+    this.translatedText = response.trans_result[0].dst
+    })</code></pre>
+<p>并且在 html 的部分绑定这个属性：</p>
+<pre><code>&lt;translateOutput v-text=&quot;translatedText&quot;&gt;&lt;/translateOutput&gt;</code></pre><p>然后，在 <code>TranslateOutput.vue</code> 中实现 <code>translatedText</code> 这个属性：</p>
+<pre><code>export default {
+  name: &#39;translateOutput&#39;,
+  props: [
+      &quot;translatedText&quot;
+  ] 
+}</code></pre><p>同时，需要在 html 的部分调用这个属性：</p>
+<pre><code>&lt;template&gt;
+  &lt;div id=&quot;translateOutput&quot;&gt;
+    &lt;h2&gt;{{translatedText}}&lt;/h2&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre><p>到这里，在线翻译小项目的基本功能就实现的差不多了。</p>
+<h2 id="实现多语种翻译"><a href="#实现多语种翻译" class="headerlink" title="实现多语种翻译"></a>实现多语种翻译</h2><p>上面的翻译结果都是基于英文的，要实现多语言的翻译，还需要在 <code>TranslateForm.vue</code> 组件里添加多个语言的选项：</p>
+<pre><code class="html">&lt;select&gt;
+    &lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;
+    &lt;option value=&quot;ru&quot;&gt;Russian&lt;/option&gt;
+    &lt;option value=&quot;kor&quot;&gt;Korean&lt;/option&gt;
+    &lt;option value=&quot;jp&quot;&gt;Japanese&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+<p>其中的 <code>value</code> 属性按照百度翻译 API 文档中的规定来写。</p>
+<p>在 <code>&lt;select&gt;</code> 标签中定义一个名为 <code>language</code> 的属性，相应的属性在 <code>data</code> 方法中：</p>
+<pre><code>&lt;select v-model=&quot;language&quot;&gt;
+&lt;script&gt;
+data: function() {
+      return {
+          textToTranslate: &quot;&quot;,
+          language: &quot;&quot;
+      }
+  }
+  &lt;/script&gt;</code></pre><p><code>language</code> 属性定义好之后，需要将用户选择的 <code>language</code> 的值传递给根组件，以便在根组件的 API 请求中对应翻译的语种。实现方式同样借助 <code>$emit()</code> 注册事件，只需要在原来的注册事件中增加 <code>language</code> 的值：</p>
+<pre><code class="javascript">// 注册事件
+this.$emit(&quot;formSubmitted&quot;, this.textToTranslate, this.language); </code></pre>
+<p>在 <code>App.vue</code> 中，用一个参数 <code>langage</code> 接收子组件传递过来的值，与前一个参数 <code>text</code> 是一样的逻辑。再将原 API 地址中的 <code>en</code> 替换为 <code>language</code>：</p>
+<pre><code class="javascript">methods: {
+    translateText: function(text, language) {
+        // API请求部分
+    }</code></pre>
+<p>这样，多语言翻译就实现了。</p>
+<p>不过，刷新页面之后，语言选项是空白，没有指定默认的选项。此时，可以通过添加 <code>created</code> 方法（该方法自动执行），来设置默认显示的选项：</p>
+<pre><code>export default {
+  name: &#39;translateForm&#39;,
+  ...
+  created: function() {
+      this.language = &quot;en&quot;;
+  }
+}</code></pre><h1 id="四、应用-Bootstrap-主题更改页面样式"><a href="#四、应用-Bootstrap-主题更改页面样式" class="headerlink" title="四、应用 Bootstrap 主题更改页面样式"></a>四、应用 Bootstrap 主题更改页面样式</h1><p>可以直接在 Bootswatch 这个网站上，下载想要的主题包，然后将包文件放到 <code>/static/css/</code> 的路径下，并在 <code>index.html</code> 文件中引入：</p>
+<pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/bootstrap.min.css&quot;&gt;</code></pre><p>更改根组件的一些样式，为副标题添加一个强调色：</p>
+<pre><code>&lt;h5 class=&quot;text-muted&quot;&gt;这是一个很小的 Vue 项目 😊&lt;/h5&gt;</code></pre><p>更改 <code>TranslateForm.vue</code> 组件的一些样式：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div class=&quot;row&quot; id=&quot;translateForm&quot;&gt;
+      &lt;div class=&quot;offset-md-3 col-md-6&quot;&gt;
+        &lt;form id=&quot;transForm&quot; class=&quot;well form-inline&quot; v-on:submit=&quot;formSubmit&quot;&gt;
+            &lt;input class=&quot;form-control col-md-8&quot; type=&quot;text&quot; v-model=&quot;textToTranslate&quot; placeholder=&quot;输入需要翻译的内容&quot;&gt;
+            &lt;select class=&quot;form-control col-md-2&quot; v-model=&quot;language&quot;&gt;
+                &lt;option value=&quot;en&quot;&gt;English&lt;/option&gt;
+                &lt;option value=&quot;ru&quot;&gt;Russian&lt;/option&gt;
+                &lt;option value=&quot;kor&quot;&gt;Korean&lt;/option&gt;
+                &lt;option value=&quot;jp&quot;&gt;Japanese&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;input class=&quot;btn btn-primary  col-md-2&quot; type=&quot;submit&quot; value=&quot;翻译&quot;&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<p><code>offset-md-3 col-md-6</code> 这个属性是 Bootstrap 4 中的写法，和较早版本的写法稍有不同，需要注意一下。</p>
+<p>还有一些样式，就直接在 <code>&lt;style&gt;</code> 标签里写了，比如添加边框，设置边框样式和颜色等等。</p>
+<p><code>TranslateOutput.vue</code> 组件中输入结果的字体不够明显，也可以直接在 <code>&lt;style&gt;</code> 标签里添加一些针对字体的样式。</p>
+<p><strong>最终，这个在线翻译小项目的页面就是这个样子啦：</strong></p>
+<p><img src="/img/final-translate.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><em><a href="http://api.fanyi.baidu.com/product/113" target="_blank" rel="noopener">百度翻译开放平台</a></em></li>
+<li><em><a href="https://blog.csdn.net/unbreakablec/article/details/91792652" target="_blank" rel="noopener">js MD5加密</a></em></li>
+<li><em><a href="https://www.zhihu.com/question/46202188" target="_blank" rel="noopener">Vue.js如何实现跨域请求？</a></em></li>
+<li><em><a href="https://www.cnblogs.com/wjw1014/p/11592444.html" target="_blank" rel="noopener">vue 使用 jsonp 请求数据</a></em></li>
+<li><em><a href="https://www.csdn.net/gather_20/MtTaAg1sOTA2MS1ibG9n.html" target="_blank" rel="noopener">vue 中的css文件位置</a></em></li>
+<li><em><a href="https://bootswatch.com" target="_blank" rel="noopener">Bootswatch</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Vue">Vue</a>
+                
+                  <a class="hover-with-bg" href="/tags/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91API">百度翻译API</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Vue.js 实现在线翻译小项目&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
