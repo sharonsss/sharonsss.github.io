@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Java 程序打包之后，替换 jar 包内的文件 - Sansan&#39;s Blog</title>
+  <title>MySQL 的基本操作 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -120,7 +120,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Thursday, April 30th 2020, 8:55 pm
+                  Friday, June 12th 2020, 6:17 pm
                 </p>
               
 
@@ -129,7 +129,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    803 字
+                    953 字
                   </span>&nbsp;
                 
 
@@ -170,54 +170,107 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p><strong>Java 对我来说绝对是一窍不通，基本陌生。</strong></p>
+            <p>近期在维护的系统涉及到 <code>MySQL</code> 数据库的一些操作，都比较简单。没学习过数据库操作的知识，先在这里大致记录下用到的一些基本操作。</p>
 <a id="more"></a>
 
-<p>奈何公司的工程师小伙伴开发了一个Java程序，前端、后端、数据库都是他自己一个人一手搭建起来的，遇到任何问题也只有他才能解决。</p>
-<p>这两天领导一句话，要求把程序里的Logo换掉，可是小伙伴的程序都是打包好的，jar 包里的文件，怎么样替换呢？</p>
-<p>小伙伴也不知道，这种不能像拆口袋一样，直接拆包替换东西。</p>
-<p>下载到本地，在压缩软件里，不解压的情况下直接替换里面的logo文件，再上传到服务器？</p>
-<p><strong>尝试失败。</strong></p>
-<p>文件在压缩包里替换成功，但上传到服务器，替换原 jar 包之后，运行程序会报错，显示修改打包文件错误。</p>
-<p>看来不能直接这样替换文件？！</p>
-<p><img src="/img/wunai.jpg" srcset="/img/loading.gif" alt="wunai"></p>
-<p>之后，在万能百度上才找到正确方法：</p>
-<h2 id="替换-jar-包中指定文件"><a href="#替换-jar-包中指定文件" class="headerlink" title="替换 jar 包中指定文件"></a>替换 jar 包中指定文件</h2><ol>
-<li><strong>找到 jar 包中指定文件的路径：</strong></li>
+<h1 id="记录-MySQL-的操作"><a href="#记录-MySQL-的操作" class="headerlink" title="记录 MySQL 的操作"></a>记录 MySQL 的操作</h1><p>主要基于 <code>Terminal</code> 和 <code>Mysql Workbench</code> ，使用中涉及的一些步骤包括：</p>
+<ol>
+<li><p>登陆本地数据库、远程服务器数据库</p>
+</li>
+<li><p>下载远程数据到本地</p>
+</li>
+<li><p>将数据表导入数据库</p>
+</li>
+<li><p>查看数据库中的数据</p>
+</li>
+<li><p>向数据库中添加新数据</p>
+</li>
+<li><p><code>Nginx</code> 图片文件夹添加对应的新图片（上传图片至服务器文件夹）</p>
+</li>
+<li><p>重启系统，测试图片是否成功显示 - <code>YES</code></p>
+</li>
+<li><p>更改系统中 <code>html</code> 静态文件中的部分字段，将更改后的文件重新上传，并打包 <code>jar</code> 包</p>
+</li>
 </ol>
-<p>先进入jar包所在的目录下：</p>
-<pre><code>jar -tvf test.jar | grep logo.svg</code></pre><ol start="2">
-<li><strong>解压指定路径下的文件</strong></li>
-</ol>
-<pre><code>jar -xvf test.jar conf/logo.svg</code></pre><p>会自动在当前路径下创建目录。</p>
-<ol start="3">
-<li><strong>把需要替换的文件删除</strong></li>
-</ol>
-<pre><code>rm -rf conf/logo.svg</code></pre><ol start="4">
-<li><strong>上传文件到替换文件的目录下</strong></li>
-</ol>
-<pre><code class="terminal">$ scp 本地目录 服务器目录（绝对路径）</code></pre>
-<ol start="5">
-<li><strong>更新到 jar 包中</strong></li>
-</ol>
-<pre><code>jar -uvf test.jar conf/logo.svg</code></pre><br>
+<p><code>6、7、8</code> 暂时不在这里记录。</p>
+<h1 id="MySQL-数据库的基本操作"><a href="#MySQL-数据库的基本操作" class="headerlink" title="MySQL 数据库的基本操作"></a>MySQL 数据库的基本操作</h1><h2 id="1-在-Terminal-中登录"><a href="#1-在-Terminal-中登录" class="headerlink" title="1. 在 Terminal 中登录"></a>1. 在 <code>Terminal</code> 中登录</h2><p>在 <code>Terminal</code> 中登录本地数据库，比较简单：</p>
+<pre><code>$ mysql -u 用户名 -p 密码</code></pre><p>登录远程服务器：</p>
+<pre><code>$ mysql -u 远程服务器用户名 -p 远程服务器密码(具体密码可不填)  -h 远程服务器IP -P 远程服务器端口（一般为 3306）
+$ Enter password:</code></pre><p>密码输入正确的话，会出现如下的信息：</p>
+<pre><code>Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is xxxx
+Server version: 5.7.23 MySQL Community Server (GPL)
 
-<h2 id="2020-05-25补充"><a href="#2020-05-25补充" class="headerlink" title="2020.05.25补充"></a>2020.05.25补充</h2><p>实操过程中，正确替换了Jar包中的文件之后，需要重新启动服务器，然后重新启动Redis、应用程序、Nginx，不然系统还是运行不起来的。mark 一下。</p>
-<h2 id="2020-06-09补充"><a href="#2020-06-09补充" class="headerlink" title="2020.06.09补充"></a>2020.06.09补充</h2><p>上面记录的太过简单，这里再补充一下当时复制 <code>jar</code> 包到本地时，需要注意的地方。</p>
-<p>首先，将远程服务器的文件复制到本地，需要使用 <code>scp</code> 命令。</p>
-<p>如果是已经登陆了远程的服务器，相当于远程的服务器是“本地”，而需要下载到的电脑就变成了“远程”。因此，scp命令中不需要加入远程服务器的用户名和 <code>IP</code>，相反，本机电脑的地址需要加上用户名和 <code>IP</code>：</p>
-<pre><code>scp 已经登陆的远程服务器的绝对路径 username@ip:本机电脑的绝对路径</code></pre><p>第一次尝试的时候，出现了 <strong>本地ip</strong> <code>connection failed</code> 的错误。网上搜索了半天答案，无解。<br>后来意识到，<strong>莫非是电脑远程访问权限的问题？</strong> 于是进到 <code>sharing</code> 里，打开了<strong>远程登录</strong>的权限。</p>
-<p>再次尝试，出现如下提示：</p>
-<pre><code>The authenticity of host &#39;10.xx.xx.xx&#39; can&#39;t be established.
-ECDSA key fingerprint is xxxxxx.
-ECDSA key fingerprint is MD5:xxxxx.
-Are you sure you want to continue connecting (yes/no)? </code></pre><p>这里选择 <code>yes</code>，会出现一条 <code>warning</code> 信息，提示风险。如果是确定的操作，不用理会。</p>
-<p><code>Warning: Permanently added &#39;10.xx.xx.xx&#39; (ECDSA) to the list of known hosts.</code></p>
-<p>然后会要求输入电脑密码，回车，远程服务器上的文件就可以正常下载了。</p>
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
+</code></pre><p>说明成功连接到了远程服务器，接下来就可以进行一些基本操作了。</p>
+<h2 id="2-MySQL-的基本操作"><a href="#2-MySQL-的基本操作" class="headerlink" title="2. MySQL 的基本操作"></a>2. MySQL 的基本操作</h2><p>想要查看系统所在的数据表，定位到具体的某个表格，这样操作（ MySQL 的语句后面要一定要加 <code>;</code> 符号）：</p>
+<p>查看所有的数据库：</p>
+<pre><code>mysql&gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| key_data           |
++--------------------+
+2 rows in set (0.00 sec)</code></pre><p>定位到一个具体的数据库中：</p>
+<pre><code>mysql&gt; use key_data;</code></pre><p>查看这个数据库中所有的数据表：</p>
+<pre><code>mysql&gt; show tables;
++------------------------------+
+| Tables_in_gain_external_data |
++------------------------------+
+| table_1                      |
+| table_2                      |
+| table_3                      |
+| table_4                      |
++------------------------------+
+4 rows in set (0.00 sec)</code></pre><p>查看某一个数据表的基本结构：</p>
+<pre><code>mysql&gt; describe table_1;
++----------------------+---------------+------+-----+---------+-------+
+| Field                | Type          | Null | Key | Default | Extra |
++----------------------+---------------+------+-----+---------+-------+
+| id                   | int(11)       | NO   | PRI | 0       |       |
+| chinese              | text          | NO   |     | NULL    |       |
+| english              | text          | NO   |     | NULL    |       |
+| classification1      | varchar(512)  | YES  |     | NULL    |       |
+| classification2      | varchar(512)  | YES  |     | NULL    |       |
++----------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)</code></pre><p>预览数据表中前 <code>10</code> 行的数据：</p>
+<pre><code>mysql&gt; SELECT * FROM key_data.table_1 LIMIT 0,10;</code></pre><p>向数据表中添加数据，两种情况：</p>
+<ol>
+<li><p><code>id</code> 存在，只需要为已有 <code>id</code> 的数据添加一些已有字段的信息，使用 <code>update</code>；</p>
+</li>
+<li><p><code>id</code> 不存在，需要完全添加新的数据，使用 <code>insert</code>。 如果表中还有其他字段，而且是必须填的，插入会出错，如果没有就成功了。</p>
+</li>
+</ol>
+<p>对于已有 <code>id</code> 的数据，举例操作如下：</p>
+<pre><code>mysql&gt; update table_1 set image=&quot;xxx&quot; where id=10;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0</code></pre><p>如果完全添加新数据，举例如下：</p>
+<pre><code>mysql&gt; insert into 表名 （id,address） values (1,&#39;柳州&#39;)</code></pre><h2 id="3-导入导出数据表"><a href="#3-导入导出数据表" class="headerlink" title="3. 导入导出数据表"></a>3. 导入导出数据表</h2><p>这里我使用的是 <strong>MySQL Workbench</strong>，可以直观对 MySQL 数据库进行操作。</p>
+<p>登录时连接项目所在的服务器地址，输入账号密码的登录之后，就可以进行操作了。</p>
+<p>如果需要导入导出数据表，直接选择 <code>Table Data Import Wizard</code> 或者 <code>Table Data Export Wizard</code> 就可以。</p>
+<img src="/img/wizard.png" srcset="/img/loading.gif" width="40%">
+
+<p>导出时，根据需要进行相关的设置，比如导出格式选择 <code>csv</code>、<code>JSON</code> 等等，分隔符、文本符号怎么显示等等。</p>
+<p><img src="/img/wizard2.png" srcset="/img/loading.gif" alt="tu"></p>
+<br>
+
+<p>关于 Mysql 数据库的操作就记录到这里，如果后面遇到新操作，再来这里补充～</p>
+<br>
+
 <hr>
 <p><strong>参考来源：</strong></p>
 <ul>
-<li><em><a href="https://blog.csdn.net/u011817217/article/details/92411009" target="_blank" rel="noopener">使用jar命令替换jar包中指定文件</a></em></li>
+<li><p><em><a href="https://blog.csdn.net/qq_41596568/article/details/88983561" target="_blank" rel="noopener">MySql登陆服务器</a></em></p>
+</li>
+<li><p><em><a href="http://c.biancheng.net/view/2579.html" target="_blank" rel="noopener">MySQL UPDATE：修改数据（更新数据）</a></em></p>
+</li>
 </ul>
 
             <hr>
@@ -229,7 +282,7 @@ Are you sure you want to continue connecting (yes/no)? </code></pre><p>这里选
               <span>
                 <i class="iconfont icon-inbox"></i>
                 
-                  <a class="hover-with-bg" href="/categories/Java%20%E7%A8%8B%E5%BA%8F">Java 程序</a>
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
                   &nbsp;
                 
               </span>&nbsp;&nbsp;
@@ -238,7 +291,7 @@ Are you sure you want to continue connecting (yes/no)? </code></pre><p>这里选
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/Java">Java</a>
+                  <a class="hover-with-bg" href="/tags/MySQL">MySQL</a>
                 
               </span>
             
@@ -394,7 +447,7 @@ Are you sure you want to continue connecting (yes/no)? </code></pre><p>这里选
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Java 程序打包之后，替换 jar 包内的文件&nbsp;",
+        "MySQL 的基本操作&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
