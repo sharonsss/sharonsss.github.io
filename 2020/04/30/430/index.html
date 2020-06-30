@@ -206,7 +206,8 @@
 <h2 id="2020-06-09补充"><a href="#2020-06-09补充" class="headerlink" title="2020.06.09补充"></a>2020.06.09补充</h2><p>上面记录的太过简单，这里再补充一下当时复制 <code>jar</code> 包到本地时，需要注意的地方。</p>
 <p>首先，将远程服务器的文件复制到本地，需要使用 <code>scp</code> 命令。</p>
 <p>如果是已经登陆了远程的服务器，相当于远程的服务器是“本地”，而需要下载到的电脑就变成了“远程”。因此，scp命令中不需要加入远程服务器的用户名和 <code>IP</code>，相反，本机电脑的地址需要加上用户名和 <code>IP</code>：</p>
-<pre><code>scp 已经登陆的远程服务器的绝对路径 username@ip:本机电脑的绝对路径</code></pre><p>第一次尝试的时候，出现了 <strong>本地ip</strong> <code>connection failed</code> 的错误。网上搜索了半天答案，无解。<br>后来意识到，<strong>莫非是电脑远程访问权限的问题？</strong> 于是进到 <code>sharing</code> 里，打开了<strong>远程登录</strong>的权限。</p>
+<pre><code>scp 已经登陆的远程服务器的绝对路径 username@ip:本机电脑的绝对路径</code></pre><p>第一次尝试的时候，出现了 <strong>本地ip</strong> <code>connection failed</code> 的错误。网上搜索了半天答案，无解。</p>
+<p>后来意识到，<strong>莫非是电脑远程访问权限的问题？</strong> 于是进到 <code>sharing</code> 里，打开了<strong>远程登录</strong>的权限。</p>
 <p>再次尝试，出现如下提示：</p>
 <pre><code>The authenticity of host &#39;10.xx.xx.xx&#39; can&#39;t be established.
 ECDSA key fingerprint is xxxxxx.

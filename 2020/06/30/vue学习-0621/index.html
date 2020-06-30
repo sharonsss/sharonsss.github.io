@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>【Vue 学习笔记】VueCli3.x 教程（一） - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Tuesday, June 30th 2020, 6:45 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.4k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      6 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <blockquote>
+<p>《VueCli3.x 最新入门教程》主要基于 Vue.js 教程与官方的 API 文档，进行相关的讲解。</p>
+</blockquote>
+<blockquote>
+<p>这篇文章记录第一部分，基于 CDN 进行 Vue 的开发，以及小 Demo 的制作，随堂记录。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="1-数据绑定"><a href="#1-数据绑定" class="headerlink" title="1. 数据绑定"></a>1. 数据绑定</h2><p>数据绑定是 Vue 里的基本实现。</p>
+<ul>
+<li><code>v-bind</code>: 数据绑定（在 html 属性中进行）</li>
+</ul>
+<p>示例：</p>
+<pre><code class="html">&lt;p&gt;
+  &lt;a v-bind:href=&quot;website&quot;&gt;Baidu&lt;/a&gt;
+  &lt;a :href=&quot;website&quot;&gt;Baidu&lt;/a&gt;
+&lt;/p&gt;
+&lt;!-- &lt;p&gt;{{ websiteTag }}&lt;/p&gt; --&gt;
+
+&lt;p&gt;&lt;input type=&quot;text&quot; v-bind:value=&quot;name&quot; /&gt;&lt;/p&gt;</code></pre>
+<ul>
+<li><code>v-</code>: 叫做“指令”</li>
+</ul>
+<h2 id="2-事件"><a href="#2-事件" class="headerlink" title="2. 事件"></a>2. 事件</h2><ul>
+<li>单击事件 <code>@click</code></li>
+<li>双击事件 <code>@dblclick</code></li>
+<li>鼠标事件 <code>v-on:mousemove</code></li>
+</ul>
+<p>示例：</p>
+<pre><code class="html">&lt;!-- mousemove  event --&gt;
+&lt;div id=&quot;canvas&quot; v-on:mousemove=&quot;updateXY&quot;&gt;
+  {{X}}, {{Y}}
+&lt;/div&gt;</code></pre>
+<ul>
+<li>事件修饰符(<code>.once</code>, <code>.prevent</code>)</li>
+</ul>
+<p>示例：</p>
+<pre><code class="html">&lt;!-- 事件修饰符 .prevent 阻止自动刷新的默认事件 --&gt;
+&lt;p&gt;&lt;a @click.prevent=&quot;handleClick&quot; href=&quot;http://www.baidu.com&quot;&gt;百度&lt;/a&gt;&lt;/p&gt;</code></pre>
+<ul>
+<li>键盘事件(<code>keyup</code>, <code>keydown</code>, 加入修饰符)</li>
+</ul>
+<p>示例：</p>
+<pre><code class="html">&lt;!-- 键盘事件--&gt;
+&lt;label&gt;姓名&lt;/label&gt;
+&lt;input type=&quot;text&quot; v-on:keydown.enter=&quot;logName&quot; /&gt;
+&lt;label&gt;年龄&lt;/label&gt;
+&lt;input type=&quot;text&quot; v-on:keyup.alt.enter=&quot;logAge&quot; /&gt;</code></pre>
+<h2 id="3-双向数据绑定-v-model"><a href="#3-双向数据绑定-v-model" class="headerlink" title="3. 双向数据绑定 v-model"></a>3. 双向数据绑定 v-model</h2><ul>
+<li>v-model：实现数据的输入和输出</li>
+</ul>
+<h2 id="4-特殊特性-ref"><a href="#4-特殊特性-ref" class="headerlink" title="4. 特殊特性 ref"></a>4. 特殊特性 ref</h2><p>通过 <code>ref</code> 获取对应的元素对象，类似 js 中 获取 DOM 的操作。</p>
+<h2 id="5-监听-watch"><a href="#5-监听-watch" class="headerlink" title="5. 监听 watch"></a>5. 监听 watch</h2><p>不建议使用 <code>watch</code>，一般在调试的时候，或者迫不得已的情况。因为会持续监听属性的状态，会影响项目的性能。</p>
+<h2 id="6-计算属性-computed"><a href="#6-计算属性-computed" class="headerlink" title="6. 计算属性 computed"></a>6. 计算属性 computed</h2><ul>
+<li>computed：只有在当前的属性发生变化的时候，才会被触发。</li>
+</ul>
+<p>而 <code>methods</code> 中的属性，首先在一开始时会执行一次，而在之后每次其中一个属性发生变化的时候，另外一个属性也会执行。这样当属性非常多的时候，是非常耗费性能的。而我们只想执行当前操作的这个属性，其他的都不要有任何动作。</p>
+<p>这个时候，就需要引入 <code>computed</code> 计算属性了。</p>
+<ul>
+<li><p><em>调用 <code>methods</code> 方法时，不能加括号。</em></p>
+</li>
+<li><p><code>methods</code> 不一定要 <code>return</code> 属性，<code>computed</code> 必须要有 <code>return</code> 返回值</p>
+</li>
+<li><p>样式需要发生一些变化的时候，以及搜索的时候，可以使用 <code>computed</code>。</p>
+</li>
+</ul>
+<h2 id="7-动态改变样式的两种方式"><a href="#7-动态改变样式的两种方式" class="headerlink" title="7. 动态改变样式的两种方式"></a>7. 动态改变样式的两种方式</h2><ul>
+<li>属性绑定</li>
+</ul>
+<p>花括号：</p>
+<pre><code>{{ 属性名称 }}</code></pre><ul>
+<li>计算属性绑定-样式变化频率高，最好使用计算属性：</li>
+</ul>
+<pre><code class="html">&lt;button @click=&quot;mrChangeColor = !mrChangeColor&quot;&gt;change color&lt;/button&gt;</code></pre>
+<h2 id="8-条件判断-v-if"><a href="#8-条件判断-v-if" class="headerlink" title="8. 条件判断 v-if"></a>8. 条件判断 v-if</h2><p>示例：</p>
+<pre><code class="html">&lt;button @click=&quot;error = !error&quot;&gt;error&lt;/button&gt;</code></pre>
+<ul>
+<li><code>v-show</code> 和 <code>v-if</code> 的区别：</li>
+</ul>
+<p><strong>核心区别在于 DOM</strong></p>
+<p><code>v-if</code> 属性为假时，DOM 中相应的标签会直接被去掉，不会显示。<code>v-show</code> 属性为假时，DOM 中相应的标签 还会存在，只不过会显示 <code>display: none</code>，为真时，<code>display: block</code>。</p>
+<h2 id="9-v-for-遍历数组-对象"><a href="#9-v-for-遍历数组-对象" class="headerlink" title="9. v-for 遍历数组/对象"></a>9. v-for 遍历数组/对象</h2><ul>
+<li><code>v-for</code> 可以用来遍历数组或者对象。</li>
+</ul>
+<p>遍历数组：</p>
+<pre><code class="html">&lt;ul&gt;
+  &lt;li v-for=&quot;char in characters&quot;&gt;
+    {{ char}}
+  &lt;/li&gt;
+  &lt;li v-for=&quot;(char, index) in characters&quot;&gt;
+    {{index + 1}} . {{ char}}
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<p>遍历对象：</p>
+<pre><code class="html">&lt;!-- 遍历对象 --&gt;
+&lt;template v-for=&quot;(user, index) in users&quot;&gt;
+  &lt;div v-for=&quot;(val, key) in user&quot;&gt;
+    &lt;p&gt;{{key}} - {{val}}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<h2 id="10-Demo-示例-瓶子状态改变"><a href="#10-Demo-示例-瓶子状态改变" class="headerlink" title="10. Demo 示例 (瓶子状态改变)"></a>10. Demo 示例 (瓶子状态改变)</h2><p>详细实现方式后面补充。</p>
+<p>先看下效果：</p>
+<img src="/img/bottle.png" srcset="/img/loading.gif" width="30%">
+
+<img src="/img/bottle-restart.png" srcset="/img/loading.gif" width="30%">
+
+<h2 id="11-实例化多个-Vue-示例"><a href="#11-实例化多个-Vue-示例" class="headerlink" title="11. 实例化多个 Vue 示例"></a>11. 实例化多个 Vue 示例</h2><ul>
+<li>每个 Vue 实例用 <code>const one</code>、<code>const two</code> 来定义</li>
+</ul>
+<p>在 <code>const two</code> 实例中，可以改变 <code>const one</code> 中的属性的值，比如 <code>title</code>。方式是，调用时将原来的 <code>this</code> 替换成相应的 <code>const</code> 变量，例如 <code>one</code> 或者 <code>two</code>。</p>
+<p>示例：</p>
+<pre><code class="javascript">const one = new Vue({
+  el: &quot;#vue-app-one&quot;,
+  data() {
+    return {
+      title: &quot;this is vue app one&quot;,
+    };
+  },
+});
+
+const two = new Vue({
+  el: &quot;#vue-app-two&quot;,
+  data() {
+    return {
+      title: &quot;this is vue app two&quot;,
+    };
+  },
+  methods: {
+    changeAppOneTitle() {
+      // 原本的 this 替换成对应的定义变量 one
+      one.title = &quot;这是app-one的新title&quot;;
+    },
+  },
+});</code></pre>
+<p><code>changeAppOneTitle()</code> 方法在 <code>methods</code> 中定义，在 html 中调用：</p>
+<pre><code class="html">&lt;button @click=&quot;changeAppOneTitle&quot;&gt;Change app one title&lt;/button&gt;</code></pre>
+<p>另外，也可以直接在实例外面修改实例内的值，比如：</p>
+<pre><code class="javascript">two.title = &quot;这是app-two的title&quot;;</code></pre>
+<h2 id="12-Vue-component"><a href="#12-Vue-component" class="headerlink" title="12. Vue.component"></a>12. Vue.component</h2><ul>
+<li><code>Vue.component(id, properties)</code> 组建可以单独封装，然后在不同的实例中调用。</li>
+</ul>
+<p>id 为组建的名称，在属性中，可以创建 html 模版，也可以添加其他的属性、方法等。</p>
+<h2 id="13-请求数据"><a href="#13-请求数据" class="headerlink" title="13. 请求数据"></a>13. 请求数据</h2><h3 id="1）fetch-请求"><a href="#1）fetch-请求" class="headerlink" title="1）fetch 请求"></a>1）fetch 请求</h3><p>代码示例：</p>
+<pre><code class="javascript">// Get
+fetch(&quot;http://jsonplaceholder.typicode.com/todos&quot;)
+  .then((res) =&gt; {
+    // console.log(res);
+    // console.log(res.json());
+    return res.json();
+  })
+  .then((todos) =&gt; {
+    // console.log(todos);
+    this.todos = todos;
+  });
+
+// POST
+fetch(&quot;http://jsonplaceholder.typicode.com/todos&quot;, {
+  method: &quot;POST&quot;,
+  body: JSON.stringify(this.todo),
+  headers: {
+    &quot;Content-type&quot;: &quot;application/json&quot;,
+  },
+})
+  .then((res) =&gt; {
+    return res.json();
+  })
+  .then((todo) =&gt; {
+    // console.log(todo);
+    this.todos.unshift(todo);
+  });</code></pre>
+<ul>
+<li><strong><code>unshift()</code> 方法：</strong></li>
+</ul>
+<p><code>unshift()</code> 方法可向数组的开头添加一个或更多元素，并返回新的长度。</p>
+<h3 id="2）axios-请求"><a href="#2）axios-请求" class="headerlink" title="2）axios 请求"></a>2）axios 请求</h3><p><strong>axios</strong> 请求相比 <strong>fetch</strong> 代码量少一些，不需要把 <code>response</code> 的数据再经一步 <code>json</code> 转换，而是直接通过 <code>response.data</code> 就能获取。</p>
+<p>本次直接使用 CDN 引入 axios：</p>
+<pre><code class="html">&lt;script src=&quot;https://unpkg.com/axios/dist/axios.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>axios 请求 API 数据代码示例：</p>
+<pre><code class="javascript">// GET
+axios.get(&quot;http://jsonplaceholder.typicode.com/todos&quot;).then((res) =&gt; {
+  //console.log(res);
+  this.todos = res.data;
+});
+
+// POST
+axios
+  .post(&quot;http://jsonplaceholder.typicode.com/todos&quot;, this.todo)
+  .then((res) =&gt; {
+    // console.log(res.data);
+    this.todos.unshift(res.data);
+  });</code></pre>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Vue">Vue</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【Vue 学习笔记】VueCli3.x 教程（一）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
