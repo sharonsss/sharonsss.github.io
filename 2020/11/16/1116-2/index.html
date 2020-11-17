@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Archives - Sansan&#39;s Blog</title>
+  <title>Python 将毫秒转换为“分：秒”的形式 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -107,7 +107,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/ingmar.jpg')no-repeat center center;
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -117,6 +117,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Monday, November 16th 2020, 3:46 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    407 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -128,89 +163,108 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">18 posts in total.</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/04/24/420/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Linux 服务器根目录空间不足与 Nginx 重启</span>
-      <span style="float: right;">04-24</span>
-    </a>
-  
-    
-    <a href="/2020/04/15/0415-1/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery、HTML、CSS中的小细节汇总（一）</span>
-      <span style="float: right;">04-15</span>
-    </a>
-  
-    
-    <a href="/2020/04/11/jquery/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery需要注意的几个小点</span>
-      <span style="float: right;">04-11</span>
-    </a>
-  
-    
-    <a href="/2020/04/05/elasticsearch%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch + Kibana 安装记录</span>
-      <span style="float: right;">04-05</span>
-    </a>
-  
-    
-    <a href="/2020/04/02/elasticdump%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticdump 踩坑记录</span>
-      <span style="float: right;">04-02</span>
-    </a>
-  
-    
-    <a href="/2020/03/23/%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B8%80/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">知识点（一）：MVVM模型</span>
-      <span style="float: right;">03-23</span>
-    </a>
-  
-    
-    <a href="/2020/03/20/vscode/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">拥抱VS Code，抛弃Atom</span>
-      <span style="float: right;">03-20</span>
-    </a>
-  
-    
-    <a href="/2020/01/08/2020%E5%B9%B4%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A1%E5%88%92/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">2020年的一些计划</span>
-      <span style="float: right;">01-08</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="index posts navigation">
-    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
-      ele.href += '#board';
-    }
-  </script>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>在使用网易云 API 获取数据的时候，我发现，网易云上每首歌的时长是以毫秒的格式表示的。数据抓取下来之后，还要将其处理成 <strong>“分: 秒”</strong> 的格式。</p>
+<p><img src="/img/duration.jpg" srcset="/img/loading.gif" alt="duration"></p>
+<p>最终实现的处理方式比较典型，在这里记录一下。</p>
+<a id="more"></a>
 
+<h2 id="将-“毫秒”-转换为-“分-秒”"><a href="#将-“毫秒”-转换为-“分-秒”" class="headerlink" title="将 “毫秒” 转换为 “分: 秒”"></a>将 “毫秒” 转换为 “分: 秒”</h2><p>首先，毫秒和秒的关系是：</p>
+<p><code>1000 毫秒 = 1 秒</code></p>
+<p>假如一首歌的时长是 287560 毫秒，我们首先需要计算出以“秒”为单位的时长，然后再将“秒”换算成“分：秒”。</p>
+<p>Python 中有一个函数正好适用于这种情况——<code>divmod()</code>。</p>
+<p><code>divmod(a, b)</code> 中 a 表示原始值，b 表示除数，得到的结果为包含商和余数的元组：<code>(a // b, a % b)</code>。</p>
+<p>要将秒转换为（分，秒），那么：</p>
+<pre><code class="python"># a为秒数，b为除数每分钟60秒
+a, b = 273, 60
+c, d = divmod(a, b)
 
-              </div>
-            </div>
+print(c, d)
+print (c + &quot;:&quot; + d)</code></pre>
+<p>得到结果：</p>
+<pre><code>(4, 33)
+(4:33)</code></pre><h2 id="位数不足，自动补-0"><a href="#位数不足，自动补-0" class="headerlink" title="位数不足，自动补 0"></a>位数不足，自动补 0</h2><p>转换后得到的结果是 <code>4:33</code>，可是我想让结果显示为 <code>04:33</code>。那么，就需要在位数不足的时候补上 <code>0</code>。</p>
+<p>这个时候可以使用 <code>zfill(width)</code> 方法，<code>width</code> 为返回的字符串长度，输入类型和返回类型都是<strong>字符串</strong>。</p>
+<p>比如：</p>
+<pre><code class="python"># 当“分”只有一位时，自动在数字前补0
+if len(str(c))) &lt; 2 :
+    c = str(c).zfill(2)
+
+# 当“秒”只有一位时，自动在数字前补0
+if len(str(d))) &lt; 2 :
+    c = str(d).zfill(2)
+
+print(c + &#39;:&#39; + d)</code></pre>
+<p>得到结果：</p>
+<pre><code>(04:33)</code></pre><p>转换完成。</p>
+<hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><p><em><a href="https://www.runoob.com/python/python-func-divmod.html" target="_blank" rel="noopener">Python divmod() 函数）</a></em></p>
+</li>
+<li><p><em><a href="https://www.cnblogs.com/zhanglianbo/p/6202683.html" target="_blank" rel="noopener">Python 自动给数字前面补 0）</a></em></p>
+</li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Python">Python</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -289,6 +343,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -340,7 +399,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "Python 将毫秒转换为“分：秒”的形式&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

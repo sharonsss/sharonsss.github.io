@@ -4,6 +4,56 @@
   
   
   <entry>
+    <title>Python 数字取整方法（int，ceil、round、modf）</title>
+    <link href="/2020/11/16/1116/"/>
+    <url>/2020/11/16/1116/</url>
+    
+    <content type="html"><![CDATA[<p>歌单项目中用到了一些小知识点，这里记录一下: Python 和 JavaScript 在进行数字取整时的几种用法。</p><a id="more"></a><h2 id="Python-对数字取整"><a href="#Python-对数字取整" class="headerlink" title="Python 对数字取整"></a>Python 对数字取整</h2><p>Python 对数字取整有这样几种情况：</p><ol><li><p><strong>int()</strong>: 直接去掉小数点后的值，不考虑是否进位等问题（向下取整），例如 3.8 取 3</p></li><li><p><strong>math.ceil()</strong>: 向上取整，例如 2.4 取 3</p></li><li><p><strong>round()</strong>: 四舍五入</p></li></ol><p>这几种方式的 Python 实现如下：</p><pre><code class="python">import mathfloat1 = 3.24float2 = 2.1float3 = 5.89# 向下取整print(int(float1), int(float2), int(float3))# 向上取整print(math.ceil(float1), math.ceil(float2), math.ceil(float3))# 四舍五入print(round(float1), round(float2), round(float3))</code></pre><p>输出的结果如下：</p><pre><code class="python">&quot;&quot;&quot;3   2   54   3   63   2   6&quot;&quot;&quot;</code></pre><p>另外，还有一个方法可以将 float 值返回为一个元组——<code>math.modf()</code>。整数部分以浮点形式表示。</p><p>不过，该方法返回的小数部分会存在偏差。</p><p>这是由于计算机采用二进制计算，而我们需要运算的是十进制数。在小数部分无法通过乘 2 达到 0 的时候，该方法计算出来的结果，精度就会存在偏差。</p><p>比如：</p><pre><code class="python">import mathprint(math.modf(2.4))</code></pre><p>最后会输出：<strong>(0.3999999999999999, 2.0)</strong>。</p><h2 id="JavaScript-对数字取整"><a href="#JavaScript-对数字取整" class="headerlink" title="JavaScript 对数字取整"></a>JavaScript 对数字取整</h2><p>在 JavaScript 中 ，上面三种取整方式对应的方法如下；</p><pre><code class="js">// 1. 向下取整,丢弃小数部分Math.floor(5 / 2); // 2// 2. 向上取整,有小数就整数部分加1Math.ceil(5 / 2); // 3// 3. 四舍五入Math.round(5 / 2); // 3</code></pre><p>注意，与<code>Math.floor()</code>容易混淆的方法是<code>parseInt()</code>，两者实际上是存在很大区别的。</p><ol><li><p>parseInt() 是类型转换，能够转换任意字符串为整数，在转换数值时，能达到向下取整的效果。Math.floor() 不能解析字符串。</p></li><li><p>两者在转换负数时，结果也不相同。</p></li></ol><p>比如：</p><pre><code class="js">Math.floor(-0.2); //结果 -1Math.floor(-4.3); //结果 -5parseInt(-0.2); //结果 0parseInt(-4.3); //结果 -4</code></pre><p><strong>使用时要注意区分。</strong></p><hr><p><strong>参考来源：</strong></p><ul><li><em><a href="https://www.cnblogs.com/huangqihui/p/12125109.html" target="_blank" rel="noopener">python 对数字的四种取整方法（int，ceil，round，modf）</a></em></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据处理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Python 将毫秒转换为“分：秒”的形式</title>
+    <link href="/2020/11/16/1116-2/"/>
+    <url>/2020/11/16/1116-2/</url>
+    
+    <content type="html"><![CDATA[<p>在使用网易云 API 获取数据的时候，我发现，网易云上每首歌的时长是以毫秒的格式表示的。数据抓取下来之后，还要将其处理成 <strong>“分: 秒”</strong> 的格式。</p><p><img src="/img/duration.jpg" srcset="/img/loading.gif" alt="duration"></p><p>最终实现的处理方式比较典型，在这里记录一下。</p><a id="more"></a><h2 id="将-“毫秒”-转换为-“分-秒”"><a href="#将-“毫秒”-转换为-“分-秒”" class="headerlink" title="将 “毫秒” 转换为 “分: 秒”"></a>将 “毫秒” 转换为 “分: 秒”</h2><p>首先，毫秒和秒的关系是：</p><p><code>1000 毫秒 = 1 秒</code></p><p>假如一首歌的时长是 287560 毫秒，我们首先需要计算出以“秒”为单位的时长，然后再将“秒”换算成“分：秒”。</p><p>Python 中有一个函数正好适用于这种情况——<code>divmod()</code>。</p><p><code>divmod(a, b)</code> 中 a 表示原始值，b 表示除数，得到的结果为包含商和余数的元组：<code>(a // b, a % b)</code>。</p><p>要将秒转换为（分，秒），那么：</p><pre><code class="python"># a为秒数，b为除数每分钟60秒a, b = 273, 60c, d = divmod(a, b)print(c, d)print (c + &quot;:&quot; + d)</code></pre><p>得到结果：</p><pre><code>(4, 33)(4:33)</code></pre><h2 id="位数不足，自动补-0"><a href="#位数不足，自动补-0" class="headerlink" title="位数不足，自动补 0"></a>位数不足，自动补 0</h2><p>转换后得到的结果是 <code>4:33</code>，可是我想让结果显示为 <code>04:33</code>。那么，就需要在位数不足的时候补上 <code>0</code>。</p><p>这个时候可以使用 <code>zfill(width)</code> 方法，<code>width</code> 为返回的字符串长度，输入类型和返回类型都是<strong>字符串</strong>。</p><p>比如：</p><pre><code class="python"># 当“分”只有一位时，自动在数字前补0if len(str(c))) &lt; 2 :    c = str(c).zfill(2)# 当“秒”只有一位时，自动在数字前补0if len(str(d))) &lt; 2 :    c = str(d).zfill(2)print(c + &#39;:&#39; + d)</code></pre><p>得到结果：</p><pre><code>(04:33)</code></pre><p>转换完成。</p><hr><p><strong>参考来源：</strong></p><ul><li><p><em><a href="https://www.runoob.com/python/python-func-divmod.html" target="_blank" rel="noopener">Python divmod() 函数）</a></em></p></li><li><p><em><a href="https://www.cnblogs.com/zhanglianbo/p/6202683.html" target="_blank" rel="noopener">Python 自动给数字前面补 0）</a></em></p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据处理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>【歌单推荐】Node.js + Express 搭建后端服务器</title>
     <link href="/2020/11/12/1112/"/>
     <url>/2020/11/12/1112/</url>

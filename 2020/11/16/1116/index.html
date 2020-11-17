@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Archives - Sansan&#39;s Blog</title>
+  <title>Python 数字取整方法（int，ceil、round、modf） - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -107,7 +107,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/ingmar.jpg')no-repeat center center;
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -117,6 +117,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Monday, November 16th 2020, 5:37 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    522 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      2 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -128,89 +163,131 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">18 posts in total.</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/04/24/420/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Linux 服务器根目录空间不足与 Nginx 重启</span>
-      <span style="float: right;">04-24</span>
-    </a>
-  
-    
-    <a href="/2020/04/15/0415-1/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery、HTML、CSS中的小细节汇总（一）</span>
-      <span style="float: right;">04-15</span>
-    </a>
-  
-    
-    <a href="/2020/04/11/jquery/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery需要注意的几个小点</span>
-      <span style="float: right;">04-11</span>
-    </a>
-  
-    
-    <a href="/2020/04/05/elasticsearch%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticsearch + Kibana 安装记录</span>
-      <span style="float: right;">04-05</span>
-    </a>
-  
-    
-    <a href="/2020/04/02/elasticdump%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Elasticdump 踩坑记录</span>
-      <span style="float: right;">04-02</span>
-    </a>
-  
-    
-    <a href="/2020/03/23/%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B8%80/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">知识点（一）：MVVM模型</span>
-      <span style="float: right;">03-23</span>
-    </a>
-  
-    
-    <a href="/2020/03/20/vscode/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">拥抱VS Code，抛弃Atom</span>
-      <span style="float: right;">03-20</span>
-    </a>
-  
-    
-    <a href="/2020/01/08/2020%E5%B9%B4%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A1%E5%88%92/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">2020年的一些计划</span>
-      <span style="float: right;">01-08</span>
-    </a>
-  
-</div>
 
-  <nav aria-label="index posts navigation">
-    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
-      <a class="extend prev" rel="prev" href="/archives/2020/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </span>
-  </nav>
-  
-  <script>
-    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
-      ele.href += '#board';
-    }
-  </script>
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>歌单项目中用到了一些小知识点，这里记录一下: Python 和 JavaScript 在进行数字取整时的几种用法。</p>
+<a id="more"></a>
 
+<h2 id="Python-对数字取整"><a href="#Python-对数字取整" class="headerlink" title="Python 对数字取整"></a>Python 对数字取整</h2><p>Python 对数字取整有这样几种情况：</p>
+<ol>
+<li><p><strong>int()</strong>: 直接去掉小数点后的值，不考虑是否进位等问题（向下取整），例如 3.8 取 3</p>
+</li>
+<li><p><strong>math.ceil()</strong>: 向上取整，例如 2.4 取 3</p>
+</li>
+<li><p><strong>round()</strong>: 四舍五入</p>
+</li>
+</ol>
+<p>这几种方式的 Python 实现如下：</p>
+<pre><code class="python">import math
 
-              </div>
-            </div>
+float1 = 3.24
+float2 = 2.1
+float3 = 5.89
+
+# 向下取整
+print(int(float1), int(float2), int(float3))
+# 向上取整
+print(math.ceil(float1), math.ceil(float2), math.ceil(float3))
+# 四舍五入
+print(round(float1), round(float2), round(float3))</code></pre>
+<p>输出的结果如下：</p>
+<pre><code class="python">&quot;&quot;&quot;
+3   2   5
+4   3   6
+3   2   6
+&quot;&quot;&quot;</code></pre>
+<p>另外，还有一个方法可以将 float 值返回为一个元组——<code>math.modf()</code>。整数部分以浮点形式表示。</p>
+<p>不过，该方法返回的小数部分会存在偏差。</p>
+<p>这是由于计算机采用二进制计算，而我们需要运算的是十进制数。在小数部分无法通过乘 2 达到 0 的时候，该方法计算出来的结果，精度就会存在偏差。</p>
+<p>比如：</p>
+<pre><code class="python">import math
+print(math.modf(2.4))</code></pre>
+<p>最后会输出：<strong>(0.3999999999999999, 2.0)</strong>。</p>
+<h2 id="JavaScript-对数字取整"><a href="#JavaScript-对数字取整" class="headerlink" title="JavaScript 对数字取整"></a>JavaScript 对数字取整</h2><p>在 JavaScript 中 ，上面三种取整方式对应的方法如下；</p>
+<pre><code class="js">// 1. 向下取整,丢弃小数部分
+Math.floor(5 / 2); // 2
+// 2. 向上取整,有小数就整数部分加1
+Math.ceil(5 / 2); // 3
+// 3. 四舍五入
+Math.round(5 / 2); // 3</code></pre>
+<p>注意，与<code>Math.floor()</code>容易混淆的方法是<code>parseInt()</code>，两者实际上是存在很大区别的。</p>
+<ol>
+<li><p>parseInt() 是类型转换，能够转换任意字符串为整数，在转换数值时，能达到向下取整的效果。Math.floor() 不能解析字符串。</p>
+</li>
+<li><p>两者在转换负数时，结果也不相同。</p>
+</li>
+</ol>
+<p>比如：</p>
+<pre><code class="js">Math.floor(-0.2); //结果 -1
+Math.floor(-4.3); //结果 -5
+
+parseInt(-0.2); //结果 0
+parseInt(-4.3); //结果 -4</code></pre>
+<p><strong>使用时要注意区分。</strong></p>
+<hr>
+<p><strong>参考来源：</strong></p>
+<ul>
+<li><em><a href="https://www.cnblogs.com/huangqihui/p/12125109.html" target="_blank" rel="noopener">python 对数字的四种取整方法（int，ceil，round，modf）</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Python">Python</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -289,6 +366,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -340,7 +422,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Archive&nbsp;",
+        "Python 数字取整方法（int，ceil、round、modf）&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
