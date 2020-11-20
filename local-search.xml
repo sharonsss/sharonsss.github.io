@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>JS 生成随机排序且不重复数组的几种方式</title>
+    <link href="/2020/11/20/1119/"/>
+    <url>/2020/11/20/1119/</url>
+    
+    <content type="html"><![CDATA[<p>在项目进行过程中，遇到了需要<strong>生成随机排序且不重复的数组</strong>的问题（指定长度）。在网上研究了一下发现，有两种方式。</p><ol><li>在指定长度范围内，利用 <code>Math.random()</code>，生成不重复的随机数组</li><li>利用 <code>Math.random()</code>和 <code>sort()</code>函数，生成不重复的随机数组</li></ol><a id="more"></a><p>两种方式各有利弊，接下来分别说一下。</p><h2 id="1-利用-Math-random-，比较相同数值，排除重复"><a href="#1-利用-Math-random-，比较相同数值，排除重复" class="headerlink" title="1. 利用 Math.random()，比较相同数值，排除重复"></a>1. 利用 Math.random()，比较相同数值，排除重复</h2><p>这种方式分两部，首先不考虑重复问题，生成指定长度的随机数组；然后，判断该数组中是否有重复的值，如果没有，该数组才会最终生成。</p><p>用代码表示：</p><pre><code class="js">// 定义随机数组var randArr = new Array();// when data.length is more then or equal to 12if (data.length &gt;= 12) {  // TRY 1: 生成一组随机数的数组  // 会导致有重复数字的时候，程序不执行  for (var i = 0; i &lt; 10; i++) {    var num = Math.floor(Math.random() * data.length);    // 判断数组中是否有重复的值    for (var index = 0; index &lt; randArr.length; index++) {      // 如果有，则程序不执行      if (randArr[index] == num) {        return false;      }    }    // 没有重复的情况下，才会最终生成数组    randArr.push(num);  }  console.log(randArr);}</code></pre><p>这种方法有一个很明显的问题：当数组中有重复值的时候，程序会返回 <code>false</code>，这意味着在这种情况下，我们没办法获取这组数值，有重复的数组不会被 <code>console.log</code> 出来。</p><h2 id="2-利用-sort-函数，实现随机排序且不重复"><a href="#2-利用-sort-函数，实现随机排序且不重复" class="headerlink" title="2. 利用 sort()函数，实现随机排序且不重复"></a>2. 利用 sort()函数，实现随机排序且不重复</h2><p>网上有一种比较常用的方法是使用 JS 的 <code>sort()</code>函数。</p><p><code>sort()</code>结合 <code>Math.random()</code>，实现方法如下：</p><pre><code class="js">// 定义随机数组var randArr = new Array();// when data.length is more then or equal to 12if (data.length &gt;= 12) {// TRY 2: 生成一组随机数的数组    // 先创建data长度的数组，给数组整体随机排序（此时可保证没有重复），再取前12位数作为新的数组    for (var i = 0; i &lt; data.length; i++) {        randArr.push(i);    }    randArr.sort(function () {        return 0.5 - Math.random();    });    randArr.length = 12;    console.log(randArr);</code></pre><p>ES6 的写法：</p><pre><code class="js">//ES6function shuffle(arr) {  arr.sort(() =&gt; Math.random() - 0.5);}</code></pre><p>这种方法的优点是，<strong>不会出现重复值。</strong></p><p>缺点是，排序之前需要根据 <code>data</code> 长度先生成一个整体数组，然后在对整体数组进行。当排序数据量大时，运行效率低，性能慢。</p><p>如果只需要从大数组里取较小长度的值，效率比较低。</p><h3 id="sort-方法并不能实现真正的“随机”"><a href="#sort-方法并不能实现真正的“随机”" class="headerlink" title="sort()方法并不能实现真正的“随机”"></a>sort()方法并不能实现真正的“随机”</h3><p>我后来在网上研究了一下发现，虽然这个函数常用，但是最终实现的随机排序，并不是真正的“随机”。</p><p>解释的比较好的是这篇博客：</p><p><em><a href="https://blog.csdn.net/Bule_daze/article/details/103971587" target="_blank" rel="noopener"><code>arr.sort(() =&gt; Math.random() - 0.5);</code> 不能真正地随机打乱数组</a></em></p><p>主要原因总结一下就是，在执行这种方法之后会发现，数组里的每个元素仍然有很大机率在它原来的位置附近出现。</p><p>当数组长度小于 <code>10</code> 时，其中某个元素多次出现的分布可能是这样的：</p><p><img src="/img/distribution1.png" srcset="/img/loading.gif" alt="distribution1"></p><p><img src="/img/distribution2.png" srcset="/img/loading.gif" alt="distribution2"></p><p>当数组长度大于 <code>10</code> 时，其中某个元素多次出现的分布又可能是这样：</p><p><img src="/img/distribution3.png" srcset="/img/loading.gif" alt="distribution3"></p><p>国外有人将结果进行了可视化展示，在下边的展示中，也能够看出 <code>sort()</code>方法存在的问题。</p><p><img src="/img/distribution.png" srcset="/img/loading.gif" alt="distribution"></p><p><strong>以上说明：</strong></p><p><strong>这种随机排序方法确实有一定的随机性，但是大致分布趋势却并不是平均分布的。如果应用此方法，会导致最后的随机排序结果不准确。</strong></p><p>其他方式等实际研究之后再补充。</p><hr><p><strong>参考来源：</strong></p><ul><li><p><em><a href="https://blog.csdn.net/Bule_daze/article/details/103971587" target="_blank" rel="noopener"><code>arr.sort(() =&gt; Math.random() - 0.5);</code> 不能真正地随机打乱数组 (关于 JavaScript 的数组随机排序)）</a></em></p></li><li><p><em><a href="https://bost.ocks.org/mike/shuffle/compare.html" target="_blank" rel="noopener">Will It Shuffle?</a></em></p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>前端开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>JavaScript</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Python 数字取整方法（int，ceil、round、modf）</title>
     <link href="/2020/11/16/1116/"/>
     <url>/2020/11/16/1116/</url>
