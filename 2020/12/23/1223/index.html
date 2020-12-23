@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Categories - 前端开发 - Sansan&#39;s Blog</title>
+  <title>Vue 中为表格单元格动态添加超链接 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -107,7 +107,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/wolfgang.jpg')no-repeat center center;
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -117,6 +117,41 @@
               
             </span>
 
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Wednesday, December 23rd 2020, 5:04 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    380 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      1 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
             
           </div>
 
@@ -128,90 +163,97 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5 z-depth-3" id="board">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-<!--  <p class="h4">10 posts in total.</p>-->
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/12/23/1223/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Vue 中为表格单元格动态添加超链接</span>
-      <span style="float: right;">12-23</span>
-    </a>
-  
-    
-    <a href="/2020/11/20/1119/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">JS 生成随机排序且不重复数组的几种方式</span>
-      <span style="float: right;">11-20</span>
-    </a>
-  
-    
-    <a href="/2020/11/11/1111/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【歌单推荐】数据准备：从网易云音乐API获取数据</span>
-      <span style="float: right;">11-11</span>
-    </a>
-  
-    
-    <a href="/2020/06/30/vue%E5%AD%A6%E4%B9%A0-0621/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【Vue 学习笔记】VueCli3.x 教程（一）</span>
-      <span style="float: right;">06-30</span>
-    </a>
-  
-    
-    <a href="/2020/05/30/vue%E5%9C%A8%E7%BA%BF%E7%BF%BB%E8%AF%91%E9%A1%B9%E7%9B%AE/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【Vue 学习笔记】Vue.js 实现在线翻译小项目</span>
-      <span style="float: right;">05-30</span>
-    </a>
-  
-    
-    <a href="/2020/05/25/vue%E5%AE%89%E8%A3%85/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【Vue 学习笔记】Vue 安装——使用命令行工具（CLI）脚手架</span>
-      <span style="float: right;">05-25</span>
-    </a>
-  
-    
-    <a href="/2020/04/15/0415-1/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery、HTML、CSS中的小细节汇总（一）</span>
-      <span style="float: right;">04-15</span>
-    </a>
-  
-    
-    <a href="/2020/04/11/jquery/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">jQuery需要注意的几个小点</span>
-      <span style="float: right;">04-11</span>
-    </a>
-  
-    
-    <a href="/2020/03/23/%E7%9F%A5%E8%AF%86%E7%82%B9%E4%B8%80/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">知识点（一）：MVVM模型</span>
-      <span style="float: right;">03-23</span>
-    </a>
-  
-    
-    <a href="/2020/03/20/vscode/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">拥抱VS Code，抛弃Atom</span>
-      <span style="float: right;">03-20</span>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>在基于 Vue 做表格的时候，遇到了给表格的单元格内容动态添加超链接的问题。</p>
+<p>因为表格是动态渲染出来的，其中含有变量，数据通过 <code>methods</code> 获取数据库数据，并遍历得来<a id="more"></a>，因此在<code>&lt;td&gt;</code>标签里，首先尝试了 <code>location.href=&#39;/url&#39;</code> 方法。结果发现引用的数据无法通过拼接链接获取到。</p>
+<p>后来便采取了第二种方式：</p>
+<p><strong>在<code>&lt;td&gt;</code>标签中添加<code>&lt;a&gt;</code>标签，在<code>&lt;a&gt;</code>标签里使用 <code>:href=&quot;&quot;</code> 来拼接链接，<code>:href</code>具有绑定意义。</strong></p>
+<p>经过验证，这种方法可取。</p>
+<p>上代码：</p>
+<pre><code class="html">&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Song name&lt;/th&gt;
+    &lt;th&gt;Artist&lt;/th&gt;
+    &lt;th&gt;Duration&lt;/th&gt;
+    &lt;th&gt;Album&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr id=&quot;list&quot; v-for=&quot;item in items&quot;&gt;
+    &lt;td&gt;
+      &lt;a :href=&quot;&#39;https://xxx.xxx.com/#/song?id=&#39; + item.song_id&quot; target=&quot;_blank&quot;
+        &gt;{{ item.song_name }}&lt;/a
+      &gt;
+    &lt;/td&gt;
+    &lt;td&gt;{{ item.artist }}&lt;/td&gt;
+    &lt;td class=&quot;duration&quot;&gt;{{ item.duration }}&lt;/td&gt;
+    &lt;td&gt;{{ item.album_name }}&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+<p>这样，在点击歌曲名时，就可以直接跳转到相应页面。</p>
+<p><code>target=&quot;_blank&quot;</code> 保证点击之后打开新标签页。</p>
+<p><img src="/img/table.png" srcset="/img/loading.gif" alt=""></p>
+<p><strong><code>&lt;a&gt;</code>标签中<code>href</code>有变量，链接拼接时注意：</strong></p>
+<p>1.<code>href</code> 前面要加<code>“ : ”</code>。Vue 标签里有变量的时候，需要使用<code>:href</code>这种写法。</p>
+<p>2.链接中的字符串用单引号<code>“ ’ ”</code>包住。</p>
 
-
-              </div>
-            </div>
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Vue">Vue</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
           </div>
         </div>
       </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
     
   </main>
 
@@ -290,6 +332,11 @@
 
 
 
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
 
 
   <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
@@ -341,7 +388,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Category - 前端开发&nbsp;",
+        "Vue 中为表格单元格动态添加超链接&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

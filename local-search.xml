@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Vue 中为表格单元格动态添加超链接</title>
+    <link href="/2020/12/23/1223/"/>
+    <url>/2020/12/23/1223/</url>
+    
+    <content type="html"><![CDATA[<p>在基于 Vue 做表格的时候，遇到了给表格的单元格内容动态添加超链接的问题。</p><p>因为表格是动态渲染出来的，其中含有变量，数据通过 <code>methods</code> 获取数据库数据，并遍历得来<a id="more"></a>，因此在<code>&lt;td&gt;</code>标签里，首先尝试了 <code>location.href=&#39;/url&#39;</code> 方法。结果发现引用的数据无法通过拼接链接获取到。</p><p>后来便采取了第二种方式：</p><p><strong>在<code>&lt;td&gt;</code>标签中添加<code>&lt;a&gt;</code>标签，在<code>&lt;a&gt;</code>标签里使用 <code>:href=&quot;&quot;</code> 来拼接链接，<code>:href</code>具有绑定意义。</strong></p><p>经过验证，这种方法可取。</p><p>上代码：</p><pre><code class="html">&lt;table&gt;  &lt;tr&gt;    &lt;th&gt;Song name&lt;/th&gt;    &lt;th&gt;Artist&lt;/th&gt;    &lt;th&gt;Duration&lt;/th&gt;    &lt;th&gt;Album&lt;/th&gt;  &lt;/tr&gt;  &lt;tr id=&quot;list&quot; v-for=&quot;item in items&quot;&gt;    &lt;td&gt;      &lt;a :href=&quot;&#39;https://xxx.xxx.com/#/song?id=&#39; + item.song_id&quot; target=&quot;_blank&quot;        &gt;{{ item.song_name }}&lt;/a      &gt;    &lt;/td&gt;    &lt;td&gt;{{ item.artist }}&lt;/td&gt;    &lt;td class=&quot;duration&quot;&gt;{{ item.duration }}&lt;/td&gt;    &lt;td&gt;{{ item.album_name }}&lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;</code></pre><p>这样，在点击歌曲名时，就可以直接跳转到相应页面。</p><p><code>target=&quot;_blank&quot;</code> 保证点击之后打开新标签页。</p><p><img src="/img/table.png" srcset="/img/loading.gif" alt=""></p><p><strong><code>&lt;a&gt;</code>标签中<code>href</code>有变量，链接拼接时注意：</strong></p><p>1.<code>href</code> 前面要加<code>“ : ”</code>。Vue 标签里有变量的时候，需要使用<code>:href</code>这种写法。</p><p>2.链接中的字符串用单引号<code>“ ’ ”</code>包住。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>前端开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Vue</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>JS 生成随机排序且不重复数组的几种方式</title>
     <link href="/2020/11/20/1119/"/>
     <url>/2020/11/20/1119/</url>
