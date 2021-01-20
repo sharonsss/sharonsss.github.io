@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Tags - Python - Sansan&#39;s Blog</title>
+  <title>Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -39,7 +39,7 @@
 
 
 <body>
-  <header style="height: 80vh;">
+  <header style="height: 100vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -107,7 +107,7 @@
 </nav>
 
     <div class="view intro-2" id="background"
-         style="background: url('/img/wolfgang.jpg')no-repeat center center;
+         style="background: url('/img/ingmar.jpg')no-repeat center center;
            background-size: cover;
            background-attachment: fixed;">
       <div class="full-bg-img">
@@ -120,6 +120,10 @@
             
           </div>
 
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
           
         </div>
       </div>
@@ -136,41 +140,63 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-<!--  <p class="h4">4 posts in total.</p>-->
-  <hr>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
+        <a href="/2020/01/08/2020%E5%B9%B4%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A1%E5%88%92/" target="_self">
+          <img src="/img/serenity.jpg" srcset="/img/loading.gif" alt="2020年的一些计划" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2020/01/08/2020%E5%B9%B4%E7%9A%84%E4%B8%80%E4%BA%9B%E8%AE%A1%E5%88%92/">
+        <p class="h4 index-header">2020年的一些计划</p>
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">经过一天的时间搭建Hexo，我的个人博客地址有个了雏形，目前还在找背景图片的阶段，再过几天才能整成想要的样子。
+不得不说，Hexo这类工具真的蛮好用，虽然前期花时间部署比较费劲，但是呈现的效果还是非常不错的，再加上自己可以在原有主题的基础上不断折腾，也是乐趣所在。...</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-08&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E8%AE%A1%E5%88%92">计划</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/%E4%B8%AA%E4%BA%BA">个人</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </span>
+  </nav>
   
-    
-      
-      <p class="h5">2021</p>
-    
-    <a href="/2021/01/20/20210120/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Data Analysis Hints from FreeCodeCamp</span>
-      <span style="float: right;">01-20</span>
-    </a>
-  
-    
-      
-      <p class="h5">2020</p>
-    
-    <a href="/2020/11/16/1116/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Python 数字取整方法（int，ceil、round、modf）</span>
-      <span style="float: right;">11-16</span>
-    </a>
-  
-    
-    <a href="/2020/11/16/1116-2/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">Python 将毫秒转换为“分：秒”的形式</span>
-      <span style="float: right;">11-16</span>
-    </a>
-  
-    
-    <a href="/2020/11/11/1111/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【歌单推荐】数据准备：从网易云音乐API获取数据</span>
-      <span style="float: right;">11-11</span>
-    </a>
-  
-</div>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
@@ -308,7 +334,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Tag - Python&nbsp;",
+        "人生是一股莫之能御的洪流。&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Data Analysis Hints from FreeCodeCamp</title>
+    <link href="/2021/01/20/20210120/"/>
+    <url>/2021/01/20/20210120/</url>
+    
+    <content type="html"><![CDATA[<p>记录 FreeCodeCamp 上 Data Analysis using Python 课程中遇到的一些知识点。这部分不是代码实操，而是以选择题的形式理解一些函数的用法。主要涉及到的类库是 Numpy 和 Pandas。</p><a id="more"></a><h2 id="1-np-nan-和-notnull-的用法"><a href="#1-np-nan-和-notnull-的用法" class="headerlink" title="1. np.nan 和 notnull()的用法"></a>1. np.nan 和 notnull()的用法</h2><p>问题：</p><pre><code class="python">Q: 以下代码返回的值是什么？import pandas as pdimport numpy as nps = pd.Series([&#39;a&#39;, 3, np,nan, 1, np.nan])print(s.notnull().sum())</code></pre><p>首先，列表 s 中出现的 <code>np.nan</code>，能够返回什么值呢？</p><p>用 IDE 实际操作一下，返回结果如下：</p><pre><code class="python">&gt;&gt;&gt; print(s)0      a1      32    NaN3      14    NaNdtype: object</code></pre><p>知识点：</p><ol><li><p><code>np.nan</code>是一个 float 类型的数据，结果会显示为 <code>NaN</code>。再 <code>Series</code>中可以进行计算，进行计算时，可以通过 np.sum()得到结果，NaN 默认为 0.0。</p></li><li><p><code>notnull()</code>函数，判断元素是否为空值，是则为 <code>False</code>，否则为 <code>True</code>。上面 <code>s.notnull()</code>返回的结果为：</p></li></ol><pre><code class="python">&gt;&gt;&gt; s.notnull()0     True1     True2    False3     True4    Falsedtype: bool</code></pre><p>其中有三个元素返回结果为 True。</p><p>问题中 <code>s.notnull().sum()</code>，是计算<code>s.notnull()</code>返回结果为 <code>True</code> 的数量是多少个，而不是要这些元素的值相加。因此结果为 <code>3</code>。</p><pre><code class="python">&gt;&gt;&gt; s.notnull().sum()3</code></pre><h2 id="2-fillna-的几种方式"><a href="#2-fillna-的几种方式" class="headerlink" title="2. fillna()的几种方式"></a>2. fillna()的几种方式</h2><p>问题：</p><pre><code class="python">Q: 以下代码返回什么结果？import pandas as pdimport numpy as nps= pd.Series([np.nan, 1, 2, np.nan, 3])s = s.fillna(method=&#39;ffill&#39;)print(s)</code></pre><p>考察 <code>fillna()</code>的用法：填充缺失值。根据 <code>method</code> 参数，分为几种情况：</p><ul><li><p><strong>不指定 <code>method</code> 参数，可填充常数</strong></p></li><li><p><strong><code>method = &#39;ffill&#39; / &#39;pad&#39;</code>，用前一个非缺失值去填充（向下填充）</strong></p></li><li><p><strong><code>method = &#39;bflii&#39; / &#39;backfill&#39;</code>，用后一个非缺失值去填充（向上填充）</strong></p></li></ul><p>另外，可以通过指定 <code>inplace</code> 参数，来决定是否修改原对象；</p><p>指定 <code>limit</code> 参数，来决定填充几个；</p><p>指定 <code>axis</code> 参数，来决定按行填充还是按列填充（<code>axis=1</code> 为按行填充，<code>axis=0</code> 为按列填充）。</p><p>因此，该问题返回的结果为：</p><pre><code class="python">&gt;&gt;&gt; print(s)0    NaN1    1.02    2.03    2.04    3.0dtype: float64</code></pre><h2 id="3-遍历返回词典中的-key-和-value"><a href="#3-遍历返回词典中的-key-和-value" class="headerlink" title="3. 遍历返回词典中的 key 和 value"></a>3. 遍历返回词典中的 key 和 value</h2><p>想要遍历获得词典数据中的键值，有几种方式：</p><pre><code class="python">方式一：a = {&#39;a&#39;: &#39;1&#39;, &#39;b&#39;: &#39;2&#39;, &#39;c&#39;: &#39;3&#39;}方式一：for key in a:    print(key, a[key])方式二：for key in a.keys():    print(key, a[key])方式三：for key,value in a.items():       print(key, value)方式四：for (key,value) in a.items():    print(key, value)</code></pre><p>返回结果：</p><pre><code class="python">a 1b 2c 3</code></pre><h2 id="4-a-2-和-a-2-的区别"><a href="#4-a-2-和-a-2-的区别" class="headerlink" title="4. a[:2] 和 a[:, 2]的区别"></a>4. a[:2] 和 a[:, 2]的区别</h2><p>问题：</p><pre><code>Q: 怎么样能返回如下Output的值？a = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])# Output:# [[1 2 20 4 5 ]# [6 7 20 9 10]]</code></pre><p>按照问题描述，需要将每一行的第三个数值改为 20。</p><p>这里涉及到如何取值的问题，也需要区分 <code>a[:2]</code>与 <code>a[:, 2]</code>的用法。</p><p>在多行数组中，</p><ul><li><p><code>a[:2]</code>表示索引 0 至 1 行</p></li><li><p><code>a[:, 2]</code>表示所有行的第 3 列</p></li></ul><p>那么在这个问题中，只需要将每一行的第三列改为 20 即可：</p><pre><code>a[:, 2] = 20</code></pre><h2 id="5-1-1-1-1"><a href="#5-1-1-1-1" class="headerlink" title="5. [1:-1, 1:-1]"></a>5. [1:-1, 1:-1]</h2><p>问题：</p><pre><code class="python">Q: 怎样得到如下数组：[[0. 0. 0. 0. 0. 0. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 5. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 0. 0. 0. 0. 0. 0.]]</code></pre><p>先说解决方法：</p><pre><code class="python">output = np.zeros((7, 7))z = np.ones((5, 5))z[2, 2] = 5output[1:-1, 1:-1] = z&gt;&gt;&gt; print(output)[[0. 0. 0. 0. 0. 0. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 5. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 1. 1. 1. 1. 1. 0.] [0. 0. 0. 0. 0. 0. 0.]]</code></pre><p>思路就是先创建一个 7x7 的、由数值都是<code>0</code>的矩阵数组。然后创建一个 5x5、全部由<code>1</code>组成的矩阵数组。</p><p>之后，通过定位到<code>[2, 2]</code>（第三行第三列）的位置，将该位置的值改为 5。</p><p>然后，将<code>output</code>数组中的 5x5 部分替换为<code>z</code>。这里是通过<code>[1:-1, 1:-1]</code>来定位的。</p><p>这个问题的重点是搞清楚<code>[1:-1, 1:-1]</code>指定的位置到底是在哪。</p><ul><li><p>这里第一组 <code>1:-1</code>，指的是从第二行到倒数第二行</p></li><li><p>第二组 <code>1:-1</code>，指的是从第二列到倒数第二列</p></li></ul><p>这样，就能将原数组中的 5x5 部分用 <code>z</code> 数组替换掉。</p><hr><p><em>参考来源：</em></p><ul><li><em><a href="https://blog.csdn.net/weixin_39549734/article/details/81221276" target="_blank" rel="noopener">fillna()函数详解</a></em></li><li><em><a href="https://blog.csdn.net/houyanhua1/article/details/87855228" target="_blank" rel="noopener">Python pandas，NaN 的判断（isnull(),notnull()），NaN 的处理，缺失处理，dropna()，fillna()</a></em></li><li><em><a href="https://blog.csdn.net/liuyhoo/article/details/80789715" target="_blank" rel="noopener">Python 中列表索引 A[ : 2 ]与 A[ : , 2]的区别</a></em></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>数据处理</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Vue 中为表格单元格动态添加超链接</title>
     <link href="/2020/12/23/1223/"/>
     <url>/2020/12/23/1223/</url>

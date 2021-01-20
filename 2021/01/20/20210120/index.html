@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>Data Analysis Hints from FreeCodeCamp - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Wednesday, January 20th 2021, 3:23 pm
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    1.2k 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      5 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>记录 FreeCodeCamp 上 Data Analysis using Python 课程中遇到的一些知识点。这部分不是代码实操，而是以选择题的形式理解一些函数的用法。主要涉及到的类库是 Numpy 和 Pandas。</p>
+<a id="more"></a>
+
+<h2 id="1-np-nan-和-notnull-的用法"><a href="#1-np-nan-和-notnull-的用法" class="headerlink" title="1. np.nan 和 notnull()的用法"></a>1. np.nan 和 notnull()的用法</h2><p>问题：</p>
+<pre><code class="python">Q: 以下代码返回的值是什么？
+
+import pandas as pd
+import numpy as np
+
+s = pd.Series([&#39;a&#39;, 3, np,nan, 1, np.nan])
+print(s.notnull().sum())</code></pre>
+<p>首先，列表 s 中出现的 <code>np.nan</code>，能够返回什么值呢？</p>
+<p>用 IDE 实际操作一下，返回结果如下：</p>
+<pre><code class="python">&gt;&gt;&gt; print(s)
+0      a
+1      3
+2    NaN
+3      1
+4    NaN
+dtype: object</code></pre>
+<p>知识点：</p>
+<ol>
+<li><p><code>np.nan</code>是一个 float 类型的数据，结果会显示为 <code>NaN</code>。再 <code>Series</code>中可以进行计算，进行计算时，可以通过 np.sum()得到结果，NaN 默认为 0.0。</p>
+</li>
+<li><p><code>notnull()</code>函数，判断元素是否为空值，是则为 <code>False</code>，否则为 <code>True</code>。上面 <code>s.notnull()</code>返回的结果为：</p>
+</li>
+</ol>
+<pre><code class="python">&gt;&gt;&gt; s.notnull()
+0     True
+1     True
+2    False
+3     True
+4    False
+dtype: bool</code></pre>
+<p>其中有三个元素返回结果为 True。</p>
+<p>问题中 <code>s.notnull().sum()</code>，是计算<code>s.notnull()</code>返回结果为 <code>True</code> 的数量是多少个，而不是要这些元素的值相加。因此结果为 <code>3</code>。</p>
+<pre><code class="python">&gt;&gt;&gt; s.notnull().sum()
+3</code></pre>
+<h2 id="2-fillna-的几种方式"><a href="#2-fillna-的几种方式" class="headerlink" title="2. fillna()的几种方式"></a>2. fillna()的几种方式</h2><p>问题：</p>
+<pre><code class="python">Q: 以下代码返回什么结果？
+
+import pandas as pd
+import numpy as np
+
+s= pd.Series([np.nan, 1, 2, np.nan, 3])
+s = s.fillna(method=&#39;ffill&#39;)
+
+print(s)</code></pre>
+<p>考察 <code>fillna()</code>的用法：填充缺失值。根据 <code>method</code> 参数，分为几种情况：</p>
+<ul>
+<li><p><strong>不指定 <code>method</code> 参数，可填充常数</strong></p>
+</li>
+<li><p><strong><code>method = &#39;ffill&#39; / &#39;pad&#39;</code>，用前一个非缺失值去填充（向下填充）</strong></p>
+</li>
+<li><p><strong><code>method = &#39;bflii&#39; / &#39;backfill&#39;</code>，用后一个非缺失值去填充（向上填充）</strong></p>
+</li>
+</ul>
+<p>另外，可以通过指定 <code>inplace</code> 参数，来决定是否修改原对象；</p>
+<p>指定 <code>limit</code> 参数，来决定填充几个；</p>
+<p>指定 <code>axis</code> 参数，来决定按行填充还是按列填充（<code>axis=1</code> 为按行填充，<code>axis=0</code> 为按列填充）。</p>
+<p>因此，该问题返回的结果为：</p>
+<pre><code class="python">&gt;&gt;&gt; print(s)
+0    NaN
+1    1.0
+2    2.0
+3    2.0
+4    3.0
+dtype: float64</code></pre>
+<h2 id="3-遍历返回词典中的-key-和-value"><a href="#3-遍历返回词典中的-key-和-value" class="headerlink" title="3. 遍历返回词典中的 key 和 value"></a>3. 遍历返回词典中的 key 和 value</h2><p>想要遍历获得词典数据中的键值，有几种方式：</p>
+<pre><code class="python">方式一：
+a = {&#39;a&#39;: &#39;1&#39;, &#39;b&#39;: &#39;2&#39;, &#39;c&#39;: &#39;3&#39;}
+
+方式一：
+for key in a:
+    print(key, a[key])
+
+方式二：
+for key in a.keys():
+    print(key, a[key])
+
+方式三：
+for key,value in a.items():
+       print(key, value)
+
+方式四：
+for (key,value) in a.items():
+    print(key, value)</code></pre>
+<p>返回结果：</p>
+<pre><code class="python">a 1
+b 2
+c 3</code></pre>
+<h2 id="4-a-2-和-a-2-的区别"><a href="#4-a-2-和-a-2-的区别" class="headerlink" title="4. a[:2] 和 a[:, 2]的区别"></a>4. a[:2] 和 a[:, 2]的区别</h2><p>问题：</p>
+<pre><code>Q: 怎么样能返回如下Output的值？
+
+a = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])
+
+# Output:
+# [[1 2 20 4 5 ]
+# [6 7 20 9 10]]</code></pre><p>按照问题描述，需要将每一行的第三个数值改为 20。</p>
+<p>这里涉及到如何取值的问题，也需要区分 <code>a[:2]</code>与 <code>a[:, 2]</code>的用法。</p>
+<p>在多行数组中，</p>
+<ul>
+<li><p><code>a[:2]</code>表示索引 0 至 1 行</p>
+</li>
+<li><p><code>a[:, 2]</code>表示所有行的第 3 列</p>
+</li>
+</ul>
+<p>那么在这个问题中，只需要将每一行的第三列改为 20 即可：</p>
+<pre><code>a[:, 2] = 20</code></pre><h2 id="5-1-1-1-1"><a href="#5-1-1-1-1" class="headerlink" title="5. [1:-1, 1:-1]"></a>5. [1:-1, 1:-1]</h2><p>问题：</p>
+<pre><code class="python">Q: 怎样得到如下数组：
+
+[[0. 0. 0. 0. 0. 0. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 5. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]</code></pre>
+<p>先说解决方法：</p>
+<pre><code class="python">output = np.zeros((7, 7))
+z = np.ones((5, 5))
+z[2, 2] = 5
+output[1:-1, 1:-1] = z
+
+&gt;&gt;&gt; print(output)
+[[0. 0. 0. 0. 0. 0. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 5. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 1. 1. 1. 1. 1. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]</code></pre>
+<p>思路就是先创建一个 7x7 的、由数值都是<code>0</code>的矩阵数组。然后创建一个 5x5、全部由<code>1</code>组成的矩阵数组。</p>
+<p>之后，通过定位到<code>[2, 2]</code>（第三行第三列）的位置，将该位置的值改为 5。</p>
+<p>然后，将<code>output</code>数组中的 5x5 部分替换为<code>z</code>。这里是通过<code>[1:-1, 1:-1]</code>来定位的。</p>
+<p>这个问题的重点是搞清楚<code>[1:-1, 1:-1]</code>指定的位置到底是在哪。</p>
+<ul>
+<li><p>这里第一组 <code>1:-1</code>，指的是从第二行到倒数第二行</p>
+</li>
+<li><p>第二组 <code>1:-1</code>，指的是从第二列到倒数第二列</p>
+</li>
+</ul>
+<p>这样，就能将原数组中的 5x5 部分用 <code>z</code> 数组替换掉。</p>
+<hr>
+<p><em>参考来源：</em></p>
+<ul>
+<li><em><a href="https://blog.csdn.net/weixin_39549734/article/details/81221276" target="_blank" rel="noopener">fillna()函数详解</a></em></li>
+<li><em><a href="https://blog.csdn.net/houyanhua1/article/details/87855228" target="_blank" rel="noopener">Python pandas，NaN 的判断（isnull(),notnull()），NaN 的处理，缺失处理，dropna()，fillna()</a></em></li>
+<li><em><a href="https://blog.csdn.net/liuyhoo/article/details/80789715" target="_blank" rel="noopener">Python 中列表索引 A[ : 2 ]与 A[ : , 2]的区别</a></em></li>
+</ul>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/Python">Python</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e7e697d38c5a814b00fe553d27f81508";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Data Analysis Hints from FreeCodeCamp&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
