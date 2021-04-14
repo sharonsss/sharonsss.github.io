@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Data Analysis Hints from FreeCodeCamp - Sansan&#39;s Blog</title>
+  <title>Git version control 相关操作记录，防止踩坑 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -122,7 +122,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Wednesday, January 20th 2021, 3:23 pm
+                  Wednesday, April 14th 2021, 4:47 pm
                 </p>
               
 
@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    1.2k 字
+                    1.1k 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      5 min
+                      4 min
                   </span>&nbsp;
                 
 
@@ -172,157 +172,144 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>记录 FreeCodeCamp 上 Data Analysis using Python 课程中遇到的一些知识点。这部分不是代码实操，而是以选择题的形式理解一些函数的用法。主要涉及到的类库是 Numpy 和 Pandas。</p>
+            <p>今年到了一个新的项目组，开始跟团队合作进行前端开发，于是遇到了不少 <code>git pull</code>、<code>git push</code>、<code>git branch</code> 之类的问题。这里统一记录下来，做个备忘。</p>
 <a id="more"></a>
 
-<h2 id="1-np-nan-和-notnull-的用法"><a href="#1-np-nan-和-notnull-的用法" class="headerlink" title="1. np.nan 和 notnull()的用法"></a>1. np.nan 和 notnull()的用法</h2><p>问题：</p>
-<pre><code class="python">Q: 以下代码返回的值是什么？
+<h2 id="1-git-branch-相关操作"><a href="#1-git-branch-相关操作" class="headerlink" title="1. git branch 相关操作"></a>1. git branch 相关操作</h2><ul>
+<li><code>git branch</code> 基本操作</li>
+</ul>
+<pre><code>1. 查看本地的分支列表,以及当前所在的分支
+$ git branch
 
-import pandas as pd
-import numpy as np
+  hexo
+* master
 
-s = pd.Series([&#39;a&#39;, 3, np,nan, 1, np.nan])
-print(s.notnull().sum())</code></pre>
-<p>首先，列表 s 中出现的 <code>np.nan</code>，能够返回什么值呢？</p>
-<p>用 IDE 实际操作一下，返回结果如下：</p>
-<pre><code class="python">&gt;&gt;&gt; print(s)
-0      a
-1      3
-2    NaN
-3      1
-4    NaN
-dtype: object</code></pre>
-<p>知识点：</p>
-<ol>
-<li><p><code>np.nan</code>是一个 float 类型的数据，结果会显示为 <code>NaN</code>。再 <code>Series</code>中可以进行计算，进行计算时，可以通过 <code>np.sum()</code>得到结果，<code>NaN</code> 默认为 <code>0.0</code>。</p>
-</li>
-<li><p><code>notnull()</code>函数，判断元素是否为空值，是则为 <code>False</code>，否则为 <code>True</code>。上面 <code>s.notnull()</code>返回的结果为：</p>
-</li>
-</ol>
-<pre><code class="python">&gt;&gt;&gt; s.notnull()
-0     True
-1     True
-2    False
-3     True
-4    False
-dtype: bool</code></pre>
-<p>其中有三个元素返回结果为 <code>True</code>。</p>
-<p>问题中 <code>s.notnull().sum()</code>，是计算<code>s.notnull()</code>返回结果为 <code>True</code> 的数量是多少个，而不是要这些元素的值相加。因此结果为 <code>3</code>。</p>
-<pre><code class="python">&gt;&gt;&gt; s.notnull().sum()
-3</code></pre>
-<h2 id="2-fillna-的几种方式"><a href="#2-fillna-的几种方式" class="headerlink" title="2. fillna()的几种方式"></a>2. fillna()的几种方式</h2><p>问题：</p>
-<pre><code class="python">Q: 以下代码返回什么结果？
+2. 查看远程分支
+$ git branch -r
 
-import pandas as pd
-import numpy as np
+3. 查看本地和远程的所有分支
+$ git brnach -a
 
-s= pd.Series([np.nan, 1, 2, np.nan, 3])
-s = s.fillna(method=&#39;ffill&#39;)
+  hexo
+* master
+  remotes/origin/hexo
 
-print(s)</code></pre>
-<p>考察 <code>fillna()</code>的用法：填充缺失值。根据 <code>method</code> 参数，分为几种情况：</p>
+4. 查看本地分支与远程分支的追踪关系
+$ git branch -vv
+
+* master      fe69429 [origin/master: ahead 11, behind 4] Merge branch &#39;zhangyi-dev&#39;
+  zhangyi-dev 930cf95 [origin/zhangyi-dev] 解决冲突
+
+5.设置追踪关系
+如：本地名称为 master 要追踪到远程origin/master，命令如下：
+
+$ git branch --set-upstream-to=origin/master master
+
+6.切换分支
+$ git checkout targetBranchName
+
+7.切换并新建分支（新建一个分支，并且换到该分支）
+$ git checkout -b newBranchName</code></pre><ul>
+<li>git 分支的重命名与删除</li>
+</ul>
+<pre><code>1. 创建分支
+git branch [branchname]
+
+2. 删除本地某分支
+$ git brnach -d branchName
+
+3. 删除远程某分支
+$ git push origin --delete [branchname]
+
+4. 修改远程分支名
+$ git branch -m branch_old branch_new
+$ git push origin :branch_old
+$ git push --set-upstream origin branch_new</code></pre><h2 id="2-git-stash"><a href="#2-git-stash" class="headerlink" title="2. git stash"></a>2. git stash</h2><p>当本地代码修改完成后，在 push 推送到远程对应分支之前，需要先暂存本地修改后的文件，并将远程对应分支最新的代码 pull 下来，与本地的修改合并，才能 push。此时就需要使用 <code>git stash</code>。</p>
 <ul>
-<li><p><strong>不指定 <code>method</code> 参数，可填充常数</strong></p>
+<li><code>git stash</code> 前，先添加本地的修改</li>
+</ul>
+<pre><code>$ git add .</code></pre><ul>
+<li>然后将本地的代码暂存到缓存区</li>
+</ul>
+<pre><code>$ git stash
+
+or
+
+$ git stash save &quot;输入暂存信息&quot;</code></pre><ul>
+<li>此时，我们可以查看之前所有的缓存：</li>
+</ul>
+<pre><code>$ git stash list
+
+stash@{0}: On devBranch: 再次修改dev分支文件
+stash@{1}: On devBranch: 修改dev分支文件</code></pre><p>其中 <code>stash@{0}</code> 是最新一次暂存的记录。</p>
+<ul>
+<li><p>暂存之后，<code>git pull</code> 拉取远程的最新代码</p>
 </li>
-<li><p><strong><code>method = &#39;ffill&#39; / &#39;pad&#39;</code>，用前一个非缺失值去填充（向下填充）</strong></p>
-</li>
-<li><p><strong><code>method = &#39;bflii&#39; / &#39;backfill&#39;</code>，用后一个非缺失值去填充（向上填充）</strong></p>
+<li><p>还原拉取之前暂存的内容</p>
 </li>
 </ul>
-<p>另外，可以通过指定 <code>inplace</code> 参数，来决定是否修改原对象；</p>
-<p>指定 <code>limit</code> 参数，来决定填充几个；</p>
-<p>指定 <code>axis</code> 参数，来决定按行填充还是按列填充（<code>axis=1</code> 为按行填充，<code>axis=0</code> 为按列填充）。</p>
-<p>因此，该问题返回的结果为：</p>
-<pre><code class="python">&gt;&gt;&gt; print(s)
-0    NaN
-1    1.0
-2    2.0
-3    2.0
-4    3.0
-dtype: float64</code></pre>
-<h2 id="3-遍历返回词典中的-key-和-value"><a href="#3-遍历返回词典中的-key-和-value" class="headerlink" title="3. 遍历返回词典中的 key 和 value"></a>3. 遍历返回词典中的 key 和 value</h2><p>想要遍历获得词典数据中的键值，有几种方式：</p>
-<pre><code class="python">方式一：
-a = {&#39;a&#39;: &#39;1&#39;, &#39;b&#39;: &#39;2&#39;, &#39;c&#39;: &#39;3&#39;}
+<pre><code>1. 还原指定暂存，同时此次暂存从list中清除
+$ git stash pop stash@{id}
 
-方式一：
-for key in a:
-    print(key, a[key])
+2. 还原指定暂存，此次暂存仍然存在于list中
+$ git stash apply stash@{id}
 
-方式二：
-for key in a.keys():
-    print(key, a[key])
-
-方式三：
-for key,value in a.items():
-       print(key, value)
-
-方式四：
-for (key,value) in a.items():
-    print(key, value)</code></pre>
-<p>返回结果：</p>
-<pre><code class="python">a 1
-b 2
-c 3</code></pre>
-<h2 id="4-a-2-和-a-2-的区别"><a href="#4-a-2-和-a-2-的区别" class="headerlink" title="4. a[:2] 和 a[:, 2]的区别"></a>4. a[:2] 和 a[:, 2]的区别</h2><p>问题：</p>
-<pre><code>Q: 怎么样能返回如下Output的值？
-
-a = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])
-
-# Output:
-# [[1 2 20 4 5 ]
-# [6 7 20 9 10]]</code></pre><p>按照问题描述，需要将每一行的第三个数值改为 20。</p>
-<p>这里涉及到如何取值的问题，也需要区分 <code>a[:2]</code>与 <code>a[:, 2]</code>的用法。</p>
-<p>在多行数组中，</p>
-<ul>
-<li><p><code>a[:2]</code>表示索引 0 至 1 行</p>
-</li>
-<li><p><code>a[:, 2]</code>表示所有行的第 3 列</p>
-</li>
+3. 恢复最新一次暂存
+$ git stash pop</code></pre><ul>
+<li>删除某一个修改暂存</li>
 </ul>
-<p>那么在这个问题中，只需要将每一行的第三列改为 20 即可：</p>
-<pre><code>a[:, 2] = 20</code></pre><h2 id="5-1-1-1-1"><a href="#5-1-1-1-1" class="headerlink" title="5. [1:-1, 1:-1]"></a>5. [1:-1, 1:-1]</h2><p>问题：</p>
-<pre><code class="python">Q: 怎样得到如下数组：
-
-[[0. 0. 0. 0. 0. 0. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 5. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 0. 0. 0. 0. 0. 0.]]</code></pre>
-<p>先说解决方法：</p>
-<pre><code class="python">output = np.zeros((7, 7))
-z = np.ones((5, 5))
-z[2, 2] = 5
-output[1:-1, 1:-1] = z
-
-&gt;&gt;&gt; print(output)
-[[0. 0. 0. 0. 0. 0. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 5. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 1. 1. 1. 1. 1. 0.]
- [0. 0. 0. 0. 0. 0. 0.]]</code></pre>
-<p>思路就是先创建一个 7x7 的、由数值都是<code>0</code>的矩阵数组。然后创建一个 5x5、全部由<code>1</code>组成的矩阵数组。</p>
-<p>之后，通过定位到<code>[2, 2]</code>（第三行第三列）的位置，将该位置的值改为 5。</p>
-<p>然后，将<code>output</code>数组中的 5x5 部分替换为<code>z</code>。这里是通过<code>[1:-1, 1:-1]</code>来定位的。</p>
-<p>这个问题的重点是搞清楚<code>[1:-1, 1:-1]</code>指定的位置到底是在哪。</p>
-<ul>
-<li><p>这里第一组 <code>1:-1</code>，指的是从第二行到倒数第二行</p>
-</li>
-<li><p>第二组 <code>1:-1</code>，指的是从第二列到倒数第二列</p>
-</li>
+<pre><code>git stash drop stash@{id}</code></pre><ul>
+<li>清空所有的修改暂存</li>
 </ul>
-<p>这样，就能将原数组中的 5x5 部分用 <code>z</code> 数组替换掉。</p>
-<hr>
-<p><em>参考来源：</em></p>
-<ul>
-<li><em><a href="https://blog.csdn.net/weixin_39549734/article/details/81221276" target="_blank" rel="noopener">fillna()函数详解</a></em></li>
-<li><em><a href="https://blog.csdn.net/houyanhua1/article/details/87855228" target="_blank" rel="noopener">Python pandas，NaN 的判断（isnull(),notnull()），NaN 的处理，缺失处理，dropna()，fillna()</a></em></li>
-<li><em><a href="https://blog.csdn.net/liuyhoo/article/details/80789715" target="_blank" rel="noopener">Python 中列表索引 A[ : 2 ]与 A[ : , 2]的区别</a></em></li>
+<pre><code>$ git stash clear</code></pre><ul>
+<li>远程 pull 下来的代码与本地合并之后，就可以 commit，然后 push 提交了</li>
 </ul>
+<h2 id="3-git-commit-pull-push"><a href="#3-git-commit-pull-push" class="headerlink" title="3. git commit / pull / push"></a>3. git commit / pull / push</h2><h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><pre><code>$ git pull origin remtebranch</code></pre><p>如果远程指定的分支已经与当前本地的分支关联，则可以直接使用 <code>git pull</code>。</p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><ul>
+<li>commit 之前，确认代码提交的状态</li>
+</ul>
+<pre><code>git status</code></pre><ul>
+<li><code>git commit</code> 本地修改</li>
+</ul>
+<pre><code>$ git commit -m&quot;&quot;</code></pre><ul>
+<li>查看已提交但是未传送到远程代码库的 commit</li>
+</ul>
+<pre><code>$ git cherry -v
 
+eg: + 27122d40164dbf08276d96960bde20a2059cdb8b 修改页面</code></pre><ul>
+<li>查看已提交但是未传送到远程代码库的 commit（可能不止一次）</li>
+</ul>
+<pre><code>$ git log master ^origin/master
+
+eg：
+commit 27122d40164dbf08276d96960bde20a2059cdb8b
+Author: hup &lt;673643141@qq.com&gt;
+Date:   Mon Oct 8 11:43:19 2018 +0800
+
+    修改页面</code></pre><ul>
+<li>撤销已经 <code>git commit</code> 但是未 push 的修改</li>
+</ul>
+<pre><code>1. 找到上次commit的id
+$ git log
+
+2. 完成撤销,同时将代码恢复到前一个commit_id 对应的版本（不建议使用，撤销之后，后面的代码不可恢复）
+$ git reset --hard commit_id 
+
+3. 完成commit命令的撤销，但是不对代码修改进行撤销，可以直接通过git commit重新提交对本地代码的修改
+$ git reset commit_id </code></pre><h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><ul>
+<li>推送本地修改到远程对应分支</li>
+</ul>
+<pre><code>1. 远程已有remote_branch分支并且已经关联本地分支local_branch，且本地已经切换到local_branch
+   如果当前分支只有一个追踪分支，那么主机名都可以省略
+$ git push
+
+2. 远程已有remote_branch分支但未关联本地分支local_branch，且本地已经切换到local_branch
+$ git push -u origin/remotebranch
+
+3. 远程没有remote_branch分支并，本地已经切换到local_branch（如果没有远程分支，则会在远程新创建一个）
+$ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作："><a href="#其他操作：" class="headerlink" title="其他操作："></a>其他操作：</h3><p>把远程某各分支拉到本地的 branchname 下，如果没有 branchname，则会在本地新建 branchname。</p>
+<pre><code>$ git fetch origin branchname:branchname</code></pre><p>获取远程分支 remoteName 到本地新分支 localName，并跳到 localName 分支。</p>
+<pre><code>$ git checkout origin/remoteName -b localName</code></pre>
             <hr>
           </div>
           <br>
@@ -332,7 +319,7 @@ output[1:-1, 1:-1] = z
               <span>
                 <i class="iconfont icon-inbox"></i>
                 
-                  <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86">数据处理</a>
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
                   &nbsp;
                 
               </span>&nbsp;&nbsp;
@@ -341,7 +328,7 @@ output[1:-1, 1:-1] = z
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/Python">Python</a>
+                  <a class="hover-with-bg" href="/tags/git">git</a>
                 
               </span>
             
@@ -508,7 +495,7 @@ output[1:-1, 1:-1] = z
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Data Analysis Hints from FreeCodeCamp&nbsp;",
+        "Git version control 相关操作记录，防止踩坑&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
