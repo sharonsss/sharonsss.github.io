@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Git version control 相关操作记录，防止踩坑 - Sansan&#39;s Blog</title>
+  <title>Git 操作(二)：Reset HEAD回退代码版本的三种模式 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -122,7 +122,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Wednesday, April 14th 2021, 4:47 pm
+                  Monday, April 26th 2021, 4:13 pm
                 </p>
               
 
@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    1.1k 字
+                    825 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      4 min
+                      3 min
                   </span>&nbsp;
                 
 
@@ -172,149 +172,68 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>今年到了一个新的项目组，开始跟团队合作进行前端开发，于是遇到了不少 <code>git pull</code>、<code>git push</code>、<code>git branch</code> 之类的问题。这里统一记录下来，做个备忘。</p>
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>主要记录将代码回退到历史某一次提交的版本，使用 <code>git reset</code> 三种不同的形式 <code>soft</code>、<code>mixed</code>、<code>hard</code>，实现不同的回退效果。</p>
+<p>其中，<strong>“硬回退”</strong>的方式在一般情况下不建议使用，因为会导致新的代码被清空，无法找回。</p>
 <a id="more"></a>
 
-<h2 id="1-git-branch-相关操作"><a href="#1-git-branch-相关操作" class="headerlink" title="1. git branch 相关操作"></a>1. git branch 相关操作</h2><ul>
-<li><code>git branch</code> 基本操作</li>
-</ul>
-<pre><code>1. 查看本地的分支列表,以及当前所在的分支
-$ git branch
-
-  hexo
-* master
-
-2. 查看远程分支
-$ git branch -r
-
-3. 查看本地和远程的所有分支
-$ git brnach -a
-
-  hexo
-* master
-  remotes/origin/hexo
-
-4. 查看本地分支与远程分支的追踪关系
-$ git branch -vv
-
-* master      fe69429 [origin/master: ahead 11, behind 4] Merge branch &#39;zhangyi-dev&#39;
-  zhangyi-dev 930cf95 [origin/zhangyi-dev] 解决冲突
-
-5.设置追踪关系
-如：本地名称为 master 要追踪到远程origin/master，命令如下：
-
-$ git branch --set-upstream-to=origin/master master
-
-6.切换分支
-$ git checkout targetBranchName
-
-7.切换并新建分支（新建一个分支，并且换到该分支）
-$ git checkout -b newBranchName</code></pre><ul>
-<li>git 分支的重命名与删除</li>
-</ul>
-<pre><code>1. 创建分支
-git branch [branchname]
-
-2. 删除本地某分支
-$ git brnach -d branchName
-
-3. 删除远程某分支
-$ git push origin --delete [branchname]
-
-4. 修改远程分支名
-$ git branch -m branch_old branch_new
-$ git push origin :branch_old
-$ git push --set-upstream origin branch_new</code></pre><h2 id="2-git-stash"><a href="#2-git-stash" class="headerlink" title="2. git stash"></a>2. git stash</h2><p>当本地代码修改完成后，在 push 推送到远程对应分支之前，需要先暂存本地修改后的文件，并将远程对应分支最新的代码 pull 下来，与本地的修改合并，才能 push。此时就需要使用 <code>git stash</code>。</p>
+<h2 id="git-reseet-含义"><a href="#git-reseet-含义" class="headerlink" title="git reseet 含义"></a>git reseet 含义</h2><p><strong>git reset 的定义：</strong></p>
+<p><code>git-reset - Reset current HEAD to the specified state</code></p>
+<p>三种模式的解释，看下面这张图可以比较好的理解：</p>
+<p><img src="/img/git-tree.png" srcset="/img/loading.gif" alt="git"></p>
 <ul>
-<li><code>git stash</code> 前，先添加本地的修改</li>
-</ul>
-<pre><code>$ git add .</code></pre><ul>
-<li>然后将本地的代码暂存到缓存区</li>
-</ul>
-<pre><code>$ git stash
-
-or
-
-$ git stash save &quot;输入暂存信息&quot;</code></pre><ul>
-<li>此时，我们可以查看之前所有的缓存：</li>
-</ul>
-<pre><code>$ git stash list
-
-stash@{0}: On devBranch: 再次修改dev分支文件
-stash@{1}: On devBranch: 修改dev分支文件</code></pre><p>其中 <code>stash@{0}</code> 是最新一次暂存的记录。</p>
-<ul>
-<li><p>暂存之后，<code>git pull</code> 拉取远程的最新代码</p>
+<li><p>History 是 git commit 之后的记录（包括代码和 commit 的信息）</p>
 </li>
-<li><p>还原拉取之前暂存的内容</p>
+<li><p>Stage/Index 是暂存区域，也就是使用 <code>git add XX</code> 之后，将代码添加到的区域</p>
+</li>
+<li><p>Working directory 也就是我们当前的工作区</p>
 </li>
 </ul>
-<pre><code>1. 还原指定暂存，同时此次暂存从list中清除
-$ git stash pop stash@{id}
+<p><strong>以下按照从弱到强的顺序，说明 <code>git reset --soft/mixed/hard</code> 三种模式。</strong></p>
+<h2 id="关于-HEAD-指针"><a href="#关于-HEAD-指针" class="headerlink" title="关于 HEAD 指针"></a>关于 HEAD 指针</h2><p><code>HEAD</code> 指针放在 git reset 后面，用来说明指向哪个提交历史。</p>
+<p>实际使用时，有几种不同的形式：</p>
+<pre><code>// 回退到上个版本
+git reset (--soft/hard/mixed) HEAD^
+或者
+git reset (--soft/hard/mixed) HEAD~1
 
-2. 还原指定暂存，此次暂存仍然存在于list中
-$ git stash apply stash@{id}
+// 回退到之前的某个版本
+git reset (--soft/hard/mixed) HEAD~3 // 回退到3次提交之前，也就是回退到往回数第4次提交
+或者
+git reset (--soft/hard/mixed) HEAD commitId // 回退到这个指定的commitId</code></pre><h2 id="1-git-reset-–soft"><a href="#1-git-reset-–soft" class="headerlink" title="1. git reset –soft"></a>1. git reset –soft</h2><ul>
+<li><p><strong><code>git reset --soft</code> 首先不会改动当前的工作区内容</strong></p>
+</li>
+<li><p><strong>会重置目标 HEAD 之后的 commit 历史记录</strong></p>
+</li>
+<li><p><strong>同时，将当前节点与被重置的目标节点 HEAD 之间差异变更，放到 Stage/Index 暂存区域</strong></p>
+</li>
+</ul>
+<p>这样，不想要的 commit 历史记录没有了，但是 commit 对应的修改都已经自动放到了暂存区。</p>
+<p>如果重置之后 <code>git status</code>，会发现变更的内容都是 <strong>“已add”的绿色状态</strong>。</p>
+<p>所以，只需要直接 <code>git commit</code>，就可以暂存区中的变更一次性重新提交。这是可以说是修改历史 commit 记录最便捷的方式了。</p>
+<h2 id="2-git-reset-–mixed-默认"><a href="#2-git-reset-–mixed-默认" class="headerlink" title="2. git reset –mixed (默认)"></a>2. git reset –mixed (默认)</h2><p>首先，git reset 默认的使用方式，就是 –mixed 这种实现方式。</p>
+<ul>
+<li><p><code>git reset --mixed</code> 也不会改动当前的工作区内容</p>
+</li>
+<li><p>会重置目标 <code>HEAD</code> 之后的 commit 历史记录</p>
+</li>
+<li><p>同时，会清空 Stage/Index 暂存区域到的内容，将当前节点与被重置的目标节点 <code>HEAD</code> 之间的差异变更，放到当前工作区</p>
+</li>
+</ul>
+<p>如果重置之后 <code>git status</code>，会发现变更的内容都是 <strong>“未add”的红色状态</strong>。</p>
+<p>因此，与 soft 相比，mixed 模式需要在重置之后，重新 <code>git add XX</code> 一下，将更改重新添加至暂存区。</p>
+<h2 id="3-git-reset-–hard（强重置）"><a href="#3-git-reset-–hard（强重置）" class="headerlink" title="3. git reset –hard（强重置）"></a>3. git reset –hard（强重置）</h2><p><strong>提醒：这个模式要慎重使用，除非你真的要放弃目前本地所有的修改。</strong></p>
+<p>一句话解释：</p>
+<ul>
+<li>如果使用 hard 模式，会将 History、Stage/Index、Working directory 中的所有记录全部清空！</li>
+</ul>
+<p>当前修改的代码，一不小心，就都会清除，这个操作相当的酸爽。。</p>
+<h2 id="将改动推送到远程分支"><a href="#将改动推送到远程分支" class="headerlink" title="将改动推送到远程分支"></a>将改动推送到远程分支</h2><p>撤销的动作会影响 commit 的历史记录，如果本地已经撤销了某些 commit，同时也需要将远程分支的 commit 历史做相应的改动。</p>
+<p>那么需要强制 push 到远程：</p>
+<pre><code>$ git push origin HEAD --force</code></pre><hr>
+<p><em>参考来源：</em></p>
+<p><em>1. <a href="https://www.jianshu.com/p/c2ec5f06cf1a" target="_blank" rel="noopener">Git Reset 三种模式</a></em></p>
+<p><em>2. <a href="https://www.cnblogs.com/hukuangjie/p/11369434.html" target="_blank" rel="noopener">Git回滚代码到某个commit</a></em></p>
 
-3. 恢复最新一次暂存
-$ git stash pop</code></pre><ul>
-<li>删除某一个修改暂存</li>
-</ul>
-<pre><code>git stash drop stash@{id}</code></pre><ul>
-<li>清空所有的修改暂存</li>
-</ul>
-<pre><code>$ git stash clear</code></pre><ul>
-<li>远程 pull 下来的代码与本地合并之后，就可以 commit，然后 push 提交了</li>
-</ul>
-<h2 id="3-git-commit-pull-push"><a href="#3-git-commit-pull-push" class="headerlink" title="3. git commit / pull / push"></a>3. git commit / pull / push</h2><h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><pre><code>$ git pull origin remtebranch</code></pre><p>如果远程指定的分支已经与当前本地的分支关联，则可以直接使用 <code>git pull</code>。</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><ul>
-<li>commit 之前，确认代码提交的状态</li>
-</ul>
-<pre><code>git status</code></pre><ul>
-<li><code>git commit</code> 本地的修改</li>
-</ul>
-<pre><code>$ git commit -m&quot;&quot;</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit</li>
-</ul>
-<pre><code>$ git cherry -v
-
-eg: + 27122d40164dbf08276d96960bde20a2059cdb8b 修改页面</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit（可能不止一次）</li>
-</ul>
-<pre><code>$ git log master ^origin/master
-
-eg：
-commit 27122d40164dbf08276d96960bde20a2059cdb8b
-Author: hup &lt;673643141@qq.com&gt;
-Date:   Mon Oct 8 11:43:19 2018 +0800
-
-    修改页面</code></pre><ul>
-<li>撤销已经 <code>git commit</code> 但是未 push 的修改</li>
-</ul>
-<pre><code>1. 找到上次commit的id
-$ git log
-
-2. 完成撤销,同时将代码恢复到前一个commit_id 对应的版本（不建议使用，撤销之后，后面的代码不可恢复）
-$ git reset --hard commit_id 
-
-3. 完成commit命令的撤销，但是不对代码修改进行撤销，可以直接通过git commit重新提交对本地代码的修改
-$ git reset commit_id</code></pre><ul>
-<li>修改已git commit的注释信息</li>
-</ul>
-<pre><code>git commit --amend</code></pre><p>输入命令之后，会进入 vim 界面，在界面中修改之前 commit 的信息。</p>
-<p>修改完成之后，<code>:wq</code> 退出编辑模式。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><ul>
-<li>推送本地修改到远程对应分支</li>
-</ul>
-<pre><code>1. 远程已有remote_branch分支并且已经关联本地分支local_branch，且本地已经切换到local_branch
-   如果当前分支只有一个追踪分支，那么主机名都可以省略
-$ git push
-
-2. 远程已有remote_branch分支但未关联本地分支local_branch，且本地已经切换到local_branch
-$ git push -u origin/remotebranch
-
-3. 远程没有remote_branch分支并，本地已经切换到local_branch（如果没有远程分支，则会在远程新创建一个）
-$ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作："><a href="#其他操作：" class="headerlink" title="其他操作："></a>其他操作：</h3><p>把远程某各分支拉到本地的 branchname 下，如果没有 branchname，则会在本地新建 branchname。</p>
-<pre><code>$ git fetch origin branchname:branchname</code></pre><p>获取远程分支 remoteName 到本地新分支 localName，并跳到 localName 分支。</p>
-<pre><code>$ git checkout origin/remoteName -b localName</code></pre>
             <hr>
           </div>
           <br>
@@ -500,7 +419,7 @@ $ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作：">
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Git version control 相关操作记录，防止踩坑&nbsp;",
+        "Git 操作(二)：Reset HEAD回退代码版本的三种模式&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

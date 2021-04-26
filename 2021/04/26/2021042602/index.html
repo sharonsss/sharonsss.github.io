@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Git version control 相关操作记录，防止踩坑 - Sansan&#39;s Blog</title>
+  <title>Vue query 与 params：传参、接收与 url 显示 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -122,7 +122,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Wednesday, April 14th 2021, 4:47 pm
+                  Monday, April 26th 2021, 4:17 pm
                 </p>
               
 
@@ -131,7 +131,7 @@
                   
                   &nbsp;<i class="far fa-chart-bar"></i>
                   <span class="post-count">
-                    1.1k 字
+                    858 字
                   </span>&nbsp;
                 
 
@@ -139,7 +139,7 @@
                   
                   &nbsp;<i class="far fa-clock"></i>
                   <span class="post-count">
-                      4 min
+                      3 min
                   </span>&nbsp;
                 
 
@@ -172,149 +172,97 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>今年到了一个新的项目组，开始跟团队合作进行前端开发，于是遇到了不少 <code>git pull</code>、<code>git push</code>、<code>git branch</code> 之类的问题。这里统一记录下来，做个备忘。</p>
+            <p>前端开发中，遇到的必不可少的问题就是关于传参和接收参数的问题，而在 Vue 里，参数传递与接收都是通过query、params以及 <code>$router</code> 和 <code>$route</code> 来实现的。</p>
 <a id="more"></a>
 
-<h2 id="1-git-branch-相关操作"><a href="#1-git-branch-相关操作" class="headerlink" title="1. git branch 相关操作"></a>1. git branch 相关操作</h2><ul>
-<li><code>git branch</code> 基本操作</li>
-</ul>
-<pre><code>1. 查看本地的分支列表,以及当前所在的分支
-$ git branch
-
-  hexo
-* master
-
-2. 查看远程分支
-$ git branch -r
-
-3. 查看本地和远程的所有分支
-$ git brnach -a
-
-  hexo
-* master
-  remotes/origin/hexo
-
-4. 查看本地分支与远程分支的追踪关系
-$ git branch -vv
-
-* master      fe69429 [origin/master: ahead 11, behind 4] Merge branch &#39;zhangyi-dev&#39;
-  zhangyi-dev 930cf95 [origin/zhangyi-dev] 解决冲突
-
-5.设置追踪关系
-如：本地名称为 master 要追踪到远程origin/master，命令如下：
-
-$ git branch --set-upstream-to=origin/master master
-
-6.切换分支
-$ git checkout targetBranchName
-
-7.切换并新建分支（新建一个分支，并且换到该分支）
-$ git checkout -b newBranchName</code></pre><ul>
-<li>git 分支的重命名与删除</li>
-</ul>
-<pre><code>1. 创建分支
-git branch [branchname]
-
-2. 删除本地某分支
-$ git brnach -d branchName
-
-3. 删除远程某分支
-$ git push origin --delete [branchname]
-
-4. 修改远程分支名
-$ git branch -m branch_old branch_new
-$ git push origin :branch_old
-$ git push --set-upstream origin branch_new</code></pre><h2 id="2-git-stash"><a href="#2-git-stash" class="headerlink" title="2. git stash"></a>2. git stash</h2><p>当本地代码修改完成后，在 push 推送到远程对应分支之前，需要先暂存本地修改后的文件，并将远程对应分支最新的代码 pull 下来，与本地的修改合并，才能 push。此时就需要使用 <code>git stash</code>。</p>
-<ul>
-<li><code>git stash</code> 前，先添加本地的修改</li>
-</ul>
-<pre><code>$ git add .</code></pre><ul>
-<li>然后将本地的代码暂存到缓存区</li>
-</ul>
-<pre><code>$ git stash
-
-or
-
-$ git stash save &quot;输入暂存信息&quot;</code></pre><ul>
-<li>此时，我们可以查看之前所有的缓存：</li>
-</ul>
-<pre><code>$ git stash list
-
-stash@{0}: On devBranch: 再次修改dev分支文件
-stash@{1}: On devBranch: 修改dev分支文件</code></pre><p>其中 <code>stash@{0}</code> 是最新一次暂存的记录。</p>
-<ul>
-<li><p>暂存之后，<code>git pull</code> 拉取远程的最新代码</p>
+<h2 id="一、-router-与-route-的区别"><a href="#一、-router-与-route-的区别" class="headerlink" title="一、$router 与 $route 的区别"></a>一、$router 与 $route 的区别</h2><ul>
+<li><p><code>$router</code> 为只写对象，用来定义路由跳转与传递参数</p>
 </li>
-<li><p>还原拉取之前暂存的内容</p>
+<li><p><code>$route</code> 为只读对象，用来接收路由传递过来的参数</p>
 </li>
 </ul>
-<pre><code>1. 还原指定暂存，同时此次暂存从list中清除
-$ git stash pop stash@{id}
+<p>示例：</p>
+<pre><code class="js">//组件1: 写入 路由跳转与参数传递
+this.$router.push({
+      name:&#39;hello&#39;,
+      params:{
+          name:&#39;word&#39;,
+          age:&#39;11&#39;
+     }
+})
 
-2. 还原指定暂存，此次暂存仍然存在于list中
-$ git stash apply stash@{id}
+//组件一2: 读取 路由参数接收
+this.name = this.$route.params.name;
+this.age = this.$route.params.age;</code></pre>
+<h2 id="二、query-传递参数与接收参数"><a href="#二、query-传递参数与接收参数" class="headerlink" title="二、query 传递参数与接收参数"></a>二、query 传递参数与接收参数</h2><h3 id="1-query-传递参数"><a href="#1-query-传递参数" class="headerlink" title="1. query 传递参数"></a>1. query 传递参数</h3><p>query 传递参数优先使用 <code>path</code> 传参(不过测试使用 <code>name</code> 也可以)。</p>
+<p><code>$router</code> 定义传递的 path 和参数：</p>
+<pre><code class="js">// 组件1
+this.$router.push({
+    path:&#39;/pathName&#39;, // component在前端显示的path，例如‘/front-path-name’
+    query: {
+        queryId:&#39;1234&#39;,
+        queryName: &#39;query&#39;
+    }
+})</code></pre>
+<p>query 在 <code>url</code> 中的显示形式为：</p>
+<pre><code>http://localhost:3000/#/path?queryId=1234&amp;queryName=query</code></pre><p>可以看到，query 是拼接在 <code>url</code> 后面的参数。</p>
+<h3 id="2-接收query参数"><a href="#2-接收query参数" class="headerlink" title="2. 接收query参数"></a>2. 接收query参数</h3><p>使用 <code>$route.query.queryName</code> 来接收组件1传递过来的参数：</p>
+<pre><code class="js">// 组件2
+this.queryName = this.$route.query.queryName;
+this.queryId = this.$route.query.queryId;</code></pre>
+<p>对应的路由配置：</p>
+<pre><code class="js">// api里配置路由信息
+{
+    path: &#39;/pathName&#39;,
+    name: &#39;name&#39;,
+    component: () =&gt; import(&#39;@/view/componentName&#39;)
+}</code></pre>
+<p>开发中曾遇到过一个问题，网站配置了第三方登录，需要获取第三方登录产生的 token，来判断该用户是否允许某些操作。</p>
+<p>当时传递过来的是一个完整的 <code>url</code> 链接，即：</p>
+<pre><code>http://dev-enviornment.com.cn/?token=2e78dg52d</code></pre><p>可以看到，每次登录产生的 token 都是会改变的。在浏览器 Network 里，token 的显示是这样的：</p>
+<p><code>?token=2e78dg52d</code></p>
+<p>因此，想要获取这个 token，需要在页面加载时，将本次带过来的的 token 获取到，这时候就用到了 <code>$route.query</code>。</p>
+<pre><code class="js">// 通过$route.query获取到token
+this.tokenId = this.$route.query.token;</code></pre>
+<h2 id="三、params-传递参数与接收参数"><a href="#三、params-传递参数与接收参数" class="headerlink" title="三、params 传递参数与接收参数"></a>三、params 传递参数与接收参数</h2><h3 id="1-params-传递参数"><a href="#1-params-传递参数" class="headerlink" title="1. params 传递参数"></a>1. params 传递参数</h3><p>params 只能通过 <code>name</code> 来传递参数，如果使用了 <code>path</code>，那么 params 将被忽略。</p>
+<p>示例：</p>
+<pre><code class="js">//组件1: params传参 使用name
+this.$router.push({
+  name:&#39;name&#39;,
+  params: {
+    id:&#39;1234&#39;,
+    name: &#39;name&#39;
+  }
+})</code></pre>
+<p>对应的路由配置：</p>
+<pre><code class="js">// router文件夹里，配置路由信息
+{
+    path: &#39;/pathName/:id/:name&#39;,
+    name: &#39;name&#39;,
+    component: () =&gt; import(&#39;@/view/componentName&#39;)
+}</code></pre>
+<p><strong>注意：</strong></p>
+<p><strong>router 里面的path必须要将参数一起写上（见上方代码）</strong>，不然如果这个路由有 params 传参，但是在跳转的时候没有传这个参数，会导致跳转失败或者页面会没有内容。</p>
+<p>第一次看到的页面中能看到 params 的信息，但是，<strong>一旦刷新页面之后，params 的信息就会丢失，变成 undefined！！</strong></p>
+<ul>
+<li>如果没有在 router 中添加 params 名称，<code>url</code> 的显示形式为：</li>
+</ul>
+<pre><code>http://localhost:3000/#/path</code></pre><ul>
+<li>如果在 router 中添加了 <code>params</code> 名称，即 <code>path: &#39;/pathName/:id/:name&#39;</code> 这种形式，<code>url</code> 的显示形式为：</li>
+</ul>
+<pre><code>http://localhost:3000/#/path/1234/name</code></pre><p><strong>另外，query 与 params 还有点儿区别：</strong></p>
+<ul>
+<li><p>query 相当于 <code>get</code> 请求，页面跳转时，可以在地址栏看到请求参数。</p>
+</li>
+<li><p>params 相当于 <code>post</code> 请求，参数不会在地址栏中显示。</p>
+</li>
+</ul>
+<hr>
+<p><em>参考来源：</em></p>
+<p><em>1. <a href="https://blog.csdn.net/mf_717714/article/details/81945218" target="_blank" rel="noopener">Vue Router 的params和query传参的使用和区别（详尽）</a></em></p>
+<p><em>2. <a href="https://blog.csdn.net/lsy__lsy/article/details/79991955" target="_blank" rel="noopener">vue之this.$route.query和this.$route.params的使用与区别</a></em></p>
+<p><em>3. <a href="https://blog.csdn.net/Leon_940002463/article/details/107176483?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-1&spm=1001.2101.3001.4242" target="_blank" rel="noopener">深入了解query和params的使用区别</a></em></p>
 
-3. 恢复最新一次暂存
-$ git stash pop</code></pre><ul>
-<li>删除某一个修改暂存</li>
-</ul>
-<pre><code>git stash drop stash@{id}</code></pre><ul>
-<li>清空所有的修改暂存</li>
-</ul>
-<pre><code>$ git stash clear</code></pre><ul>
-<li>远程 pull 下来的代码与本地合并之后，就可以 commit，然后 push 提交了</li>
-</ul>
-<h2 id="3-git-commit-pull-push"><a href="#3-git-commit-pull-push" class="headerlink" title="3. git commit / pull / push"></a>3. git commit / pull / push</h2><h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><pre><code>$ git pull origin remtebranch</code></pre><p>如果远程指定的分支已经与当前本地的分支关联，则可以直接使用 <code>git pull</code>。</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><ul>
-<li>commit 之前，确认代码提交的状态</li>
-</ul>
-<pre><code>git status</code></pre><ul>
-<li><code>git commit</code> 本地的修改</li>
-</ul>
-<pre><code>$ git commit -m&quot;&quot;</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit</li>
-</ul>
-<pre><code>$ git cherry -v
-
-eg: + 27122d40164dbf08276d96960bde20a2059cdb8b 修改页面</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit（可能不止一次）</li>
-</ul>
-<pre><code>$ git log master ^origin/master
-
-eg：
-commit 27122d40164dbf08276d96960bde20a2059cdb8b
-Author: hup &lt;673643141@qq.com&gt;
-Date:   Mon Oct 8 11:43:19 2018 +0800
-
-    修改页面</code></pre><ul>
-<li>撤销已经 <code>git commit</code> 但是未 push 的修改</li>
-</ul>
-<pre><code>1. 找到上次commit的id
-$ git log
-
-2. 完成撤销,同时将代码恢复到前一个commit_id 对应的版本（不建议使用，撤销之后，后面的代码不可恢复）
-$ git reset --hard commit_id 
-
-3. 完成commit命令的撤销，但是不对代码修改进行撤销，可以直接通过git commit重新提交对本地代码的修改
-$ git reset commit_id</code></pre><ul>
-<li>修改已git commit的注释信息</li>
-</ul>
-<pre><code>git commit --amend</code></pre><p>输入命令之后，会进入 vim 界面，在界面中修改之前 commit 的信息。</p>
-<p>修改完成之后，<code>:wq</code> 退出编辑模式。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><ul>
-<li>推送本地修改到远程对应分支</li>
-</ul>
-<pre><code>1. 远程已有remote_branch分支并且已经关联本地分支local_branch，且本地已经切换到local_branch
-   如果当前分支只有一个追踪分支，那么主机名都可以省略
-$ git push
-
-2. 远程已有remote_branch分支但未关联本地分支local_branch，且本地已经切换到local_branch
-$ git push -u origin/remotebranch
-
-3. 远程没有remote_branch分支并，本地已经切换到local_branch（如果没有远程分支，则会在远程新创建一个）
-$ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作："><a href="#其他操作：" class="headerlink" title="其他操作："></a>其他操作：</h3><p>把远程某各分支拉到本地的 branchname 下，如果没有 branchname，则会在本地新建 branchname。</p>
-<pre><code>$ git fetch origin branchname:branchname</code></pre><p>获取远程分支 remoteName 到本地新分支 localName，并跳到 localName 分支。</p>
-<pre><code>$ git checkout origin/remoteName -b localName</code></pre>
             <hr>
           </div>
           <br>
@@ -333,7 +281,7 @@ $ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作：">
               <span>
                 <i class="iconfont icon-tag"></i>
                 
-                  <a class="hover-with-bg" href="/tags/git">git</a>
+                  <a class="hover-with-bg" href="/tags/Vue">Vue</a>
                 
               </span>
             
@@ -500,7 +448,7 @@ $ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作：">
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Git version control 相关操作记录，防止踩坑&nbsp;",
+        "Vue query 与 params：传参、接收与 url 显示&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
