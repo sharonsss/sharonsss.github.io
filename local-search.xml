@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Git 操作(三)：本地分支合并，历史commit记录合并</title>
+    <link href="/2021/04/28/20210428/"/>
+    <url>/2021/04/28/20210428/</url>
+    
+    <content type="html"><![CDATA[<p>主要记录本地分支怎样合并，以及在 commit 很多且冗余的情况下，将历史的 commit 记录进行合并，来使 commit 记录更加清晰简洁。</p><!-- mre --><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候，当需要写一个新功能，或者修改一部分代码的时候，并不希望在本地的主节点来修改。于是会重新拉一个新分支下来。</p><p>当新分支修改完，确认运行正常之后，再把这个分支新增的代码与主分支的代码合并（这里指的都是本地）。</p><p><strong>合并的方式有两种。一种是 merge，一种是 rebase。</strong></p><h2 id="1-git-merge"><a href="#1-git-merge" class="headerlink" title="1. git merge"></a>1. git merge</h2><ul><li><p>假如你有两个分支：branch1 和 branch2</p></li><li><p>branch1、branch2 开始都是和远程对应分支 commit 记录相同的，而你接下来在branch2 中做了修改</p></li><li><p>你想将 branch2 重的修改合并到 branch1 中时，就可以使用 merge</p></li></ul><p>步骤：</p><pre><code>1. 保存branch2中的代码2. 切换到branch1分支git checkout branch1git merge branch1</code></pre><p>merge 命令执行之后，当前分支的代码不会被覆盖，而是会提示你有冲突，把冲突解决之后，就可以 merge 成功了。</p><pre><code>Auto-merging src/components/XXX/components/vueModal.vueCONFLICT (content): Merge conflict in src/components/XXX/vueModal.vueAuto-merging src/components/XXXHeader.vueAutomatic merge failed; fix conflicts and then commit the result.</code></pre><p>冲突解决完之后，会提示你需要 commit 一下，将 merge 的内容进行提交：</p><pre><code>On branch branch1All conflicts fixed but you are still merging.  (use &quot;git commit&quot; to conclude merge)Changes to be committed:    modified:   src/components/XXXHeader.vue    modified:   src/components/XXX/vueModal.vue</code></pre><p>此时，已经 merge 到 branch1 中的修改，是已经 add 的状态，只需要 commit。</p><p>有一张图可以说明这个操作：</p><p><img src="/img/git-merge.jpeg" srcset="/img/loading.gif" alt="merge"></p><p>但是，当你执行了 <code>git commit</code> 之后会发现，<code>git log</code> 记录中多出了这一步的 commit。</p><p>而如果你在从 branch2 切换到 branch1 之前，已经将 branch2 的修改 commit 了一次，那么此时 branch1 的 log 中会新增两条 commit 记录：</p><ul><li><p>第一条是 branch2 修改完毕之后提交的这次 commit</p></li><li><p>第二条是执行 <code>git merge</code> 时添加的 commit</p></li></ul><pre><code>commit d9ea45584f90b609d868ef9cbc6a902c1673edac (HEAD -&gt; branch1, origin/branch1)Merge: 69f6ccf6 025f707cAuthor: shaaaaa &lt;email&gt;Date:   Tue Apr 27 17:55:43 2021 +0800    登出弹窗优化commit 025f707c1aa675883aa179fd0334f7fa486c1a06 (branch2)Author: shaaaaa &lt;email&gt;Date:   Tue Apr 27 17:51:31 2021 +0800    登出弹窗优化</code></pre><p>这里的 commit 注释一样，是因为我两次 commit 写的内容是一样的。</p><p>不建议这么写，这样非常容易混淆。。。</p><p>但是我们如果要将本地的代码提交到远程，并不想把这次本地分支之间 merge 的记录也提交上去。那么怎么办呢？</p><ul><li><p><strong>一种办法是，不使用 merge，使用 <code>cherry pick</code> 。这部分后面单独拿一篇文章来写。</strong></p></li><li><p><strong>另一种办法，就是用 <code>git reset ---soft</code>，不更改代码，将 commit 记录回退，然后重新提交一次 commit。这样可以起到整理最近几次commit记录的作用。</strong></p></li></ul><p><code>git reset</code> 之后，再将 branch1 分支推送到远程对应分支的时候，远程的 commit 记录就会只有整理后的了。是不是很清晰简洁？</p><h2 id="2-git-rebase"><a href="#2-git-rebase" class="headerlink" title="2. git rebase"></a>2. git rebase</h2><p><code>git rebase</code> 操作也可以将本地另外一个分支的修改合并到当前分支。但是区别在于，rebase 会将当前分支的 commit 历史记录都修改。</p><p>假如你将 branch2 的分支合并到了 branch1 上，那么，branch2 的 commit 历史记录也会全部合并过来。</p><p>这就会导致，branch1 与 branch2 拥有相同的 commit 记录，除了当前分支上的修改，branch1 与 branch2 看起来就变成一样的了。这可能并不是我们想要的结果。</p><p>看下边这张图感受一下：</p><p><img src="/img/rebase.jpeg" srcset="/img/loading.gif" alt="merge"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说就是，<code>git merge</code> 只会将修改的部分合并过来，而 <code>git rebase</code> 在合并修改的同时，也会将历史的 commit 记录修改。</p><p>两种合并方式需要根据不同的情况，判断清楚之后再使用。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>前端开发</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>git</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Vue query 与 params：传参、接收与 url 显示</title>
     <link href="/2021/04/26/2021042602/"/>
     <url>/2021/04/26/2021042602/</url>

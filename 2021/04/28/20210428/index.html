@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/avatar.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="description" content="">
+  <meta name="author" content="San San">
+  <meta name="keywords" content="">
+  <title>Git 操作(三)：本地分支合并，历史commit记录合并 - Sansan&#39;s Blog</title>
+
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
+<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
+<link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css"  >
+<link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css"  >
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css"  >
+
+<link rel="stylesheet" href="/css/main.css"  >
+
+
+  <link rel="stylesheet" href="/lib/fancybox/jquery.fancybox.min.css"  >
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sansan's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background"
+         style="background: url('/img/christopher1.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              
+                <p class="mt-3">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
+                  Wednesday, April 28th 2021, 11:01 am
+                </p>
+              
+
+              <p>
+                
+                  
+                  &nbsp;<i class="far fa-chart-bar"></i>
+                  <span class="post-count">
+                    978 字
+                  </span>&nbsp;
+                
+
+                
+                  
+                  &nbsp;<i class="far fa-clock"></i>
+                  <span class="post-count">
+                      3 min
+                  </span>&nbsp;
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  &nbsp;<i class="far fa-eye" aria-hidden="true"></i>&nbsp;
+                  <span id="busuanzi_container_page_pv">
+                    <span id="busuanzi_value_page_pv"></span> times
+                  </span>&nbsp;
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto" id="post">
+          <div class="markdown-body">
+            <p>主要记录本地分支怎样合并，以及在 commit 很多且冗余的情况下，将历史的 commit 记录进行合并，来使 commit 记录更加清晰简洁。</p>
+<!-- mre -->
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>有时候，当需要写一个新功能，或者修改一部分代码的时候，并不希望在本地的主节点来修改。于是会重新拉一个新分支下来。</p>
+<p>当新分支修改完，确认运行正常之后，再把这个分支新增的代码与主分支的代码合并（这里指的都是本地）。</p>
+<p><strong>合并的方式有两种。一种是 merge，一种是 rebase。</strong></p>
+<h2 id="1-git-merge"><a href="#1-git-merge" class="headerlink" title="1. git merge"></a>1. git merge</h2><ul>
+<li><p>假如你有两个分支：branch1 和 branch2</p>
+</li>
+<li><p>branch1、branch2 开始都是和远程对应分支 commit 记录相同的，而你接下来在branch2 中做了修改</p>
+</li>
+<li><p>你想将 branch2 重的修改合并到 branch1 中时，就可以使用 merge</p>
+</li>
+</ul>
+<p>步骤：</p>
+<pre><code>1. 保存branch2中的代码
+2. 切换到branch1分支
+git checkout branch1
+git merge branch1</code></pre><p>merge 命令执行之后，当前分支的代码不会被覆盖，而是会提示你有冲突，把冲突解决之后，就可以 merge 成功了。</p>
+<pre><code>Auto-merging src/components/XXX/components/vueModal.vue
+CONFLICT (content): Merge conflict in src/components/XXX/vueModal.vue
+Auto-merging src/components/XXXHeader.vue
+Automatic merge failed; fix conflicts and then commit the result.</code></pre><p>冲突解决完之后，会提示你需要 commit 一下，将 merge 的内容进行提交：</p>
+<pre><code>On branch branch1
+All conflicts fixed but you are still merging.
+  (use &quot;git commit&quot; to conclude merge)
+
+Changes to be committed:
+
+    modified:   src/components/XXXHeader.vue
+    modified:   src/components/XXX/vueModal.vue</code></pre><p>此时，已经 merge 到 branch1 中的修改，是已经 add 的状态，只需要 commit。</p>
+<p>有一张图可以说明这个操作：</p>
+<p><img src="/img/git-merge.jpeg" srcset="/img/loading.gif" alt="merge"></p>
+<p>但是，当你执行了 <code>git commit</code> 之后会发现，<code>git log</code> 记录中多出了这一步的 commit。</p>
+<p>而如果你在从 branch2 切换到 branch1 之前，已经将 branch2 的修改 commit 了一次，那么此时 branch1 的 log 中会新增两条 commit 记录：</p>
+<ul>
+<li><p>第一条是 branch2 修改完毕之后提交的这次 commit</p>
+</li>
+<li><p>第二条是执行 <code>git merge</code> 时添加的 commit</p>
+</li>
+</ul>
+<pre><code>commit d9ea45584f90b609d868ef9cbc6a902c1673edac (HEAD -&gt; branch1, origin/branch1)
+Merge: 69f6ccf6 025f707c
+Author: shaaaaa &lt;email&gt;
+Date:   Tue Apr 27 17:55:43 2021 +0800
+
+    登出弹窗优化
+
+commit 025f707c1aa675883aa179fd0334f7fa486c1a06 (branch2)
+Author: shaaaaa &lt;email&gt;
+Date:   Tue Apr 27 17:51:31 2021 +0800
+
+    登出弹窗优化</code></pre><p>这里的 commit 注释一样，是因为我两次 commit 写的内容是一样的。</p>
+<p>不建议这么写，这样非常容易混淆。。。</p>
+<p>但是我们如果要将本地的代码提交到远程，并不想把这次本地分支之间 merge 的记录也提交上去。那么怎么办呢？</p>
+<ul>
+<li><p><strong>一种办法是，不使用 merge，使用 <code>cherry pick</code> 。这部分后面单独拿一篇文章来写。</strong></p>
+</li>
+<li><p><strong>另一种办法，就是用 <code>git reset ---soft</code>，不更改代码，将 commit 记录回退，然后重新提交一次 commit。这样可以起到整理最近几次commit记录的作用。</strong></p>
+</li>
+</ul>
+<p><code>git reset</code> 之后，再将 branch1 分支推送到远程对应分支的时候，远程的 commit 记录就会只有整理后的了。是不是很清晰简洁？</p>
+<h2 id="2-git-rebase"><a href="#2-git-rebase" class="headerlink" title="2. git rebase"></a>2. git rebase</h2><p><code>git rebase</code> 操作也可以将本地另外一个分支的修改合并到当前分支。但是区别在于，rebase 会将当前分支的 commit 历史记录都修改。</p>
+<p>假如你将 branch2 的分支合并到了 branch1 上，那么，branch2 的 commit 历史记录也会全部合并过来。</p>
+<p>这就会导致，branch1 与 branch2 拥有相同的 commit 记录，除了当前分支上的修改，branch1 与 branch2 看起来就变成一样的了。这可能并不是我们想要的结果。</p>
+<p>看下边这张图感受一下：</p>
+<p><img src="/img/rebase.jpeg" srcset="/img/loading.gif" alt="merge"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说就是，<code>git merge</code> 只会将修改的部分合并过来，而 <code>git rebase</code> 在合并修改的同时，也会将历史的 commit 记录修改。</p>
+<p>两种合并方式需要根据不同的情况，判断清楚之后再使用。</p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            <p>
+            
+              <span>
+                <i class="iconfont icon-inbox"></i>
+                
+                  <a class="hover-with-bg" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>
+                  &nbsp;
+                
+              </span>&nbsp;&nbsp;
+            
+            
+              <span>
+                <i class="iconfont icon-tag"></i>
+                
+                  <a class="hover-with-bg" href="/tags/git">git</a>
+                
+              </span>
+            
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;TOC</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+
+    
+  
+    <!-- 不蒜子统计PV -->
+    
+    &nbsp;<span id="busuanzi_container_site_pv">总访问量 
+          <span id="busuanzi_value_site_pv"></span> 次</span>&nbsp;
+  
+  
+    <!-- 不蒜子统计UV -->
+    
+    &nbsp;<span id="busuanzi_container_site_uv">总访客数 
+            <span id="busuanzi_value_site_uv"></span> 人</span>&nbsp;
+  
+  <br>
+
+
+
+    
+
+
+    <!-- cnzz Analytics icon -->
+    
+
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+
+  <script src="/js/lazyload.js" ></script>
+
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+
+  <script src="/lib/smooth-scroll/smooth-scroll.min.js" ></script>
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e7e697d38c5a814b00fe553d27f81508";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  <!-- cnzz Analytics -->
+  
+
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Git 操作(三)：本地分支合并，历史commit记录合并&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script src="/lib/fancybox/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
