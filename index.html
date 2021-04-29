@@ -145,6 +145,49 @@
     
     
       <div class="col-12 col-md-4 m-auto">
+        <a href="/2021/04/29/20210429/" target="_self">
+          <img src="/img/cherry-pick.png" srcset="/img/loading.gif" alt="Git 操作(四)：cherry-pick 复制commit记录" class="img-fluid rounded z-depth-3 index-thumbnails">
+        </a>
+      </div>
+    
+    <div class="col-12 col-md-8 m-auto">
+      <a href="/2021/04/29/20210429/">
+        <p class="h4 index-header">Git 操作(四)：cherry-pick 复制commit记录</p>
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">Git 操作(三)：本地分支合并，历史commit记录合并 中，说到了使用 git merge/rebase 将一个分支合并到另一个分支里。但是在很多情况下，可能需要将另一个分支里的一部分 commit 复制到当前的分支里来。
+这个时候 git cherry-pick 就派上用场了，而且非常好用。...</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-29&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91">前端开发</a>&nbsp;
+          &nbsp;
+        
+        
+          <i class="iconfont icon-tag"></i>
+          
+            <a href="/tags/git">git</a>&nbsp;
+          
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+      <div class="col-12 col-md-4 m-auto">
         <a href="/2021/04/28/20210428/" target="_self">
           <img src="/img/git-merge.jpeg" srcset="/img/loading.gif" alt="Git 操作(三)：本地分支合并，历史commit记录合并" class="img-fluid rounded z-depth-3 index-thumbnails">
         </a>
@@ -156,28 +199,10 @@
         
         
           
+          
         
-        <div class="index-excerpt" >
-          <div class="index-text mb-1">主要记录本地分支怎样合并，以及在 commit 很多且冗余的情况下，将历史的 commit 记录进行合并，来使 commit 记录更加清晰简洁。
-
-
-前言有时候，当需要写一个新功能，或者修改一部分代码的时候，并不希望在本地的主节点来修改。于是会重新拉一个新分支下来。
-当新分支修改完，确认运行正常之后，再把这个分支新增的代码与主分支的代码合并（这里指的都是本地）。
-合并的方式有两种。一种是 merge，一种是 rebase。
-1. git merge
-假如你有两个分支：branch1 和 branch2
-
-branch1、branch2 开始都是和远程对应分支 commit 记录相同的，而你接下来在branch2 中做了修改
-
-你想将 branch2 重的修改合并到 branch1 中时，就可以使用 merge
-
-
-步骤：
-1. 保存branch2中的代码
-2. 切换到branch1分支
-git checkout branch1
-git merge branch1merge 命令执行之后，当前分支的代码不会被覆盖，而是会提示你有冲突，把冲突解决之后，就可以 merge 成功了。
-Auto</div>
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">主要记录本地分支怎样合并，以及在 commit 很多且冗余的情况下，将历史的 commit 记录进行合并，来使 commit 记录更加清晰简洁。...</div>
         </div>
       </a>
 
@@ -539,54 +564,6 @@ Auto</div>
           <i class="iconfont icon-tag"></i>
           
             <a href="/tags/Python">Python</a>&nbsp;
-          
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4 mx-auto">
-    
-    
-      <div class="col-12 col-md-4 m-auto">
-        <a href="/2020/11/12/1112/" target="_self">
-          <img src="/img/nodejs.jpg" srcset="/img/loading.gif" alt="【歌单推荐】Node.js + Express 搭建后端服务器" class="img-fluid rounded z-depth-3 index-thumbnails">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 m-auto">
-      <a href="/2020/11/12/1112/">
-        <p class="h4 index-header">【歌单推荐】Node.js + Express 搭建后端服务器</p>
-        
-        
-          
-          
-        
-        <div class="index-excerpt" style="max-height: none;">
-          <div class="index-text mb-1">
-从零开始，利用 Vue、Node.js、Express、MySQL 实现前后端分离开发。花费半天时间搭建完成，小网站有了崛起的底气。
-...</div>
-        </div>
-      </a>
-
-      <div>
-        
-          <i class="iconfont icon-riqi2"></i>&nbsp;2020-11-12&nbsp;&nbsp;
-        
-        
-          <i class="iconfont icon-inbox"></i>
-          
-            <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91">后端开发</a>&nbsp;
-          &nbsp;
-        
-        
-          <i class="iconfont icon-tag"></i>
-          
-            <a href="/tags/Vue">Vue</a>&nbsp;
-          
-            <a href="/tags/MySQL">MySQL</a>&nbsp;
-          
-            <a href="/tags/Node-js">Node.js</a>&nbsp;
           
         
       </div>

@@ -16,7 +16,7 @@
   <meta name="description" content="">
   <meta name="author" content="San San">
   <meta name="keywords" content="">
-  <title>Git version control 相关操作记录，防止踩坑 - Sansan&#39;s Blog</title>
+  <title>Git 操作(四)：cherry-pick 复制commit记录 - Sansan&#39;s Blog</title>
 
   <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"  >
 <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"  >
@@ -122,7 +122,7 @@
               
                 <p class="mt-3">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>&nbsp;
-                  Wednesday, April 14th 2021, 4:47 pm
+                  Thursday, April 29th 2021, 5:22 pm
                 </p>
               
 
@@ -172,152 +172,100 @@
       <div class="py-5 z-depth-3" id="board">
         <div class="post-content mx-auto" id="post">
           <div class="markdown-body">
-            <p>今年到了一个新的项目组，开始跟团队合作进行前端开发，于是遇到了不少 <code>git pull</code>、<code>git push</code>、<code>git branch</code> 之类的问题。这里统一记录下来，做个备忘。</p>
+            <p><a href="https://sharonsss.github.io/2021/04/28/20210428/" target="_blank" rel="noopener">Git 操作(三)：本地分支合并，历史commit记录合并</a> 中，说到了使用 <code>git merge/rebase</code> 将一个分支合并到另一个分支里。但是在很多情况下，可能需要将另一个分支里的一部分 commit 复制到当前的分支里来。</p>
+<p>这个时候 <code>git cherry-pick</code> 就派上用场了，而且非常好用。</p>
 <a id="more"></a>
 
-<h2 id="1-git-branch-相关操作"><a href="#1-git-branch-相关操作" class="headerlink" title="1. git branch 相关操作"></a>1. git branch 相关操作</h2><ul>
-<li><code>git branch</code> 基本操作</li>
-</ul>
-<pre><code>1. 查看本地的分支列表,以及当前所在的分支
-$ git branch
-
-  hexo
-* master
-
-2. 查看远程分支
-$ git branch -r
-
-3. 查看本地和远程的所有分支
-$ git brnach -a
-
-  hexo
-* master
-  remotes/origin/hexo
-
-4. 查看本地分支与远程分支的追踪关系
-$ git branch -vv
-
-* master      fe69429 [origin/master: ahead 11, behind 4] Merge branch &#39;zhangyi-dev&#39;
-  zhangyi-dev 930cf95 [origin/zhangyi-dev] 解决冲突
-
-5.设置追踪关系
-如：本地名称为 master 要追踪到远程origin/master，命令如下：
-
-$ git branch --set-upstream-to=origin/master master
-
-6.切换分支
-$ git checkout targetBranchName
-
-7.切换并新建分支（新建一个分支，并且换到该分支）
-$ git checkout -b newBranchName</code></pre><ul>
-<li>git 分支的重命名与删除</li>
-</ul>
-<pre><code>1. 创建分支
-git branch [branchname]
-
-2. 删除本地某分支
-$ git brnach -d branchName
-
-3. 删除远程某分支
-$ git push origin --delete [branchname]
-
-4. 修改分支名
-$ git branch -m branch_old branch_new
-
-5. 将本地修改的分支名push到远程
-$ git branch -m branch_old branch_new
-$ git push origin :branch_old
-$ git push --set-upstream origin branch_new</code></pre><h2 id="2-git-stash"><a href="#2-git-stash" class="headerlink" title="2. git stash"></a>2. git stash</h2><p>当本地代码修改完成后，在 push 推送到远程对应分支之前，需要先暂存本地修改后的文件，并将远程对应分支最新的代码 pull 下来，与本地的修改合并，才能 push。此时就需要使用 <code>git stash</code>。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于跟其他人合作开发的经验优先，git 使用相当局限。当遇到需要摘一些 commit 记录放到当前分支的时候，使用 <code>git cherry-pick</code> 可以直接复制，复制过来之后通过 <code>git log</code> 就能查看到。</p>
+<p>只不过，<strong>cherry-pick 复制过来的 commit id 会发生变化。</strong></p>
+<p>使用方式就以之前遇到的情况来说明一下。</p>
 <ul>
-<li><code>git stash</code> 前，先添加本地的修改</li>
-</ul>
-<pre><code>$ git add .</code></pre><ul>
-<li>然后将本地的代码暂存到缓存区</li>
-</ul>
-<pre><code>$ git stash
-
-or
-
-$ git stash save &quot;输入暂存信息&quot;</code></pre><ul>
-<li>此时，我们可以查看之前所有的缓存：</li>
-</ul>
-<pre><code>$ git stash list
-
-stash@{0}: On devBranch: 再次修改dev分支文件
-stash@{1}: On devBranch: 修改dev分支文件</code></pre><p>其中 <code>stash@{0}</code> 是最新一次暂存的记录。</p>
-<ul>
-<li><p>暂存之后，<code>git pull</code> 拉取远程的最新代码</p>
+<li><p>首先，因为要开发一个新功能，便将远程 dev 分支拉到了本地，然后在 dev 的基础上进行开发</p>
 </li>
-<li><p>还原拉取之前暂存的内容</p>
+<li><p>然后，在开发过程中，因为要放到远程环境去测试效果，因此从本地 dev 分支提交了很多次的 commit</p>
+</li>
+<li><p>开发环境没问题了，此时要将这个功能上线投产。但因为这个分支上还有很多其他人提交的、还不能投产的 commit</p>
+</li>
+<li><p>因此，此时就需要将远程 release 分支（投产的分支）拉到本地，并切把本地dev分支需要的 commit 复制到本地的 release 分支里来。这样才能将写完的新功能推到远程的 release 环境，并投产</p>
 </li>
 </ul>
-<pre><code>1. 还原指定暂存，同时此次暂存从list中清除
-$ git stash pop stash@{id}
+<h2 id="cherry-pick-用法"><a href="#cherry-pick-用法" class="headerlink" title="cherry-pick 用法"></a>cherry-pick 用法</h2><h3 id="1-复制一个-commit-记录"><a href="#1-复制一个-commit-记录" class="headerlink" title="1. 复制一个 commit 记录"></a>1. 复制一个 commit 记录</h3><p>首先，如果只需要复制一个 commit 到当前分支上来：</p>
+<pre><code>1. 查看分支的commit记录
+git log
 
-2. 还原指定暂存，此次暂存仍然存在于list中
-$ git stash apply stash@{id}
+Output:
+commit 5b21e99d309f5ca3785c1049cbf908184dbab75b (HEAD -&gt; dev, origin/cc)
+Author: shaaaaa &lt;email@gmail.com&gt;
+Date:   Wed Apr 28 16:54:42 2021 +0800
 
-3. 恢复最新一次暂存
-$ git stash pop</code></pre><ul>
-<li>删除某一个修改暂存</li>
-</ul>
-<pre><code>git stash drop stash@{id}</code></pre><ul>
-<li>清空所有的修改暂存</li>
-</ul>
-<pre><code>$ git stash clear</code></pre><ul>
-<li>远程 pull 下来的代码与本地合并之后，就可以 commit，然后 push 提交了</li>
-</ul>
-<h2 id="3-git-commit-pull-push"><a href="#3-git-commit-pull-push" class="headerlink" title="3. git commit / pull / push"></a>3. git commit / pull / push</h2><h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><pre><code>$ git pull origin remtebranch</code></pre><p>如果远程指定的分支已经与当前本地的分支关联，则可以直接使用 <code>git pull</code>。</p>
-<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><ul>
-<li>commit 之前，确认代码提交的状态</li>
-</ul>
-<pre><code>git status</code></pre><ul>
-<li><code>git commit</code> 本地的修改</li>
-</ul>
-<pre><code>$ git commit -m&quot;&quot;</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit</li>
-</ul>
-<pre><code>$ git cherry -v
+    功能优化
 
-eg: + 27122d40164dbf08276d96960bde20a2059cdb8b 修改页面</code></pre><ul>
-<li>查看已提交但是未传送到远程代码库的 commit（可能不止一次）</li>
+commit 1fa59de9c5011cd2c4f8bb37d69e85b8a6ecd3c4
+Author: shaaaaa &lt;email@gmail.com&gt;
+Date:   Wed Apr 28 15:42:16 2021 +0800
+
+    登录集成
+
+commit cb93375c84965a830978fbcc5c31e8975cb77437
+Author: shaaaaa &lt;email@gmail.com&gt;
+Date:   Thu Apr 22 14:41:07 2021 +0800
+
+    新增页面2
+
+commit 84c22a116889ac51f159a271703cf6a3acc0156d
+Author: shaaaaa &lt;email@gmail.com&gt;
+Date:   Wed Apr 21 15:26:29 2021 +0800
+
+    新增页面1
+
+2. 复制需要的commit
+git cherry-pick cb93375c8</code></pre><p>上面 <code>git log</code> 的结果显示的是被复制分支的 commit 记录，我们只需要将 id 为 <code>cb93375c8</code> 的记录复制过来，因此可以直接执行 <code>git cherry-pick</code>。</p>
+<p>执行完命令之后，如果出现冲突就先解决冲突。然后，在当前分支上 <code>git log</code> 就可以看到刚刚复制的这条记录。</p>
+<p>但是注意，此时这条 commit 记录的id已经改变，和被复制分支里的记录就不一样了。</p>
+<pre><code>在当前分支上查看 commit 记录
+git log
+
+Output:
+commit [原有id改变为一个新的id] (HEAD -&gt; release, origin/cc)
+Author: shaaaaa &lt;email@gmail.com&gt;
+Date:   Wed Apr 28 16:54:42 2021 +0800
+
+    功能优化</code></pre><h3 id="2-复制连续多个-commit-记录"><a href="#2-复制连续多个-commit-记录" class="headerlink" title="2. 复制连续多个 commit 记录"></a>2. 复制连续多个 commit 记录</h3><p>如果需要同时复制多个 commit 记录，则可以使用：</p>
+<pre><code>git cherry-pick commitId1..commitId4</code></pre><p>这种形式表示：</p>
+<ul>
+<li><p>复制从 commitId2 到 commitId4 的所有记录，并不包含 commitId1。</p>
+</li>
+<li><p>即 <code>git cherry-pick (commitid1..commitid100]</code>，commitid1 为想复制的最老提交(不包括)，commitid100 为想复制的最新提交(包括)</p>
+</li>
 </ul>
-<pre><code>$ git log master ^origin/master
-
-eg：
-commit 27122d40164dbf08276d96960bde20a2059cdb8b
-Author: hup &lt;673643141@qq.com&gt;
-Date:   Mon Oct 8 11:43:19 2018 +0800
-
-    修改页面</code></pre><ul>
-<li>撤销已经 <code>git commit</code> 但是未 push 的修改</li>
+<p>如果想要包括 commitid1，那么在 commitid1 后加 <code>^</code> 即可，即：</p>
+<pre><code>git cherry-pick commitid1^..commitid100</code></pre><h3 id="3-复制多个-commit-记录，不连续"><a href="#3-复制多个-commit-记录，不连续" class="headerlink" title="3. 复制多个 commit 记录，不连续"></a>3. 复制多个 commit 记录，不连续</h3><p>如果需要复制多个记录，而且不是连续的，那么可以将几个 commit id 都列出来，中间用空格分割：</p>
+<pre><code>git cherry-pick
+20c2f506d789bb9f041050dc2c1e954fa3fb6910
+2633961a16b0dda7b767b9264662223a2874dfa9</code></pre><p>最好将最先提交的 commit 放在前面，以此类推。</p>
+<h3 id="4-cherry-pick之后，暂缓提交"><a href="#4-cherry-pick之后，暂缓提交" class="headerlink" title="4. cherry-pick之后，暂缓提交"></a>4. cherry-pick之后，暂缓提交</h3><p>前面的命令都会改变原有 commit 的 id。如果不想改变这些 id，想等到所有 commit 都拣选完成后，自己再手动 commit 呢？</p>
+<p>这时候可以加上<code>-n</code>：</p>
+<ul>
+<li><p><strong><code>-n，--no-commit</code></strong></p>
+</li>
+<li><p><strong>只更新工作区和暂存区，不产生新的提交。</strong></p>
+</li>
 </ul>
-<pre><code>1. 找到上次commit的id
-$ git log
+<pre><code>git cherry-pick  -n
+20c2f506d789bb9f041050dc2c1e954fa3fb6910
+2633961a16b0dda7b767b9264662223a2874dfa9</code></pre><p>此时如果 <code>git status</code>，会发现复制过来的修改都已经在暂存区（已 add 的状态），当前代码也会更新。</p>
+<p>如果需要 push 到远程，就可以直接执行 <code>git commit</code>，然后 <code>git push</code> 了。</p>
+<hr>
+<p>参考来源：</p>
+<ol>
+<li><p><a href="https://blog.csdn.net/Nathan1987_/article/details/82110511" target="_blank" rel="noopener">Git操作 ：从一个分支cherry-pick多个commit到其他分支</a></p>
+</li>
+<li><p><em><a href="https://www.pianshen.com/article/3911341057/" target="_blank" rel="noopener">Git cherry-pick 复制多个commit</a></em></p>
+</li>
+<li><p><em><a href="https://blog.csdn.net/Jxianxu/article/details/79240158" target="_blank" rel="noopener">Git cherry-pick 使用总结</a></em></p>
+</li>
+</ol>
 
-2. 完成撤销,同时将代码恢复到前一个commit_id 对应的版本（不建议使用，撤销之后，后面的代码不可恢复）
-$ git reset --hard commit_id 
-
-3. 完成commit命令的撤销，但是不对代码修改进行撤销，可以直接通过git commit重新提交对本地代码的修改
-$ git reset commit_id</code></pre><ul>
-<li>修改已git commit的注释信息</li>
-</ul>
-<pre><code>git commit --amend</code></pre><p>输入命令之后，会进入 vim 界面，在界面中修改之前 commit 的信息。</p>
-<p>修改完成之后，<code>:wq</code> 退出编辑模式。</p>
-<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><ul>
-<li>推送本地修改到远程对应分支</li>
-</ul>
-<pre><code>1. 远程已有remote_branch分支并且已经关联本地分支local_branch，且本地已经切换到local_branch
-   如果当前分支只有一个追踪分支，那么主机名都可以省略
-$ git push
-
-2. 远程已有remote_branch分支但未关联本地分支local_branch，且本地已经切换到local_branch
-$ git push -u origin/remotebranch
-
-3. 远程没有remote_branch分支并，本地已经切换到local_branch（如果没有远程分支，则会在远程新创建一个）
-$ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作："><a href="#其他操作：" class="headerlink" title="其他操作："></a>其他操作：</h3><p>把远程某各分支拉到本地的 branchname 下，如果没有 branchname，则会在本地新建 branchname。</p>
-<pre><code>$ git fetch origin branchname:branchname</code></pre><p>获取远程分支 remoteName 到本地新分支 localName，并跳到 localName 分支。</p>
-<pre><code>$ git checkout origin/remoteName -b localName</code></pre>
             <hr>
           </div>
           <br>
@@ -503,7 +451,7 @@ $ git push origin localbranch:remotebranch</code></pre><h3 id="其他操作：">
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Git version control 相关操作记录，防止踩坑&nbsp;",
+        "Git 操作(四)：cherry-pick 复制commit记录&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
