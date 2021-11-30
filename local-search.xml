@@ -4,6 +4,81 @@
   
   
   <entry>
+    <title>Python 数组/列表降维</title>
+    <link href="/2021/11/30/20211130-3/"/>
+    <url>/2021/11/30/20211130-3/</url>
+    
+    <content type="html"><![CDATA[<p>假设现在有一个二维列表：</p><pre><code>list1 = [[1, 2, 3], [3, 4, 7], [5, 8, 8]]</code></pre><p>我想把它变成一个一维列表，有两种方法可以实现：</p><a id="more"></a><ol><li>使用 numpy 中的 <code>flatten()</code> 函数。但需注意：<code>flatten()</code> 只能适用于 numpy 对象，即 <code>array</code> 或者 <code>mat</code> ，普通的 <code>list</code> 列表不适用。</li></ol><pre><code class="python"># 适用于array&gt;&gt;&gt; from numpy import *&gt;&gt;&gt; a=array([[1,2],[3,4],[5,6]])&gt;&gt;&gt; aarray([[1, 2],    [3, 4],    [5, 6]])&gt;&gt;&gt; a.flatten() #默认按行的方向降维array([1, 2, 3, 4, 5, 6])&gt;&gt;&gt; a.flatten(&#39;F&#39;) #按列降维array([1, 3, 5, 2, 4, 6])&gt;&gt;&gt; a.flatten(&#39;A&#39;) #按行降维array([1, 2, 3, 4, 5, 6])# 适用于mat矩阵&gt;&gt;&gt; a=mat([[1,2,3],[4,5,6]])&gt;&gt;&gt; amatrix([[1, 2, 3],    [4, 5, 6]])&gt;&gt;&gt; a.flatten()matrix([[1, 2, 3, 4, 5, 6]])</code></pre><ol start="2"><li>对于 list 列表，降维方式如下：</li></ol><pre><code class="python">&gt;&gt;&gt; a = [[1,3],[2,4],[3,5],[&quot;abc&quot;,&quot;def&quot;]]&gt;&gt;&gt; a1 = [y for x in a for y in x]&gt;&gt;&gt; a1[1, 3, 2, 4, 3, 5, &#39;abc&#39;, &#39;def&#39;]</code></pre><br><p><strong>参考来源：</strong></p><ul><li><em><a href="https://www.cnblogs.com/yvonnes/p/10020926.html" target="_blank" rel="noopener">Python 中 flatten() 函数及函数用法详解</a></em></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>爬虫</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Python 对象列表按照某个key排序</title>
+    <link href="/2021/11/30/20211130-2/"/>
+    <url>/2021/11/30/20211130-2/</url>
+    
+    <content type="html"><![CDATA[<p>假设现在有一个对象的数组：</p><a id="more"></a><pre><code class="python">arr = [{&quot;name&quot;: &quot;Apple&quot;, &quot;count&quot;: 12}, {&quot;name&quot;: &quot;bear&quot;, &quot;count&quot;: 23},{&quot;name&quot;: &quot;Judy&quot;, &quot;count&quot;: 45}]</code></pre><p>要按照count的值进行排序，那么使用sorted和lambda，进行自定义排序：</p><pre><code class="python"># 方法一arr.sort(key = lambda x:x[&quot;count&quot;])# 方法二new_arr = sorted(arr, key=lambda x:x[&quot;count&quot;])# 默认按从小到大排序，如果按从大到小：new_arr = sorted(arr, key=lambda x:x[&quot;count&quot;], reverse=True)</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>爬虫</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>使用Selenium爬取网易云音乐艺人信息</title>
+    <link href="/2021/11/30/20211130/"/>
+    <url>/2021/11/30/20211130/</url>
+    
+    <content type="html"><![CDATA[<p>之前帮朋友做过一套简单的爬虫脚本，当时并没有用到什么高效的工具，Python 代码直接抓。最近朋友的需求更新，脚本这次引入了 <code>Selenium</code>。</p><p>使用 Selenium 的原因是，这次需要爬去的数据，网易云做了 <code>iframe</code> 处理，常规的 <code>requests</code> 无法获取到。而 Selenium 可以解析到 iframe 中的内容，而且相应的处理方法也很实用。</p><a id="more"></a><p>第一个需求是抓取艺人的粉丝数，需要抓取的网页内容如下：</p><p><img src="/img/html.png" srcset="/img/loading.gif" alt="html"></p><p>可以看到，艺人信息都进行了 iframe 处理，直接引用 <code>requests</code> 方法是获取不到的。</p><h2 id="一、安装与引用Selenium"><a href="#一、安装与引用Selenium" class="headerlink" title="一、安装与引用Selenium"></a>一、安装与引用Selenium</h2><p>首先使用 pip 安装 Selenium：</p><pre><code>$ pip install -U selenium$ pip show selenium  //是否安装成功</code></pre><p>然后，chrome 浏览器需要安装相应的 chromedriver（Firefox 同样）。下载相应版本的 hromedriver：</p><ul><li>下载地址：<a href="http://chromedriver.storage.googleapis.com/index.html" target="_blank" rel="noopener">http://chromedriver.storage.googleapis.com/index.html</a></li></ul><p>由于我是 mac OS，下载解压后，将 driver 移到 <code>/usr/local/bin</code> 目录下，无需配置环境变量。</p><pre><code>$ mv chromedriver /usr/local/bin/</code></pre><p>在 Python 中引入 Selenium：</p><pre><code class="Python">from selenium import webdriver# 谷歌浏览器browser = webdriver.Chrome()</code></pre><h2 id="二、Selenium-实例"><a href="#二、Selenium-实例" class="headerlink" title="二、Selenium 实例"></a>二、Selenium 实例</h2><p>引入 selenium 之后，获取并进入 <code>iframe</code> 结构中：</p><pre><code class="Python">url = &#39;www.baidu.com&#39;browser.get(url)iframe = browser.find_element_by_id(&#39;g_iframe&#39;)browser.switch_to.frame(iframe)</code></pre><h3 id="1-获取指定内容"><a href="#1-获取指定内容" class="headerlink" title="1 获取指定内容"></a>1 获取指定内容</h3><p>通过 <code>id</code> 获取相应标签中的内容：</p><pre><code class="Python">elements = browser.find_element_by_id(&#39;m-module&#39;)text = elements.text</code></pre><p>此时获取的是 <code>tag</code> 中的内容，如<code>&lt;p id=&#39;m-module&#39;&gt;文字文字&lt;/p&gt;</code>中的“文字文字”。</p><p>如果要获取整段的 html，则可以使用:</p><pre><code class="Python">dom_html = elements.get_attribute(&#39;outerHTML&#39;) # 返回的为unicodedom_html_str = str(dom_html) # 将unicode转为stroutput:&lt;p id=&#39;m-module&#39;&gt;文字文字&lt;/p&gt;</code></pre><p>常用的获取 html 元素的方法有：</p><pre><code class="Python">browser.find_element_by_id()# 只获取第一个class相应内容browser.find_element_by_class_name()# 获取该class下的所有内容，返回为列表browser.find_elements_by_class_name()# 获取包含元素的整段htmlselected_dom.get_attribute(&#39;outerHTML&#39;)# 获取选中元素内的整段htmlselected_dom.get_attribute(&#39;innerHTML&#39;)# 直接获取某个attrbute属性的值selected_dom.get_attribute(&#39;attrbute name&#39;)</code></pre><h3 id="2-防止不断打开浏览器新窗口"><a href="#2-防止不断打开浏览器新窗口" class="headerlink" title="2 防止不断打开浏览器新窗口"></a>2 防止不断打开浏览器新窗口</h3><p>为了阻止访问一个链接时就打开一个新窗口，对 webdriver 进行一些配置：</p><pre><code class="Python"># 阻止selenium打开chrome窗口option = webdriver.ChromeOptions()option.add_argument(&#39;headless&#39;)browser = webdriver.Chrome(options=option)</code></pre><p><strong>参考来源：</strong></p><ul><li><em><a href="https://blog.csdn.net/gaimechen/article/details/81947879" target="_blank" rel="noopener">selenium get_attribute的几种用法</a></em></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>爬虫</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Git (五)：--orphan清空所有历史提交，只留最新代码</title>
     <link href="/2021/05/10/20210510/"/>
     <url>/2021/05/10/20210510/</url>
